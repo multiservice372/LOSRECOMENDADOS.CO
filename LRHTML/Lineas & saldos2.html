@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Líneas y Saldos | Telas al por Mayor en Medellín</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        :root {
+            --primary-color: #2c3e50; /* Azul oscuro elegante */
+            --accent-color: #e67e22; /* Naranja para llamadas a la acción */
+            --light-bg: #f8f9fa;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; }
+
+        /* --- HEADER --- */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a:hover { color: var(--accent-color); }
+
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1620799140408-ed5341cd2431?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); /* Imagen de ejemplo de telas */
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover { background-color: #d35400; }
+
+        /* --- BENEFICIOS --- */
+        .features {
+            padding: 4rem 5%;
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            flex: 1 1 300px; /* Responsive */
+        }
+
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+        /* --- CATEGORIAS --- */
+        .categories {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-item {
+            background-color: #ddd;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            /* Placeholder de color gris para las imágenes */
+            background-color: #7f8c8d; 
+            transition: transform 0.3s;
+        }
+
+        .category-item:hover { transform: scale(1.02); }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 2rem; }
+            .nav-links { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">🧵 Líneas y Saldos</div>
+            <ul class="nav-links">
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Telas</a></li>
+                <li><a href="#">Liquidaciones</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar tela...">
+                <span>🛒</span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>El Centro Textil de Medellín a un Clic</h1>
+        <p>La mayor variedad de telas al por mayor para tu negocio. Calidad, tendencias y precios de liquidación directa.</p>
+        <div>
+            <a href="#" class="cta-button">Ver Catálogo Mayorista</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">¿Por qué elegirnos?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Venta al Por Mayor</h3>
+                <p>Precios especiales por rollo y volumen para confeccionistas.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <h3>Ubicación Estratégica</h3>
+                <p>En el corazón de Medellín. Visítanos o pide a domicilio.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h3>Saldos Exclusivos</h3>
+                <p>Renovamos inventario constantemente con las mejores ofertas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <h2 class="section-title">Nuestras Telas</h2>
+        <div class="category-grid">
+            <div class="category-item">Algodones & Driles</div>
+            <div class="category-item">Licras Deportivas</div>
+            <div class="category-item">Dotación Industrial</div>
+            <div class="category-item">Saldos de Temporada</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>📍 Ubicación</h4>
+                <p>Centro de Medellín, Colombia</p>
+            </div>
+            <div>
+                <h4>⏰ Horario</h4>
+                <p>Lunes a Sábado: 8:00 AM - 6:00 PM</p>
+            </div>
+            <div>
+                <h4>📱 Contacto</h4>
+                <p>WhatsApp: +57 300 XXX XXXX</p>
+            </div>
+        </div>
+        <br>
+        <p>&copy; 2026 Líneas y Saldos. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>

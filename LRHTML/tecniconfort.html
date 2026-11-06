@@ -1,0 +1,1798 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TECNICONFORT S.A.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #06b6d4 #0f172a;
+    }
+    
+    *::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    *::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    
+    *::-webkit-scrollbar-thumb {
+      background: #06b6d4;
+      border-radius: 3px;
+    }
+    
+    .glass {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(6, 182, 212, 0.15);
+    }
+    
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(6, 182, 212, 0.1);
+    }
+    
+    .neon-text {
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.5), 0 0 20px rgba(6, 182, 212, 0.3);
+    }
+    
+    .purple-glow {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(168, 85, 247, 0.1);
+    }
+    
+    .gradient-border {
+      position: relative;
+    }
+    
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, #06b6d4, #a855f7, #06b6d4);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse-slow 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 8s ease infinite;
+    }
+    
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #22d3ee, #06b6d4);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #a855f7, #9333ea);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #c084fc, #a855f7);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+    }
+    
+    input, textarea, select {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+      outline: none;
+    }
+    
+    .warranty-badge {
+      background: linear-gradient(135deg, #10b981, #059669);
+      animation: badge-glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes badge-glow {
+      from { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
+      to { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+    }
+    
+    .page-transition {
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .toast {
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full bg-slate-950 text-white overflow-hidden" style="font-family: 'Rajdhani', sans-serif;"><!-- Background Effects -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+   <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+   <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1.5s;"></div>
+   <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-br from-cyan-900/5 via-transparent to-purple-900/5"></div><!-- Grid Pattern -->
+   <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px); background-size: 50px 50px;"></div>
+  </div><!-- Main App Container -->
+  <div id="app" class="h-full w-full flex flex-col relative z-10"><!-- Header/Navigation -->
+   <header id="main-header" class="glass sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between"><!-- Logo -->
+     <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
+      <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 via-purple-500 to-cyan-500 flex items-center justify-center neon-glow relative overflow-hidden group"><!-- SVG Logo - Tech + Comfort Fusion -->
+       <svg class="w-6 h-6 text-white relative z-10" viewbox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+         <lineargradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:1" />
+         </lineargradient>
+        </defs> <!-- Left side: Phone/Device (Technology) --> <rect x="15" y="28" width="25" height="44" rx="3" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" /> <rect x="18" y="32" width="19" height="32" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6" /> <circle cx="27.5" cy="72" r="1.5" fill="url(#logoGrad)" /> <!-- Right side: Curved comfort wave (Comfort/Well-being) --> <path d="M 60 35 Q 68 35 70 43 Q 72 51 70 59 Q 68 67 60 67" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" /> <path d="M 65 40 Q 71 40 72 47 Q 73 54 72 61" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.5" stroke-linecap="round" /> <!-- Connection lines (Integration/Fusion) --> <line x1="40" y1="48" x2="58" y2="48" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.7" /> <line x1="40" y1="52" x2="58" y2="52" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.7" /> <!-- Center accent: Lightning bolt (Energy/Innovation) --> <path d="M 47 45 L 51 51 L 49 51 L 53 58 L 48 52 L 50 52 Z" fill="url(#logoGrad)" opacity="0.8" />
+       </svg>
+      </div>
+      <div>
+       <h1 id="header-company-name" class="text-lg font-bold neon-text" style="font-family: 'Orbitron', sans-serif;">TECNICONFORT</h1>
+       <p id="header-tagline" class="text-xs text-cyan-400/70">Tu tecnología, nuestra pasión</p>
+      </div>
+     </div><!-- Desktop Navigation -->
+     <nav class="hidden md:flex items-center gap-6"><button onclick="navigate('home')" class="nav-link text-gray-300 hover:text-cyan-400 transition-colors font-medium">Inicio</button> <button onclick="navigate('products')" class="nav-link text-gray-300 hover:text-cyan-400 transition-colors font-medium">Productos</button> <button onclick="navigate('services')" class="nav-link text-gray-300 hover:text-cyan-400 transition-colors font-medium">Servicios</button> <button onclick="navigate('cart')" class="relative text-gray-300 hover:text-cyan-400 transition-colors">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+       </svg><span id="cart-badge" class="absolute -top-2 -right-2 w-5 h-5 bg-cyan-500 rounded-full text-xs flex items-center justify-center font-bold hidden">0</span> </button>
+      <div id="auth-nav" class="flex items-center gap-3"><button onclick="navigate('login')" class="btn-primary px-4 py-2 rounded-lg font-semibold text-sm">Ingresar</button>
+      </div>
+     </nav><!-- Mobile Menu Button --> <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-cyan-400 transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden mt-4 pb-4 border-t border-cyan-500/20 pt-4">
+     <div class="flex flex-col gap-3"><button onclick="navigate('home'); toggleMobileMenu()" class="text-left text-gray-300 hover:text-cyan-400 py-2 font-medium">🏠 Inicio</button> <button onclick="navigate('products'); toggleMobileMenu()" class="text-left text-gray-300 hover:text-cyan-400 py-2 font-medium">📱 Productos</button> <button onclick="navigate('services'); toggleMobileMenu()" class="text-left text-gray-300 hover:text-cyan-400 py-2 font-medium">🔧 Servicios</button> <button onclick="navigate('cart'); toggleMobileMenu()" class="text-left text-gray-300 hover:text-cyan-400 py-2 font-medium">����� Carrito</button>
+      <div id="mobile-auth-nav" class="pt-2 border-t border-cyan-500/20"><button onclick="navigate('login'); toggleMobileMenu()" class="btn-primary w-full px-4 py-2 rounded-lg font-semibold">Ingresar</button>
+      </div>
+     </div>
+    </div>
+   </header><!-- Main Content Area -->
+   <main id="main-content" class="flex-1 overflow-auto"><!-- Content will be rendered here -->
+   </main><!-- Toast Container -->
+   <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+  </div>
+  <script>
+    // ==================== APP STATE ====================
+    const defaultConfig = {
+      company_name: 'TECNICONFORT S.A.',
+      tagline: 'Tu tecnología, nuestra pasión',
+      warranty_text: '1 Año de Garantía',
+      background_color: '#020617',
+      surface_color: '#0f172a',
+      text_color: '#f1f5f9',
+      primary_action: '#06b6d4',
+      secondary_action: '#a855f7'
+    };
+
+    let config = { ...defaultConfig };
+    
+    const appState = {
+      currentPage: 'home',
+      user: null,
+      cart: [],
+      orders: [],
+      serviceRequests: [],
+      selectedProduct: null,
+      filterCategory: 'all',
+      isLoading: false
+    };
+
+    // ==================== PRODUCT DATA ====================
+    const products = [
+      {
+        id: 'phone-1',
+        name: 'Samsung Galaxy S24 Ultra',
+        category: 'phones',
+        price: 5499000,
+        originalPrice: 5999000,
+        image: '📱',
+        specs: ['256GB', '12GB RAM', '200MP Camera', '5G'],
+        description: 'El smartphone más avanzado de Samsung con S Pen integrado y cámara de 200MP.',
+        stock: 15,
+        featured: true
+      },
+      {
+        id: 'phone-2',
+        name: 'iPhone 15 Pro Max',
+        category: 'phones',
+        price: 6299000,
+        originalPrice: 6799000,
+        image: '📱',
+        specs: ['256GB', '8GB RAM', '48MP Camera', '5G'],
+        description: 'El iPhone más potente con chip A17 Pro y sistema de cámaras profesional.',
+        stock: 10,
+        featured: true
+      },
+      {
+        id: 'phone-3',
+        name: 'Xiaomi 14 Pro',
+        category: 'phones',
+        price: 3999000,
+        originalPrice: 4499000,
+        image: '📱',
+        specs: ['512GB', '12GB RAM', 'Leica Camera', '5G'],
+        description: 'Rendimiento flagship con sistema de cámaras Leica profesional.',
+        stock: 20,
+        featured: false
+      },
+      {
+        id: 'phone-4',
+        name: 'Google Pixel 8 Pro',
+        category: 'phones',
+        price: 4299000,
+        originalPrice: null,
+        image: '📱',
+        specs: ['128GB', '12GB RAM', '50MP Camera', '5G'],
+        description: 'La mejor experiencia Android pura con IA integrada de Google.',
+        stock: 8,
+        featured: true
+      },
+      {
+        id: 'phone-5',
+        name: 'OnePlus 12',
+        category: 'phones',
+        price: 3799000,
+        originalPrice: 4199000,
+        image: '📱',
+        specs: ['256GB', '16GB RAM', 'Hasselblad', '5G'],
+        description: 'Velocidad extrema con carga de 100W y cámaras Hasselblad.',
+        stock: 12,
+        featured: false
+      },
+      {
+        id: 'acc-1',
+        name: 'AirPods Pro 2',
+        category: 'accessories',
+        price: 1199000,
+        originalPrice: 1399000,
+        image: '🎧',
+        specs: ['ANC', 'Spatial Audio', 'USB-C', 'MagSafe'],
+        description: 'Cancelación de ruido adaptativa con audio espacial personalizado.',
+        stock: 25,
+        featured: true
+      },
+      {
+        id: 'acc-2',
+        name: 'Samsung Galaxy Watch 6',
+        category: 'accessories',
+        price: 1599000,
+        originalPrice: null,
+        image: '⌚',
+        specs: ['44mm', 'GPS', 'LTE', 'BioActive'],
+        description: 'Monitoreo avanzado de salud con sensor BioActive mejorado.',
+        stock: 18,
+        featured: false
+      },
+      {
+        id: 'acc-3',
+        name: 'Cargador Inalámbrico 3 en 1',
+        category: 'accessories',
+        price: 299000,
+        originalPrice: 399000,
+        image: '🔌',
+        specs: ['15W', 'MagSafe', 'LED', 'Qi2'],
+        description: 'Carga tu teléfono, reloj y audífonos simultáneamente.',
+        stock: 30,
+        featured: false
+      },
+      {
+        id: 'acc-4',
+        name: 'Funda Premium Leather',
+        category: 'accessories',
+        price: 189000,
+        originalPrice: null,
+        image: '📦',
+        specs: ['Cuero Real', 'MagSafe', 'Protección'],
+        description: 'Funda de cuero genuino con soporte MagSafe integrado.',
+        stock: 50,
+        featured: false
+      },
+      {
+        id: 'acc-5',
+        name: 'Power Bank 20000mAh',
+        category: 'accessories',
+        price: 249000,
+        originalPrice: 299000,
+        image: '🔋',
+        specs: ['65W', 'USB-C', 'Display', 'PD 3.0'],
+        description: 'Batería portátil de alta capacidad con carga rápida de 65W.',
+        stock: 22,
+        featured: true
+      }
+    ];
+
+    // ==================== UTILITY FUNCTIONS ====================
+    function formatPrice(price) {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0
+      }).format(price);
+    }
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-emerald-500' : type === 'error' ? 'bg-red-500' : 'bg-cyan-500';
+      toast.className = `toast glass ${bgColor}/90 px-4 py-3 rounded-lg text-white font-medium max-w-xs`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // ==================== DATA SDK INTEGRATION ====================
+    const dataHandler = {
+      onDataChanged(data) {
+        appState.orders = data.filter(d => d.type === 'order');
+        appState.serviceRequests = data.filter(d => d.type === 'service');
+        
+        // Update UI if on relevant pages
+        if (appState.currentPage === 'profile') {
+          renderProfile();
+        }
+      }
+    };
+
+    // ==================== NAVIGATION ====================
+    function navigate(page, data = null) {
+      appState.currentPage = page;
+      if (data) {
+        if (page === 'product-detail') {
+          appState.selectedProduct = data;
+        }
+      }
+      renderPage();
+      window.scrollTo(0, 0);
+    }
+
+    function renderPage() {
+      const content = document.getElementById('main-content');
+      
+      switch (appState.currentPage) {
+        case 'home':
+          content.innerHTML = renderHome();
+          break;
+        case 'login':
+          content.innerHTML = renderLogin();
+          break;
+        case 'register':
+          content.innerHTML = renderRegister();
+          break;
+        case 'products':
+          content.innerHTML = renderProducts();
+          break;
+        case 'product-detail':
+          content.innerHTML = renderProductDetail();
+          break;
+        case 'services':
+          content.innerHTML = renderServices();
+          break;
+        case 'cart':
+          content.innerHTML = renderCart();
+          break;
+        case 'checkout':
+          content.innerHTML = renderCheckout();
+          break;
+        case 'profile':
+          content.innerHTML = renderProfile();
+          break;
+        default:
+          content.innerHTML = renderHome();
+      }
+      
+      updateAuthNav();
+      updateCartBadge();
+    }
+
+    function updateAuthNav() {
+      const authNav = document.getElementById('auth-nav');
+      const mobileAuthNav = document.getElementById('mobile-auth-nav');
+      
+      if (appState.user) {
+        authNav.innerHTML = `
+          <div class="flex items-center gap-3">
+            <button onclick="navigate('profile')" class="flex items-center gap-2 text-gray-300 hover:text-cyan-400 transition-colors">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-sm font-bold">
+                ${appState.user.name.charAt(0).toUpperCase()}
+              </div>
+              <span class="hidden lg:block">${appState.user.name}</span>
+            </button>
+            <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition-colors text-sm">Salir</button>
+          </div>
+        `;
+        mobileAuthNav.innerHTML = `
+          <button onclick="navigate('profile'); toggleMobileMenu()" class="text-left text-gray-300 hover:text-cyan-400 py-2 font-medium w-full">👤 ${appState.user.name}</button>
+          <button onclick="logout(); toggleMobileMenu()" class="text-left text-red-400 hover:text-red-300 py-2 font-medium w-full">🚪 Cerrar Sesión</button>
+        `;
+      } else {
+        authNav.innerHTML = `<button onclick="navigate('login')" class="btn-primary px-4 py-2 rounded-lg font-semibold text-sm">Ingresar</button>`;
+        mobileAuthNav.innerHTML = `<button onclick="navigate('login'); toggleMobileMenu()" class="btn-primary w-full px-4 py-2 rounded-lg font-semibold">Ingresar</button>`;
+      }
+    }
+
+    function updateCartBadge() {
+      const badge = document.getElementById('cart-badge');
+      const count = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
+      if (count > 0) {
+        badge.textContent = count;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    // ==================== AUTH FUNCTIONS ====================
+    function handleLogin(e) {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.querySelector('#login-email').value;
+      const password = form.querySelector('#login-password').value;
+      
+      if (!email || !password) {
+        showToast('Por favor completa todos los campos', 'error');
+        return;
+      }
+      
+      // Simulate login
+      appState.user = {
+        id: generateId(),
+        email: email,
+        name: email.split('@')[0]
+      };
+      
+      showToast('¡Bienvenido de vuelta!', 'success');
+      navigate('home');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const form = e.target;
+      const name = form.querySelector('#register-name').value;
+      const email = form.querySelector('#register-email').value;
+      const password = form.querySelector('#register-password').value;
+      const confirmPassword = form.querySelector('#register-confirm').value;
+      
+      if (!name || !email || !password || !confirmPassword) {
+        showToast('Por favor completa todos los campos', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showToast('Las contraseñas no coinciden', 'error');
+        return;
+      }
+      
+      appState.user = {
+        id: generateId(),
+        email: email,
+        name: name
+      };
+      
+      showToast('¡Cuenta creada exitosamente!', 'success');
+      navigate('home');
+    }
+
+    function handleGoogleLogin() {
+      // Simulate Google login
+      appState.user = {
+        id: generateId(),
+        email: 'usuario@gmail.com',
+        name: 'Usuario Google'
+      };
+      
+      showToast('¡Conectado con Google!', 'success');
+      navigate('home');
+    }
+
+    function logout() {
+      appState.user = null;
+      showToast('Sesión cerrada', 'info');
+      navigate('home');
+    }
+
+    // ==================== CART FUNCTIONS ====================
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      
+      const existingItem = appState.cart.find(item => item.productId === productId);
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        appState.cart.push({
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        });
+      }
+      
+      updateCartBadge();
+      showToast(`${product.name} agregado al carrito`, 'success');
+    }
+
+    function removeFromCart(productId) {
+      appState.cart = appState.cart.filter(item => item.productId !== productId);
+      updateCartBadge();
+      renderPage();
+      showToast('Producto eliminado del carrito', 'info');
+    }
+
+    function updateCartQuantity(productId, change) {
+      const item = appState.cart.find(item => item.productId === productId);
+      if (!item) return;
+      
+      item.quantity += change;
+      if (item.quantity <= 0) {
+        removeFromCart(productId);
+      } else {
+        updateCartBadge();
+        renderPage();
+      }
+    }
+
+    function getCartTotal() {
+      return appState.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    }
+
+    // ==================== CHECKOUT & SERVICE FUNCTIONS ====================
+    async function handleCheckout(e) {
+      e.preventDefault();
+      
+      if (!appState.user) {
+        showToast('Debes iniciar sesión para continuar', 'error');
+        navigate('login');
+        return;
+      }
+      
+      if (appState.cart.length === 0) {
+        showToast('Tu carrito está vacío', 'error');
+        return;
+      }
+      
+      const form = e.target;
+      const city = form.querySelector('#checkout-city').value;
+      const address = form.querySelector('#checkout-address').value;
+      
+      if (!city || !address) {
+        showToast('Por favor completa la dirección', 'error');
+        return;
+      }
+      
+      const isMedellin = city.toLowerCase().includes('medellín') || city.toLowerCase().includes('medellin');
+      const deliveryType = isMedellin ? 'Entrega a Domicilio' : 'Envío Nacional';
+      
+      const orderData = {
+        id: generateId(),
+        type: 'order',
+        user_email: appState.user.email,
+        user_name: appState.user.name,
+        product_id: appState.cart.map(i => i.productId).join(','),
+        product_name: appState.cart.map(i => i.name).join(', '),
+        quantity: appState.cart.reduce((sum, i) => sum + i.quantity, 0),
+        price: getCartTotal(),
+        status: 'pending',
+        address: address,
+        city: city,
+        device_model: '',
+        issue_description: deliveryType,
+        created_at: new Date().toISOString()
+      };
+      
+      try {
+        const result = await window.dataSdk.create(orderData);
+        if (result.isOk) {
+          appState.cart = [];
+          updateCartBadge();
+          showToast(`¡Pedido realizado! ${deliveryType}`, 'success');
+          navigate('profile');
+        } else {
+          showToast('Error al procesar el pedido', 'error');
+        }
+      } catch (err) {
+        showToast('Error al procesar el pedido', 'error');
+      }
+    }
+
+    async function handleServiceRequest(e) {
+      e.preventDefault();
+      
+      if (!appState.user) {
+        showToast('Debes iniciar sesión para continuar', 'error');
+        navigate('login');
+        return;
+      }
+      
+      const form = e.target;
+      const deviceModel = form.querySelector('#service-device').value;
+      const issue = form.querySelector('#service-issue').value;
+      const city = form.querySelector('#service-city').value;
+      const address = form.querySelector('#service-address').value;
+      
+      if (!deviceModel || !issue || !city || !address) {
+        showToast('Por favor completa todos los campos', 'error');
+        return;
+      }
+      
+      const isMedellin = city.toLowerCase().includes('medellín') || city.toLowerCase().includes('medellin');
+      
+      if (!isMedellin) {
+        showToast('El servicio técnico a domicilio solo está disponible en Medellín', 'error');
+        return;
+      }
+      
+      const serviceData = {
+        id: generateId(),
+        type: 'service',
+        user_email: appState.user.email,
+        user_name: appState.user.name,
+        product_id: '',
+        product_name: '',
+        quantity: 1,
+        price: 0,
+        status: 'scheduled',
+        address: address,
+        city: city,
+        device_model: deviceModel,
+        issue_description: issue,
+        created_at: new Date().toISOString()
+      };
+      
+      try {
+        const result = await window.dataSdk.create(serviceData);
+        if (result.isOk) {
+          form.reset();
+          showToast('¡Solicitud de servicio enviada!', 'success');
+          navigate('profile');
+        } else {
+          showToast('Error al enviar solicitud', 'error');
+        }
+      } catch (err) {
+        showToast('Error al enviar solicitud', 'error');
+      }
+    }
+
+    // ==================== RENDER FUNCTIONS ====================
+    function renderHome() {
+      const featuredProducts = products.filter(p => p.featured);
+      const phones = products.filter(p => p.category === 'phones').slice(0, 4);
+      
+      return `
+        <div class="page-transition">
+          <!-- Hero Section -->
+          <section class="relative px-4 py-12 md:py-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+              <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                  <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                    <span class="text-sm text-cyan-400">Envíos a todo Colombia</span>
+                  </div>
+                  <h1 id="hero-title" class="text-4xl md:text-6xl font-bold leading-tight" style="font-family: 'Orbitron', sans-serif;">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 animate-gradient">
+                      Tecnología
+                    </span>
+                    <br>
+                    <span class="text-white">del Futuro</span>
+                  </h1>
+                  <p id="hero-tagline" class="text-xl text-gray-400 max-w-lg">${config.tagline || defaultConfig.tagline}</p>
+                  <div class="flex flex-wrap gap-4">
+                    <button onclick="navigate('products')" class="btn-primary px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-2">
+                      Ver Catálogo
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                      </svg>
+                    </button>
+                    <button onclick="navigate('services')" class="btn-secondary px-8 py-4 rounded-xl font-bold text-lg">
+                      Servicio Técnico
+                    </button>
+                  </div>
+                  <!-- Trust Badges -->
+                  <div class="flex flex-wrap gap-4 pt-4">
+                    <div class="glass-card px-4 py-2 rounded-lg flex items-center gap-2">
+                      <span class="text-2xl">🛡️</span>
+                      <span id="warranty-badge-text" class="text-sm text-gray-300">${config.warranty_text || defaultConfig.warranty_text}</span>
+                    </div>
+                    <div class="glass-card px-4 py-2 rounded-lg flex items-center gap-2">
+                      <span class="text-2xl">��</span>
+                      <span class="text-sm text-gray-300">Envío Gratis +$500K</span>
+                    </div>
+                    <div class="glass-card px-4 py-2 rounded-lg flex items-center gap-2">
+                      <span class="text-2xl">💳</span>
+                      <span class="text-sm text-gray-300">Pago Seguro</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Hero Visual -->
+                <div class="relative hidden md:block">
+                  <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-3xl blur-3xl"></div>
+                  <div class="relative glass-card rounded-3xl p-8 neon-glow animate-float">
+                    <div class="text-center">
+                      <div class="text-9xl mb-4">📱</div>
+                      <div class="space-y-2">
+                        <div class="h-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full w-3/4 mx-auto"></div>
+                        <div class="h-3 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full w-1/2 mx-auto"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Featured Products -->
+          <section class="px-4 py-12">
+            <div class="max-w-7xl mx-auto">
+              <div class="flex items-center justify-between mb-8">
+                <div>
+                  <h2 class="text-2xl md:text-3xl font-bold" style="font-family: 'Orbitron', sans-serif;">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Destacados</span>
+                  </h2>
+                  <p class="text-gray-400 mt-1">Los productos más populares</p>
+                </div>
+                <button onclick="navigate('products')" class="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1">
+                  Ver todos
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                ${featuredProducts.map(product => renderProductCard(product)).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- Services Banner -->
+          <section class="px-4 py-12">
+            <div class="max-w-7xl mx-auto">
+              <div class="glass-card rounded-3xl p-8 md:p-12 relative overflow-hidden gradient-border">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                <div class="relative grid md:grid-cols-2 gap-8 items-center">
+                  <div class="space-y-4">
+                    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm font-medium">
+                      Servicio Técnico
+                    </span>
+                    <h3 class="text-2xl md:text-3xl font-bold" style="font-family: 'Orbitron', sans-serif;">
+                      ¿Tu dispositivo necesita reparación?
+                    </h3>
+                    <p class="text-gray-400">
+                      Nuestros técnicos certificados van a tu domicilio en Medellín. 
+                      Reparamos pantallas, baterías, puertos de carga y más.
+                    </p>
+                    <button onclick="navigate('services')" class="btn-secondary px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      Solicitar Servicio
+                    </button>
+                  </div>
+                  <div class="hidden md:flex justify-center">
+                    <div class="text-8xl animate-float">🔧</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- New Arrivals -->
+          <section class="px-4 py-12">
+            <div class="max-w-7xl mx-auto">
+              <div class="flex items-center justify-between mb-8">
+                <div>
+                  <h2 class="text-2xl md:text-3xl font-bold" style="font-family: 'Orbitron', sans-serif;">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Celulares</span>
+                  </h2>
+                  <p class="text-gray-400 mt-1">Los últimos modelos disponibles</p>
+                </div>
+                <button onclick="navigate('products')" class="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1">
+                  Ver todos
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                ${phones.map(product => renderProductCard(product)).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          ${renderFooter()}
+        </div>
+      `;
+    }
+
+    function renderProductCard(product) {
+      return `
+        <div class="glass-card rounded-2xl p-4 hover:neon-glow transition-all duration-300 cursor-pointer group" onclick="navigate('product-detail', '${product.id}')">
+          <div class="relative">
+            <div class="aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center text-6xl mb-4 group-hover:scale-105 transition-transform">
+              ${product.image}
+            </div>
+            ${product.originalPrice ? `
+              <span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                -${Math.round((1 - product.price / product.originalPrice) * 100)}%
+              </span>
+            ` : ''}
+            <span class="warranty-badge absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded-full">
+              ${config.warranty_text || defaultConfig.warranty_text}
+            </span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-semibold text-white group-hover:text-cyan-400 transition-colors line-clamp-2">${product.name}</h3>
+            <div class="flex flex-wrap gap-1">
+              ${product.specs.slice(0, 2).map(spec => `
+                <span class="text-xs bg-slate-700/50 text-gray-400 px-2 py-0.5 rounded">${spec}</span>
+              `).join('')}
+            </div>
+            <div class="flex items-end gap-2">
+              <span class="text-xl font-bold text-cyan-400">${formatPrice(product.price)}</span>
+              ${product.originalPrice ? `
+                <span class="text-sm text-gray-500 line-through">${formatPrice(product.originalPrice)}</span>
+              ` : ''}
+            </div>
+            <button onclick="event.stopPropagation(); addToCart('${product.id}')" class="w-full btn-primary py-2 rounded-lg font-semibold text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLogin() {
+      return `
+        <div class="page-transition min-h-full flex items-center justify-center px-4 py-12">
+          <div class="w-full max-w-md">
+            <div class="glass-card rounded-3xl p-8 neon-glow">
+              <div class="text-center mb-8">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center mb-4">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-bold" style="font-family: 'Orbitron', sans-serif;">Bienvenido</h2>
+                <p class="text-gray-400 mt-1">Ingresa a tu cuenta</p>
+              </div>
+
+              <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                  <label for="login-email" class="block text-sm font-medium text-gray-300 mb-1">Correo electrónico</label>
+                  <input type="email" id="login-email" placeholder="tu@email.com" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+                <div>
+                  <label for="login-password" class="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
+                  <input type="password" id="login-password" placeholder="••••••••" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+                <button type="submit" class="w-full btn-primary py-3 rounded-xl font-bold text-lg">
+                  Iniciar Sesión
+                </button>
+              </form>
+
+              <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-gray-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-2 bg-slate-800 text-gray-400">o continúa con</span>
+                </div>
+              </div>
+
+              <button onclick="handleGoogleLogin()" class="w-full glass px-4 py-3 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-white/10 transition-colors">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Google
+              </button>
+
+              <p class="text-center text-gray-400 mt-6">
+                ¿No tienes cuenta? 
+                <button onclick="navigate('register')" class="text-cyan-400 hover:text-cyan-300 font-medium">Regístrate</button>
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderRegister() {
+      return `
+        <div class="page-transition min-h-full flex items-center justify-center px-4 py-12">
+          <div class="w-full max-w-md">
+            <div class="glass-card rounded-3xl p-8 neon-glow">
+              <div class="text-center mb-8">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-purple-400 to-cyan-500 flex items-center justify-center mb-4">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-bold" style="font-family: 'Orbitron', sans-serif;">Crear Cuenta</h2>
+                <p class="text-gray-400 mt-1">Únete a TECNICONFORT</p>
+              </div>
+
+              <form onsubmit="handleRegister(event)" class="space-y-4">
+                <div>
+                  <label for="register-name" class="block text-sm font-medium text-gray-300 mb-1">Nombre completo</label>
+                  <input type="text" id="register-name" placeholder="Juan Pérez" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+                <div>
+                  <label for="register-email" class="block text-sm font-medium text-gray-300 mb-1">Correo electrónico</label>
+                  <input type="email" id="register-email" placeholder="tu@email.com" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+                <div>
+                  <label for="register-password" class="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
+                  <input type="password" id="register-password" placeholder="••••••••" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+                <div>
+                  <label for="register-confirm" class="block text-sm font-medium text-gray-300 mb-1">Confirmar contraseña</label>
+                  <input type="password" id="register-confirm" placeholder="••••••••" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+                <button type="submit" class="w-full btn-secondary py-3 rounded-xl font-bold text-lg">
+                  Crear Cuenta
+                </button>
+              </form>
+
+              <p class="text-center text-gray-400 mt-6">
+                ¿Ya tienes cuenta? 
+                <button onclick="navigate('login')" class="text-cyan-400 hover:text-cyan-300 font-medium">Inicia sesión</button>
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderProducts() {
+      const filteredProducts = appState.filterCategory === 'all' 
+        ? products 
+        : products.filter(p => p.category === appState.filterCategory);
+      
+      return `
+        <div class="page-transition px-4 py-8">
+          <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+              <h1 class="text-3xl md:text-4xl font-bold mb-2" style="font-family: 'Orbitron', sans-serif;">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Catálogo</span>
+              </h1>
+              <p class="text-gray-400">Encuentra el dispositivo perfecto para ti</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-3 mb-8">
+              <button onclick="setFilter('all')" class="px-4 py-2 rounded-xl font-medium transition-all ${appState.filterCategory === 'all' ? 'btn-primary' : 'glass-card hover:bg-white/10'}">
+                Todos
+              </button>
+              <button onclick="setFilter('phones')" class="px-4 py-2 rounded-xl font-medium transition-all ${appState.filterCategory === 'phones' ? 'btn-primary' : 'glass-card hover:bg-white/10'}">
+                📱 Celulares
+              </button>
+              <button onclick="setFilter('accessories')" class="px-4 py-2 rounded-xl font-medium transition-all ${appState.filterCategory === 'accessories' ? 'btn-primary' : 'glass-card hover:bg-white/10'}">
+                🎧 Accesorios
+              </button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              ${filteredProducts.map(product => renderProductCard(product)).join('')}
+            </div>
+
+            ${filteredProducts.length === 0 ? `
+              <div class="text-center py-12">
+                <div class="text-6xl mb-4">🔍</div>
+                <p class="text-gray-400">No se encontraron productos</p>
+              </div>
+            ` : ''}
+          </div>
+          ${renderFooter()}
+        </div>
+      `;
+    }
+
+    function setFilter(category) {
+      appState.filterCategory = category;
+      renderPage();
+    }
+
+    function renderProductDetail() {
+      const product = products.find(p => p.id === appState.selectedProduct);
+      if (!product) {
+        navigate('products');
+        return '';
+      }
+
+      return `
+        <div class="page-transition px-4 py-8">
+          <div class="max-w-6xl mx-auto">
+            <!-- Breadcrumb -->
+            <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+              <button onclick="navigate('home')" class="hover:text-cyan-400">Inicio</button>
+              <span>/</span>
+              <button onclick="navigate('products')" class="hover:text-cyan-400">Productos</button>
+              <span>/</span>
+              <span class="text-cyan-400">${product.name}</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+              <!-- Product Image -->
+              <div class="glass-card rounded-3xl p-8 neon-glow">
+                <div class="aspect-square flex items-center justify-center text-9xl animate-float">
+                  ${product.image}
+                </div>
+                <div class="flex justify-center gap-2 mt-4">
+                  <span class="warranty-badge text-white text-sm font-bold px-3 py-1 rounded-full">
+                    ✓ ${config.warranty_text || defaultConfig.warranty_text}
+                  </span>
+                  ${product.stock > 0 ? `
+                    <span class="bg-emerald-500/20 text-emerald-400 text-sm font-medium px-3 py-1 rounded-full">
+                      ${product.stock} en stock
+                    </span>
+                  ` : `
+                    <span class="bg-red-500/20 text-red-400 text-sm font-medium px-3 py-1 rounded-full">
+                      Agotado
+                    </span>
+                  `}
+                </div>
+              </div>
+
+              <!-- Product Info -->
+              <div class="space-y-6">
+                <div>
+                  <span class="text-cyan-400 text-sm font-medium uppercase tracking-wider">
+                    ${product.category === 'phones' ? 'Celular' : 'Accesorio'}
+                  </span>
+                  <h1 class="text-3xl md:text-4xl font-bold mt-2" style="font-family: 'Orbitron', sans-serif;">
+                    ${product.name}
+                  </h1>
+                </div>
+
+                <div class="flex items-end gap-4">
+                  <span class="text-4xl font-bold text-cyan-400">${formatPrice(product.price)}</span>
+                  ${product.originalPrice ? `
+                    <span class="text-xl text-gray-500 line-through">${formatPrice(product.originalPrice)}</span>
+                    <span class="bg-red-500 text-white text-sm font-bold px-2 py-1 rounded">
+                      -${Math.round((1 - product.price / product.originalPrice) * 100)}%
+                    </span>
+                  ` : ''}
+                </div>
+
+                <p class="text-gray-400 text-lg">${product.description}</p>
+
+                <!-- Specs -->
+                <div class="glass-card rounded-2xl p-6">
+                  <h3 class="font-semibold mb-4 text-lg">Especificaciones</h3>
+                  <div class="grid grid-cols-2 gap-4">
+                    ${product.specs.map(spec => `
+                      <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-cyan-400 rounded-full"></span>
+                        <span class="text-gray-300">${spec}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <!-- Shipping Info -->
+                <div class="glass-card rounded-2xl p-6">
+                  <h3 class="font-semibold mb-4 text-lg">Envío</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                      <span class="text-2xl">🏠</span>
+                      <div>
+                        <p class="font-medium text-cyan-400">Medellín</p>
+                        <p class="text-sm text-gray-400">Entrega a domicilio en 24-48 horas</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <span class="text-2xl">��</span>
+                      <div>
+                        <p class="font-medium text-purple-400">Resto de Colombia</p>
+                        <p class="text-sm text-gray-400">Envío nacional en 3-5 días hábiles</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                  <button onclick="addToCart('${product.id}')" class="flex-1 btn-primary py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2" ${product.stock === 0 ? 'disabled' : ''}>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    Agregar al Carrito
+                  </button>
+                  <button onclick="addToCart('${product.id}'); navigate('checkout')" class="flex-1 btn-secondary py-4 rounded-xl font-bold text-lg" ${product.stock === 0 ? 'disabled' : ''}>
+                    Comprar Ahora
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          ${renderFooter()}
+        </div>
+      `;
+    }
+
+    function renderServices() {
+      return `
+        <div class="page-transition px-4 py-8">
+          <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+              <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full mb-4">
+                <span class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></span>
+                <span class="text-sm text-purple-400">Solo disponible en Medellín</span>
+              </div>
+              <h1 class="text-3xl md:text-4xl font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Servicio Técnico</span>
+              </h1>
+              <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                Nuestros técnicos certificados van a tu domicilio para reparar tu dispositivo.
+                Diagnóstico gratuito y garantía en todas las reparaciones.
+              </p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="grid sm:grid-cols-3 gap-6 mb-12">
+              <div class="glass-card rounded-2xl p-6 text-center hover:neon-glow transition-all">
+                <div class="text-5xl mb-4">📱</div>
+                <h3 class="font-semibold mb-2">Pantallas</h3>
+                <p class="text-sm text-gray-400">Cambio de pantalla LCD y OLED</p>
+              </div>
+              <div class="glass-card rounded-2xl p-6 text-center hover:purple-glow transition-all">
+                <div class="text-5xl mb-4">🔋</div>
+                <h3 class="font-semibold mb-2">Baterías</h3>
+                <p class="text-sm text-gray-400">Reemplazo de batería original</p>
+              </div>
+              <div class="glass-card rounded-2xl p-6 text-center hover:neon-glow transition-all">
+                <div class="text-5xl mb-4">🔌</div>
+                <h3 class="font-semibold mb-2">Puertos</h3>
+                <p class="text-sm text-gray-400">Reparación de puerto de carga</p>
+              </div>
+            </div>
+
+            <!-- Service Request Form -->
+            <div class="glass-card rounded-3xl p-8 neon-glow">
+              <h2 class="text-2xl font-bold mb-6" style="font-family: 'Orbitron', sans-serif;">Solicitar Servicio</h2>
+              
+              <form onsubmit="handleServiceRequest(event)" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="service-device" class="block text-sm font-medium text-gray-300 mb-2">Modelo del dispositivo</label>
+                    <input type="text" id="service-device" placeholder="Ej: iPhone 14 Pro Max" 
+                      class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                  </div>
+                  <div>
+                    <label for="service-city" class="block text-sm font-medium text-gray-300 mb-2">Ciudad</label>
+                    <select id="service-city" class="w-full px-4 py-3 rounded-xl text-white" required>
+                      <option value="">Selecciona tu ciudad</option>
+                      <option value="Medellín">Medellín</option>
+                      <option value="Bogotá" disabled>Bogotá (Próximamente)</option>
+                      <option value="Cali" disabled>Cali (Próximamente)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="service-address" class="block text-sm font-medium text-gray-300 mb-2">Dirección completa</label>
+                  <input type="text" id="service-address" placeholder="Calle, número, barrio, referencias" 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                </div>
+
+                <div>
+                  <label for="service-issue" class="block text-sm font-medium text-gray-300 mb-2">Describe el problema</label>
+                  <textarea id="service-issue" rows="4" placeholder="Cuéntanos qué le pasa a tu dispositivo..." 
+                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 resize-none" required></textarea>
+                </div>
+
+                <div class="glass rounded-xl p-4 flex items-start gap-3">
+                  <span class="text-2xl">ℹ️</span>
+                  <div class="text-sm text-gray-400">
+                    <p class="font-medium text-gray-300 mb-1">Información importante</p>
+                    <p>Un técnico se comunicará contigo en las próximas 2 horas para confirmar la cita y darte un presupuesto inicial.</p>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full btn-secondary py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                  </svg>
+                  Enviar Solicitud
+                </button>
+              </form>
+            </div>
+          </div>
+          ${renderFooter()}
+        </div>
+      `;
+    }
+
+    function renderCart() {
+      const total = getCartTotal();
+
+      return `
+        <div class="page-transition px-4 py-8">
+          <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-8" style="font-family: 'Orbitron', sans-serif;">
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Tu Carrito</span>
+            </h1>
+
+            ${appState.cart.length === 0 ? `
+              <div class="glass-card rounded-3xl p-12 text-center">
+                <div class="text-8xl mb-6">🛒</div>
+                <h2 class="text-2xl font-bold mb-2">Tu carrito está vacío</h2>
+                <p class="text-gray-400 mb-6">Agrega algunos productos increíbles</p>
+                <button onclick="navigate('products')" class="btn-primary px-8 py-3 rounded-xl font-semibold">
+                  Ver Productos
+                </button>
+              </div>
+            ` : `
+              <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Cart Items -->
+                <div class="lg:col-span-2 space-y-4">
+                  ${appState.cart.map(item => `
+                    <div class="glass-card rounded-2xl p-4 flex gap-4">
+                      <div class="w-20 h-20 bg-slate-800 rounded-xl flex items-center justify-center text-4xl flex-shrink-0">
+                        ${item.image}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <h3 class="font-semibold text-white truncate">${item.name}</h3>
+                        <p class="text-cyan-400 font-bold">${formatPrice(item.price)}</p>
+                        <div class="flex items-center gap-3 mt-2">
+                          <button onclick="updateCartQuantity('${item.productId}', -1)" class="w-8 h-8 rounded-lg bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition-colors">
+                            −
+                          </button>
+                          <span class="font-medium">${item.quantity}</span>
+                          <button onclick="updateCartQuantity('${item.productId}', 1)" class="w-8 h-8 rounded-lg bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition-colors">
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <button onclick="removeFromCart('${item.productId}')" class="text-gray-400 hover:text-red-400 transition-colors self-start">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                      </button>
+                    </div>
+                  `).join('')}
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                  <div class="glass-card rounded-2xl p-6 sticky top-24">
+                    <h3 class="font-bold text-xl mb-4">Resumen</h3>
+                    <div class="space-y-3 mb-6">
+                      <div class="flex justify-between text-gray-400">
+                        <span>Subtotal</span>
+                        <span>${formatPrice(total)}</span>
+                      </div>
+                      <div class="flex justify-between text-gray-400">
+                        <span>Envío</span>
+                        <span class="text-emerald-400">${total >= 500000 ? 'Gratis' : formatPrice(25000)}</span>
+                      </div>
+                      <div class="border-t border-gray-700 pt-3 flex justify-between text-lg font-bold">
+                        <span>Total</span>
+                        <span class="text-cyan-400">${formatPrice(total >= 500000 ? total : total + 25000)}</span>
+                      </div>
+                    </div>
+                    <button onclick="navigate('checkout')" class="w-full btn-primary py-3 rounded-xl font-bold">
+                      Proceder al Pago
+                    </button>
+                    ${total < 500000 ? `
+                      <p class="text-xs text-gray-400 text-center mt-3">
+                        ¡Agrega ${formatPrice(500000 - total)} más para env����o gratis!
+                      </p>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            `}
+          </div>
+          ${renderFooter()}
+        </div>
+      `;
+    }
+
+    function renderCheckout() {
+      if (appState.cart.length === 0) {
+        navigate('cart');
+        return '';
+      }
+
+      if (!appState.user) {
+        return `
+          <div class="page-transition px-4 py-8">
+            <div class="max-w-lg mx-auto text-center">
+              <div class="glass-card rounded-3xl p-12">
+                <div class="text-8xl mb-6">🔐</div>
+                <h2 class="text-2xl font-bold mb-2">Inicia sesión para continuar</h2>
+                <p class="text-gray-400 mb-6">Necesitas una cuenta para realizar tu compra</p>
+                <button onclick="navigate('login')" class="btn-primary px-8 py-3 rounded-xl font-semibold">
+                  Iniciar Sesión
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      const total = getCartTotal();
+      const shipping = total >= 500000 ? 0 : 25000;
+
+      return `
+        <div class="page-transition px-4 py-8">
+          <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-8" style="font-family: 'Orbitron', sans-serif;">
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Checkout</span>
+            </h1>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+              <!-- Checkout Form -->
+              <div class="space-y-6">
+                <form onsubmit="handleCheckout(event)" class="space-y-6">
+                  <!-- Shipping Address -->
+                  <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                      <span class="text-2xl">��</span> Dirección de Envío
+                    </h3>
+                    <div class="space-y-4">
+                      <div>
+                        <label for="checkout-name" class="block text-sm font-medium text-gray-300 mb-1">Nombre completo</label>
+                        <input type="text" id="checkout-name" value="${appState.user.name}" 
+                          class="w-full px-4 py-3 rounded-xl text-white" required>
+                      </div>
+                      <div>
+                        <label for="checkout-city" class="block text-sm font-medium text-gray-300 mb-1">Ciudad</label>
+                        <select id="checkout-city" onchange="updateShippingInfo()" class="w-full px-4 py-3 rounded-xl text-white" required>
+                          <option value="">Selecciona tu ciudad</option>
+                          <option value="Medellín">Medellín</option>
+                          <option value="Bogotá">Bogotá</option>
+                          <option value="Cali">Cali</option>
+                          <option value="Barranquilla">Barranquilla</option>
+                          <option value="Cartagena">Cartagena</option>
+                          <option value="Otra">Otra ciudad</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="checkout-address" class="block text-sm font-medium text-gray-300 mb-1">Dirección completa</label>
+                        <input type="text" id="checkout-address" placeholder="Calle, número, barrio, referencias" 
+                          class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500" required>
+                      </div>
+                      <div id="shipping-info" class="glass rounded-xl p-4"></div>
+                    </div>
+                  </div>
+
+                  <!-- Payment Method (Mock) -->
+                  <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                      <span class="text-2xl">💳</span> Método de Pago
+                    </h3>
+                    <div class="space-y-3">
+                      <label class="flex items-center gap-3 glass rounded-xl p-4 cursor-pointer hover:bg-white/5 transition-colors">
+                        <input type="radio" name="payment" value="card" checked class="w-4 h-4 text-cyan-500">
+                        <span class="text-2xl">💳</span>
+                        <span>Tarjeta de Crédito/Débito</span>
+                      </label>
+                      <label class="flex items-center gap-3 glass rounded-xl p-4 cursor-pointer hover:bg-white/5 transition-colors">
+                        <input type="radio" name="payment" value="pse" class="w-4 h-4 text-cyan-500">
+                        <span class="text-2xl">🏦</span>
+                        <span>PSE (Transferencia Bancaria)</span>
+                      </label>
+                      <label class="flex items-center gap-3 glass rounded-xl p-4 cursor-pointer hover:bg-white/5 transition-colors">
+                        <input type="radio" name="payment" value="cash" class="w-4 h-4 text-cyan-500">
+                        <span class="text-2xl">💵</span>
+                        <span>Pago Contraentrega</span>
+                      </label>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-4 text-center">
+                      * Demo: Los pagos se procesan de forma simulada
+                    </p>
+                  </div>
+
+                  <button type="submit" class="w-full btn-primary py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Confirmar Pedido - ${formatPrice(total + shipping)}
+                  </button>
+                </form>
+              </div>
+
+              <!-- Order Summary -->
+              <div>
+                <div class="glass-card rounded-2xl p-6 sticky top-24">
+                  <h3 class="font-bold text-xl mb-4">Tu Pedido</h3>
+                  <div class="space-y-4 mb-6 max-h-64 overflow-auto">
+                    ${appState.cart.map(item => `
+                      <div class="flex gap-3">
+                        <div class="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                          ${item.image}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="font-medium truncate">${item.name}</p>
+                          <p class="text-sm text-gray-400">Cantidad: ${item.quantity}</p>
+                        </div>
+                        <p class="font-medium text-cyan-400">${formatPrice(item.price * item.quantity)}</p>
+                      </div>
+                    `).join('')}
+                  </div>
+                  <div class="border-t border-gray-700 pt-4 space-y-2">
+                    <div class="flex justify-between text-gray-400">
+                      <span>Subtotal</span>
+                      <span>${formatPrice(total)}</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400">
+                      <span>Envío</span>
+                      <span class="${shipping === 0 ? 'text-emerald-400' : ''}">${shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
+                    </div>
+                    <div class="flex justify-between text-xl font-bold pt-2">
+                      <span>Total</span>
+                      <span class="text-cyan-400">${formatPrice(total + shipping)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateShippingInfo() {
+      const city = document.getElementById('checkout-city')?.value;
+      const infoDiv = document.getElementById('shipping-info');
+      if (!infoDiv || !city) return;
+
+      const isMedellin = city.toLowerCase().includes('medellín') || city.toLowerCase().includes('medellin');
+      
+      if (isMedellin) {
+        infoDiv.innerHTML = `
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">🏠</span>
+            <div>
+              <p class="font-medium text-cyan-400">Entrega a Domicilio</p>
+              <p class="text-sm text-gray-400">Recibe tu pedido en 24-48 horas directamente en tu puerta</p>
+            </div>
+          </div>
+        `;
+      } else if (city) {
+        infoDiv.innerHTML = `
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">🚚</span>
+            <div>
+              <p class="font-medium text-purple-400">Envío Nacional</p>
+              <p class="text-sm text-gray-400">Tu pedido llegará en 3-5 días hábiles por transportadora</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderProfile() {
+      if (!appState.user) {
+        navigate('login');
+        return '';
+      }
+
+      return `
+        <div class="page-transition px-4 py-8">
+          <div class="max-w-4xl mx-auto">
+            <!-- Profile Header -->
+            <div class="glass-card rounded-3xl p-8 mb-8 neon-glow">
+              <div class="flex flex-col sm:flex-row items-center gap-6">
+                <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-4xl font-bold">
+                  ${appState.user.name.charAt(0).toUpperCase()}
+                </div>
+                <div class="text-center sm:text-left">
+                  <h1 class="text-2xl md:text-3xl font-bold" style="font-family: 'Orbitron', sans-serif;">${appState.user.name}</h1>
+                  <p class="text-gray-400">${appState.user.email}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div class="mb-8">
+              <h2 class="text-xl font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Mis Pedidos</span>
+              </h2>
+              ${appState.orders.length === 0 ? `
+                <div class="glass-card rounded-2xl p-8 text-center">
+                  <div class="text-6xl mb-4">📦</div>
+                  <p class="text-gray-400">Aún no tienes pedidos</p>
+                  <button onclick="navigate('products')" class="btn-primary px-6 py-2 rounded-lg font-semibold mt-4">
+                    Explorar Productos
+                  </button>
+                </div>
+              ` : `
+                <div class="space-y-4">
+                  ${appState.orders.map(order => `
+                    <div class="glass-card rounded-2xl p-4">
+                      <div class="flex flex-wrap items-start justify-between gap-4">
+                        <div>
+                          <p class="font-semibold">${order.product_name}</p>
+                          <p class="text-sm text-gray-400">${order.city} - ${order.issue_description}</p>
+                          <p class="text-xs text-gray-500">${new Date(order.created_at).toLocaleDateString('es-CO')}</p>
+                        </div>
+                        <div class="text-right">
+                          <p class="font-bold text-cyan-400">${formatPrice(order.price)}</p>
+                          <span class="inline-block px-2 py-1 rounded-full text-xs font-medium ${order.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-emerald-500/20 text-emerald-400'}">
+                            ${order.status === 'pending' ? 'Pendiente' : 'Completado'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+
+            <!-- Service Requests Section -->
+            <div>
+              <h2 class="text-xl font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Servicios Técnicos</span>
+              </h2>
+              ${appState.serviceRequests.length === 0 ? `
+                <div class="glass-card rounded-2xl p-8 text-center">
+                  <div class="text-6xl mb-4">🔧</div>
+                  <p class="text-gray-400">No tienes solicitudes de servicio</p>
+                  <button onclick="navigate('services')" class="btn-secondary px-6 py-2 rounded-lg font-semibold mt-4">
+                    Solicitar Servicio
+                  </button>
+                </div>
+              ` : `
+                <div class="space-y-4">
+                  ${appState.serviceRequests.map(service => `
+                    <div class="glass-card rounded-2xl p-4">
+                      <div class="flex flex-wrap items-start justify-between gap-4">
+                        <div>
+                          <p class="font-semibold">${service.device_model}</p>
+                          <p class="text-sm text-gray-400">${service.issue_description}</p>
+                          <p class="text-xs text-gray-500">${service.address}, ${service.city}</p>
+                        </div>
+                        <div class="text-right">
+                          <span class="inline-block px-2 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400">
+                            ${service.status === 'scheduled' ? 'Programado' : 'Completado'}
+                          </span>
+                          <p class="text-xs text-gray-500 mt-1">${new Date(service.created_at).toLocaleDateString('es-CO')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+          ${renderFooter()}
+        </div>
+      `;
+    }
+
+    function renderFooter() {
+      return `
+        <footer class="glass mt-12 px-4 py-8">
+          <div class="max-w-7xl mx-auto">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+              <!-- Brand -->
+              <div>
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <span id="footer-company-name" class="font-bold" style="font-family: 'Orbitron', sans-serif;">${config.company_name || defaultConfig.company_name}</span>
+                </div>
+                <p class="text-sm text-gray-400">Tu tecnología, nuestra pasión. Desde Medellín para toda Colombia.</p>
+              </div>
+
+              <!-- Quick Links -->
+              <div>
+                <h4 class="font-semibold mb-4">Navegación</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                  <li><button onclick="navigate('home')" class="hover:text-cyan-400 transition-colors">Inicio</button></li>
+                  <li><button onclick="navigate('products')" class="hover:text-cyan-400 transition-colors">Productos</button></li>
+                  <li><button onclick="navigate('services')" class="hover:text-cyan-400 transition-colors">Servicios</button></li>
+                </ul>
+              </div>
+
+              <!-- Contact -->
+              <div>
+                <h4 class="font-semibold mb-4">Contacto</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                  <li>📍 Medellín, Colombia</li>
+                  <li>📱 +57 300 123 4567</li>
+                  <li>✉️ info@tecniconfort.co</li>
+                </ul>
+              </div>
+
+              <!-- Social -->
+              <div>
+                <h4 class="font-semibold mb-4">Síguenos</h4>
+                <div class="flex gap-3">
+                  <span class="w-10 h-10 glass rounded-lg flex items-center justify-center text-xl cursor-pointer hover:bg-white/10 transition-colors">📘</span>
+                  <span class="w-10 h-10 glass rounded-lg flex items-center justify-center text-xl cursor-pointer hover:bg-white/10 transition-colors">📸</span>
+                  <span class="w-10 h-10 glass rounded-lg flex items-center justify-center text-xl cursor-pointer hover:bg-white/10 transition-colors">🐦</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+              <p>© 2024 TECNICONFORT S.A. Todos los derechos reservados.</p>
+              <div class="flex gap-4">
+                <span class="hover:text-gray-300 cursor-pointer">Términos</span>
+                <span class="hover:text-gray-300 cursor-pointer">Privacidad</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      `;
+    }
+
+    // ==================== ELEMENT SDK INTEGRATION ====================
+    async function onConfigChange(newConfig) {
+      config = { ...defaultConfig, ...newConfig };
+      
+      // Update header
+      const headerCompanyName = document.getElementById('header-company-name');
+      if (headerCompanyName) headerCompanyName.textContent = config.company_name || defaultConfig.company_name;
+      
+      const headerTagline = document.getElementById('header-tagline');
+      if (headerTagline) headerTagline.textContent = config.tagline || defaultConfig.tagline;
+      
+      // Update colors
+      document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+      
+      // Re-render page to apply changes
+      renderPage();
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => window.elementSdk.setConfig({ background_color: value })
+          },
+          {
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (value) => window.elementSdk.setConfig({ surface_color: value })
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => window.elementSdk.setConfig({ text_color: value })
+          },
+          {
+            get: () => config.primary_action || defaultConfig.primary_action,
+            set: (value) => window.elementSdk.setConfig({ primary_action: value })
+          },
+          {
+            get: () => config.secondary_action || defaultConfig.secondary_action,
+            set: (value) => window.elementSdk.setConfig({ secondary_action: value })
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['company_name', config.company_name || defaultConfig.company_name],
+        ['tagline', config.tagline || defaultConfig.tagline],
+        ['warranty_text', config.warranty_text || defaultConfig.warranty_text]
+      ]);
+    }
+
+    // ==================== INITIALIZATION ====================
+    async function init() {
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+      }
+
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Failed to initialize Data SDK');
+        }
+      }
+
+      // Render initial page
+      renderPage();
+    }
+
+    // Start the app
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c992757936d3ee1',t:'MTc3MDM2NTI0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

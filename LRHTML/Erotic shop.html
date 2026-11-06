@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velvet Noir — Boutique Élite</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Jost:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0a0a0f;
+      --surface: #15131e;
+      --text-main: #e8e0d4;
+      --accent-red: #d63447;
+      --accent-red-light: #ff4757;
+      --accent-violet: #2a1a2a;
+    }
+
+    html { height: 100%; }
+    body { height: 100%; margin: 0; }
+
+    .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-body { font-family: 'Jost', 'Helvetica Neue', sans-serif; }
+
+    /* Noise overlay for texture */
+    .noise-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Red shimmer animation - sensual */
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .red-shimmer {
+      background: linear-gradient(90deg, #d63447 0%, #ff6b7a 25%, #d63447 50%, #ff6b7a 75%, #d63447 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s linear infinite;
+    }
+
+    /* Fade-in stagger */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+    }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.6s; }
+    .delay-5 { animation-delay: 0.75s; }
+    .delay-6 { animation-delay: 0.9s; }
+
+    /* Product card hover */
+    .product-card {
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(214, 52, 71, 0.25), 0 0 0 1px rgba(214, 52, 71, 0.2);
+    }
+    .product-card .card-image {
+      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .product-card:hover .card-image {
+      transform: scale(1.05);
+    }
+
+    /* Discrete badge pulse */
+    @keyframes gentlePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(214, 52, 71, 0.3); }
+      50% { box-shadow: 0 0 0 12px rgba(214, 52, 71, 0); }
+    }
+    .pulse-badge {
+      animation: gentlePulse 3s ease-in-out infinite;
+    }
+
+    /* WhatsApp button float */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .wa-float {
+      animation: float 3s ease-in-out infinite;
+      transition: box-shadow 0.3s ease, transform 0.15s ease;
+    }
+    .wa-float:hover {
+      animation-play-state: paused;
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+    }
+
+    /* Elegant divider */
+    .elegant-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(214, 52, 71, 0.4), transparent);
+    }
+
+    /* Scroll smooth */
+    html { scroll-behavior: smooth; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #d63447; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ff4757; }
+
+    /* Hero gradient background - red sensual tones */
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(214, 52, 71, 0.3), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(214, 52, 71, 0.15), transparent),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255, 71, 87, 0.08), transparent),
+        #0a0a0f;
+    }
+
+    /* Feature icon glow */
+    .icon-glow {
+      filter: drop-shadow(0 0 8px rgba(214, 52, 71, 0.35));
+    }
+
+    /* Sensual red accent line */
+    .accent-line-red {
+      background: linear-gradient(90deg, transparent, #d63447, transparent);
+      height: 2px;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deep: '#0a0a0f',
+            surface: '#15131e',
+            surfaceLight: '#1e1a2e',
+            red: '#d63447',
+            redLight: '#ff4757',
+            redAccent: '#ff6b7a',
+            violet: '#2a1a2a',
+            cream: '#e8e0d4',
+            muted: '#8a8294',
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body" style="background-color: #0a0a0f; color: #e8e0d4;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- ===== NAVIGATION ===== -->
+   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-500" id="main-nav">
+    <div class="w-full px-6 md:px-12 py-4 flex items-center justify-between" style="background: linear-gradient(180deg, rgba(10,10,15,0.95), rgba(10,10,15,0));"><a href="#" class="font-display text-2xl md:text-3xl font-light tracking-wider" style="color: #d63447;" id="nav-brand"> Velvet Noir </a>
+     <nav class="hidden md:flex items-center gap-8 text-sm tracking-widest uppercase" style="color: #8a8294;"><a href="#coleccion" class="hover:text-red transition-colors duration-300" style="--text-red: #d63447;">Colección</a> <a href="#confianza" class="hover:text-red transition-colors duration-300" style="--text-red: #d63447;">Discreción</a> <a href="#contacto" class="hover:text-red transition-colors duration-300" style="--text-red: #d63447;">Contacto</a>
+     </nav><!-- Mobile menu button --> <button class="md:hidden" style="color: #d63447;" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" aria-label="Abrir menú de navegación">
+      <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+       <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-6 text-sm tracking-widest uppercase" style="background: rgba(10,10,15,0.97); color: #8a8294;"><a href="#coleccion" class="block py-3 border-b" style="border-color: rgba(214, 52, 71, 0.15);">Colección</a> <a href="#confianza" class="block py-3 border-b" style="border-color: rgba(214, 52, 71, 0.15);">Discreción</a> <a href="#contacto" class="block py-3">Contacto</a>
+    </div>
+   </header>
+   <main><!-- ===== HERO / BANNER PRINCIPAL ===== -->
+    <section class="relative hero-bg noise-overlay w-full flex items-center justify-center" style="min-height: 100%; padding-top: 100px; padding-bottom: 60px;">
+     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto"><!-- Decorative top line -->
+      <div class="fade-up delay-1 mx-auto mb-8 accent-line-red" style="width: 60px;"></div><!-- Brand mark -->
+      <p class="fade-up delay-1 font-body text-xs tracking-[0.35em] uppercase mb-6" style="color: #8a8294;" id="hero-tagline">Boutique Íntima de Alta Gama — Medellín</p><!-- Main heading -->
+      <h1 class="fade-up delay-2 font-display text-5xl md:text-7xl lg:text-8xl font-light leading-none mb-6" id="hero-title"><span class="red-shimmer">Tu placer,</span><br><span style="color: #e8e0d4;">nuestra discreción</span></h1><!-- Subtitle / Banner message -->
+      <p class="fade-up delay-3 font-body text-base md:text-lg tracking-wide mb-10 max-w-xl mx-auto" style="color: #8a8294;" id="hero-subtitle">Envíos discretos a todo Colombia</p><!-- Discrete shipping badge -->
+      <div class="fade-up delay-4 inline-flex items-center gap-3 px-6 py-3 rounded-full pulse-badge mb-10" style="border: 1px solid rgba(214, 52, 71, 0.3); background: rgba(21, 19, 30, 0.8);">
+       <svg class="icon-glow" width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /> <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+       </svg><span class="text-sm tracking-wider uppercase font-medium" style="color: #d63447;" id="badge-text">Empaque 100% Discreto</span>
+      </div><br><!-- CTA buttons -->
+      <div class="fade-up delay-5 flex flex-col sm:flex-row items-center justify-center gap-4"><a href="#coleccion" class="group relative px-10 py-4 text-sm tracking-widest uppercase overflow-hidden rounded-sm" style="background: linear-gradient(135deg, #d63447, #a82239); color: #fff;"> <span class="relative z-10 font-medium">Explorar Colección</span>
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background: linear-gradient(135deg, #ff4757, #d63447);"></div></a> <a href="#confianza" class="px-10 py-4 text-sm tracking-widest uppercase rounded-sm transition-colors duration-300" style="border: 1px solid rgba(214, 52, 71, 0.3); color: #d63447;" onmouseover="this.style.borderColor='#d63447';this.style.background='rgba(214,52,71,0.05)'" onmouseout="this.style.borderColor='rgba(214, 52, 71, 0.3)';this.style.background='transparent'"> Nuestra Promesa </a>
+      </div>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 fade-up delay-6">
+      <div class="w-5 h-8 rounded-full flex items-start justify-center pt-1.5" style="border: 1px solid rgba(214, 52, 71, 0.3);">
+       <div class="w-1 h-2 rounded-full" style="background: #d63447; animation: float 2s ease-in-out infinite;"></div>
+      </div>
+     </div>
+    </section><!-- ===== PRODUCT COLLECTION ===== -->
+    <section id="coleccion" class="relative w-full py-24 px-6 md:px-12" style="background: #0a0a0f;">
+     <div class="max-w-7xl mx-auto"><!-- Section header -->
+      <div class="text-center mb-16">
+       <p class="font-body text-xs tracking-[0.3em] uppercase mb-3" style="color: #d63447;">Curada para ti</p>
+       <h2 class="font-display text-4xl md:text-5xl font-light mb-4" style="color: #e8e0d4;" id="section-title">Colección Selecta</h2>
+       <div class="mx-auto accent-line-red" style="width: 80px;"></div>
+      </div><!-- Product grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="product-grid"><!-- Product 1 -->
+       <article class="product-card group rounded-lg overflow-hidden cursor-pointer" style="background: #15131e; border: 1px solid rgba(214, 52, 71, 0.15);">
+        <div class="relative overflow-hidden" style="aspect-ratio: 3/4;">
+         <div class="card-image w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #1e1a2e, #2a1528);">
+          <svg width="60" height="60" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="0.8" class="opacity-40"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+         </div><!-- Tag --> <span class="absolute top-3 left-3 px-3 py-1 text-[10px] tracking-widest uppercase rounded-full" style="background: rgba(214, 52, 71, 0.15); color: #d63447; border: 1px solid rgba(214, 52, 71, 0.2);"> Bestseller </span>
+        </div>
+        <div class="p-5">
+         <p class="text-[10px] tracking-[0.2em] uppercase mb-1.5" style="color: #d63447;">Bienestar Personal</p>
+         <h3 class="font-display text-lg mb-2" style="color: #e8e0d4;">Silk Whisper</h3>
+         <div class="flex items-center justify-between"><span class="font-body text-sm font-medium" style="color: #d63447;">$289.000</span> <button class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300" style="border: 1px solid rgba(214, 52, 71, 0.3);" onmouseover="this.style.background='rgba(214,52,71,0.1)'" onmouseout="this.style.background='transparent'" aria-label="Agregar Silk Whisper al carrito">
+           <svg width="14" height="14" fill="none" stroke="#d63447" stroke-width="1.5" viewbox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+           </svg></button>
+         </div>
+        </div>
+       </article><!-- Product 2 -->
+       <article class="product-card group rounded-lg overflow-hidden cursor-pointer" style="background: #15131e; border: 1px solid rgba(214, 52, 71, 0.15);">
+        <div class="relative overflow-hidden" style="aspect-ratio: 3/4;">
+         <div class="card-image w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #1a1525, #251520);">
+          <svg width="60" height="60" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="0.8" class="opacity-40"><circle cx="12" cy="12" r="9" /> <path d="M12 3c2 4 2 8 0 12M12 3c-2 4-2 8 0 12" />
+          </svg>
+         </div><span class="absolute top-3 left-3 px-3 py-1 text-[10px] tracking-widest uppercase rounded-full" style="background: rgba(214, 52, 71, 0.2); color: #ff6b7a; border: 1px solid rgba(214, 52, 71, 0.3);"> Nuevo </span>
+        </div>
+        <div class="p-5">
+         <p class="text-[10px] tracking-[0.2em] uppercase mb-1.5" style="color: #d63447;">Aromas &amp; Esencias</p>
+         <h3 class="font-display text-lg mb-2" style="color: #e8e0d4;">Velvet Mist</h3>
+         <div class="flex items-center justify-between"><span class="font-body text-sm font-medium" style="color: #d63447;">$159.000</span> <button class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300" style="border: 1px solid rgba(214, 52, 71, 0.3);" onmouseover="this.style.background='rgba(214,52,71,0.1)'" onmouseout="this.style.background='transparent'" aria-label="Agregar Velvet Mist al carrito">
+           <svg width="14" height="14" fill="none" stroke="#d63447" stroke-width="1.5" viewbox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+           </svg></button>
+         </div>
+        </div>
+       </article><!-- Product 3 -->
+       <article class="product-card group rounded-lg overflow-hidden cursor-pointer" style="background: #15131e; border: 1px solid rgba(214, 52, 71, 0.15);">
+        <div class="relative overflow-hidden" style="aspect-ratio: 3/4;">
+         <div class="card-image w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #1c1828, #281527);">
+          <svg width="60" height="60" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="0.8" class="opacity-40"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+          </svg>
+         </div>
+        </div>
+        <div class="p-5">
+         <p class="text-[10px] tracking-[0.2em] uppercase mb-1.5" style="color: #d63447;">Lencería</p>
+         <h3 class="font-display text-lg mb-2" style="color: #e8e0d4;">Midnight Lace</h3>
+         <div class="flex items-center justify-between"><span class="font-body text-sm font-medium" style="color: #d63447;">$345.000</span> <button class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300" style="border: 1px solid rgba(214, 52, 71, 0.3);" onmouseover="this.style.background='rgba(214,52,71,0.1)'" onmouseout="this.style.background='transparent'" aria-label="Agregar Midnight Lace al carrito">
+           <svg width="14" height="14" fill="none" stroke="#d63447" stroke-width="1.5" viewbox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+           </svg></button>
+         </div>
+        </div>
+       </article><!-- Product 4 -->
+       <article class="product-card group rounded-lg overflow-hidden cursor-pointer" style="background: #15131e; border: 1px solid rgba(214, 52, 71, 0.15);">
+        <div class="relative overflow-hidden" style="aspect-ratio: 3/4;">
+         <div class="card-image w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #1b1628, #271524);">
+          <svg width="60" height="60" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="0.8" class="opacity-40"><path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+         </div><span class="absolute top-3 left-3 px-3 py-1 text-[10px] tracking-widest uppercase rounded-full" style="background: rgba(214, 52, 71, 0.15); color: #d63447; border: 1px solid rgba(214, 52, 71, 0.2);"> Exclusivo </span>
+        </div>
+        <div class="p-5">
+         <p class="text-[10px] tracking-[0.2em] uppercase mb-1.5" style="color: #d63447;">Kits Premium</p>
+         <h3 class="font-display text-lg mb-2" style="color: #e8e0d4;">Golden Hour</h3>
+         <div class="flex items-center justify-between"><span class="font-body text-sm font-medium" style="color: #d63447;">$520.000</span> <button class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300" style="border: 1px solid rgba(214, 52, 71, 0.3);" onmouseover="this.style.background='rgba(214,52,71,0.1)'" onmouseout="this.style.background='transparent'" aria-label="Agregar Golden Hour al carrito">
+           <svg width="14" height="14" fill="none" stroke="#d63447" stroke-width="1.5" viewbox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+           </svg></button>
+         </div>
+        </div>
+       </article>
+      </div>
+     </div>
+    </section><!-- ===== TRUST / PRIVACY SECTION ===== -->
+    <section id="confianza" class="relative w-full py-24 px-6 md:px-12" style="background: linear-gradient(180deg, #0a0a0f, #0f0a0f, #0a0a0f);">
+     <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+       <p class="font-body text-xs tracking-[0.3em] uppercase mb-3" style="color: #d63447;">Nuestra Promesa</p>
+       <h2 class="font-display text-4xl md:text-5xl font-light mb-4" style="color: #e8e0d4;" id="trust-heading">Tu privacidad es sagrada</h2>
+       <div class="mx-auto accent-line-red" style="width: 80px;"></div>
+      </div><!-- Trust features grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Feature 1: Discrete packaging -->
+       <div class="text-center p-8 rounded-lg transition-all duration-500" style="background: rgba(21, 19, 30, 0.5); border: 1px solid rgba(214, 52, 71, 0.1);" onmouseover="this.style.borderColor='rgba(214,52,71,0.2)'" onmouseout="this.style.borderColor='rgba(214,52,71,0.1)'">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(214, 52, 71, 0.08); border: 1px solid rgba(214, 52, 71, 0.15);">
+         <svg class="icon-glow" width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4M4 7l8 4M4 7v10l8 4m0-10v10" stroke-linejoin="round" />
+         </svg>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: #e8e0d4;">Empaque Neutro</h3>
+        <p class="text-sm leading-relaxed" style="color: #8a8294;">Sin logos, sin etiquetas. Tu pedido llega en empaque completamente neutro e imposible de identificar.</p>
+       </div><!-- Feature 2: Secure payment -->
+       <div class="text-center p-8 rounded-lg transition-all duration-500" style="background: rgba(21, 19, 30, 0.5); border: 1px solid rgba(214, 52, 71, 0.1);" onmouseover="this.style.borderColor='rgba(214,52,71,0.2)'" onmouseout="this.style.borderColor='rgba(214,52,71,0.1)'">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(214, 52, 71, 0.08); border: 1px solid rgba(214, 52, 71, 0.15);">
+         <svg class="icon-glow" width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" /> <path d="M7 11V7a5 5 0 0110 0v4" />
+         </svg>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: #e8e0d4;">Pago Seguro</h3>
+        <p class="text-sm leading-relaxed" style="color: #8a8294;">Múltiples métodos de pago con encriptación total. Tu estado de cuenta solo mostrará un cargo genérico.</p>
+       </div><!-- Feature 3: Nationwide shipping -->
+       <div class="text-center p-8 rounded-lg transition-all duration-500" style="background: rgba(21, 19, 30, 0.5); border: 1px solid rgba(214, 52, 71, 0.1);" onmouseover="this.style.borderColor='rgba(214,52,71,0.2)'" onmouseout="this.style.borderColor='rgba(214,52,71,0.1)'">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(214, 52, 71, 0.08); border: 1px solid rgba(214, 52, 71, 0.15);">
+         <svg class="icon-glow" width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="1.5"><circle cx="12" cy="12" r="10" /> <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+         </svg>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: #e8e0d4;">Todo Colombia</h3>
+        <p class="text-sm leading-relaxed" style="color: #8a8294;">Envío a todas las ciudades y municipios. Entrega en Medellín en 24h, resto del país en 2-4 días hábiles.</p>
+       </div>
+      </div><!-- Big discrete seal -->
+      <div class="mt-16 flex justify-center">
+       <div class="inline-flex items-center gap-4 px-8 py-5 rounded-lg" style="background: linear-gradient(135deg, rgba(214, 52, 71, 0.08), rgba(42, 26, 42, 0.08)); border: 1px solid rgba(214, 52, 71, 0.2);">
+        <svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#d63447" stroke-width="1.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /> <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div>
+         <p class="font-display text-lg" style="color: #d63447;">Garantía de Discreción Absoluta</p>
+         <p class="text-xs" style="color: #8a8294;">Tu experiencia, tu secreto. Privacidad certificada.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- ===== CONTACT SECTION ===== -->
+    <section id="contacto" class="relative w-full py-24 px-6 md:px-12" style="background: #0a0a0f;">
+     <div class="max-w-3xl mx-auto text-center">
+      <p class="font-body text-xs tracking-[0.3em] uppercase mb-3" style="color: #d63447;">Estamos para ti</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light mb-6" style="color: #e8e0d4;">Asesoría Confidencial</h2>
+      <div class="mx-auto mb-8 accent-line-red" style="width: 80px;"></div>
+      <p class="text-base leading-relaxed mb-10 max-w-lg mx-auto" style="color: #8a8294;">Nuestras asesoras te guían con total confidencialidad. Sin juicios, solo atención personalizada para que encuentres exactamente lo que buscas.</p><!-- Contact methods -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-6"><a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-8 py-4 rounded-lg text-sm tracking-wider uppercase font-medium transition-all duration-300" style="background: linear-gradient(135deg, #25D366, #128C7E); color: white;" onmouseover="this.style.boxShadow='0 8px 30px rgba(37, 211, 102, 0.3)'" onmouseout="this.style.boxShadow='none'">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg><span id="wa-btn-text">Escríbenos por WhatsApp</span> </a>
+      </div>
+     </div>
+    </section><!-- ===== FOOTER ===== -->
+    <footer class="w-full py-12 px-6 md:px-12" style="background: #08080c; border-top: 1px solid rgba(214, 52, 71, 0.1);">
+     <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8"><span class="font-display text-2xl font-light" style="color: #d63447;" id="footer-brand">Velvet Noir</span>
+       <div class="flex items-center gap-6 text-xs tracking-widest uppercase" style="color: #8a8294;"><a href="#coleccion" class="hover:text-red transition-colors" style="--text-red: #d63447;">Colección</a> <a href="#confianza" class="hover:text-red transition-colors" style="--text-red: #d63447;">Discreción</a> <a href="#contacto" class="hover:text-red transition-colors" style="--text-red: #d63447;">Contacto</a>
+       </div>
+      </div>
+      <div class="elegant-divider mb-8"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs" style="color: #5a5366;">
+       <p>© 2025 Velvet Noir. Todos los derechos reservados.</p>
+       <p>Medellín, Colombia — Boutique Íntima de Alta Gama</p>
+      </div>
+     </div>
+    </footer>
+   </main><!-- ===== FLOATING WHATSAPP BUTTON ===== --> <a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer" class="wa-float fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #25D366, #128C7E);" aria-label="Contactar por WhatsApp" id="wa-floating">
+    <svg width="28" height="28" viewbox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg></a>
+  </div>
+  <script>
+    // === CONFIG & SDK INITIALIZATION ===
+    const defaultConfig = {
+      // Colors (5 max) - Red sensual palette
+      background_color: '#0a0a0f',
+      surface_color: '#15131e',
+      text_color: '#e8e0d4',
+      accent_red: '#d63447',
+      accent_violet: '#2a1a2a',
+      // Typography
+      font_family: 'Cormorant Garamond',
+      font_size: 16,
+      // Text content
+      brand_name: 'Velvet Noir',
+      hero_title: 'Tu placer, nuestra discreción',
+      hero_subtitle: 'Envíos discretos a todo Colombia',
+      section_title: 'Colección Selecta',
+      trust_heading: 'Tu privacidad es sagrada',
+      whatsapp_text: 'Asesoría personalizada'
+    };
+
+    // DOM references cached once
+    const els = {};
+    function cacheElements() {
+      els.navBrand = document.getElementById('nav-brand');
+      els.heroTitle = document.getElementById('hero-title');
+      els.heroSubtitle = document.getElementById('hero-subtitle');
+      els.sectionTitle = document.getElementById('section-title');
+      els.trustHeading = document.getElementById('trust-heading');
+      els.waBtnText = document.getElementById('wa-btn-text');
+      els.footerBrand = document.getElementById('footer-brand');
+      els.badgeText = document.getElementById('badge-text');
+      els.body = document.body;
+      els.appWrapper = document.getElementById('app-wrapper');
+      els.productGrid = document.getElementById('product-grid');
+      els.productCards = document.querySelectorAll('.product-card');
+      els.heroSection = document.querySelector('.hero-bg');
+      els.trustCards = document.querySelectorAll('#confianza .grid > div');
+      els.trustSeal = document.querySelector('#confianza .mt-16 .inline-flex');
+      els.iconGlows = document.querySelectorAll('.icon-glow');
+      els.redShimmer = document.querySelectorAll('.red-shimmer');
+      els.navLinks = document.querySelectorAll('#main-nav nav a, #mobile-menu a, footer nav a, footer .flex a');
+    }
+
+    function applyConfig(config) {
+      const bg = config.background_color || defaultConfig.background_color;
+      const surface = config.surface_color || defaultConfig.surface_color;
+      const text = config.text_color || defaultConfig.text_color;
+      const red = config.accent_red || defaultConfig.accent_red;
+      const violet = config.accent_violet || defaultConfig.accent_violet;
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const fontSize = config.font_size || defaultConfig.font_size;
+
+      // Background color
+      els.body.style.backgroundColor = bg;
+
+      // Hero section gradient - red sensual
+      if (els.heroSection) {
+        els.heroSection.style.background = `
+          radial-gradient(ellipse 80% 50% at 50% -20%, ${red}4d, transparent),
+          radial-gradient(ellipse 60% 40% at 80% 50%, ${red}26, transparent),
+          radial-gradient(ellipse 40% 60% at 20% 80%, ${red}14, transparent),
+          ${bg}`;
+      }
+
+      // Product cards - surface color
+      els.productCards.forEach(card => {
+        card.style.background = surface;
+        card.style.borderColor = `${red}26`;
+      });
+
+      // Trust cards
+      els.trustCards.forEach(card => {
+        card.style.background = `${surface}80`;
+        card.style.borderColor = `${red}1a`;
+      });
+
+      // Trust seal
+      if (els.trustSeal) {
+        els.trustSeal.style.background = `linear-gradient(135deg, ${red}14, ${violet}14)`;
+        els.trustSeal.style.borderColor = `${red}33`;
+      }
+
+      // Text color updates
+      if (els.heroTitle) {
+        els.heroTitle.innerHTML = `<span class="red-shimmer">${(config.hero_title || defaultConfig.hero_title).split(',')[0]},</span><br><span style="color: ${text};">${(config.hero_title || defaultConfig.hero_title).split(',').slice(1).join(',') || ''}</span>`;
+      }
+      if (els.heroSubtitle) {
+        els.heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      }
+      if (els.sectionTitle) {
+        els.sectionTitle.textContent = config.section_title || defaultConfig.section_title;
+        els.sectionTitle.style.color = text;
+      }
+      if (els.trustHeading) {
+        els.trustHeading.textContent = config.trust_heading || defaultConfig.trust_heading;
+        els.trustHeading.style.color = text;
+      }
+
+      // Brand name
+      const brandName = config.brand_name || defaultConfig.brand_name;
+      if (els.navBrand) { els.navBrand.textContent = brandName; els.navBrand.style.color = red; }
+      if (els.footerBrand) { els.footerBrand.textContent = brandName; els.footerBrand.style.color = red; }
+
+      // WhatsApp text
+      if (els.waBtnText) els.waBtnText.textContent = 'Escríbenos por WhatsApp';
+
+      // Badge text
+      if (els.badgeText) els.badgeText.style.color = red;
+
+      // Red shimmer elements
+      els.redShimmer.forEach(el => {
+        el.style.background = `linear-gradient(90deg, ${red} 0%, ${red}cc 25%, ${red} 50%, ${red}cc 75%, ${red} 100%)`;
+        el.style.backgroundSize = '200% auto';
+        el.style.webkitBackgroundClip = 'text';
+        el.style.webkitTextFillColor = 'transparent';
+        el.style.backgroundClip = 'text';
+      });
+
+      // Icon glow color - red
+      els.iconGlows.forEach(icon => {
+        icon.style.filter = `drop-shadow(0 0 8px ${red}59)`;
+        icon.setAttribute('stroke', red);
+      });
+
+      // Font updates
+      const bodyStack = `${fontFamily}, Georgia, serif`;
+      document.querySelectorAll('.font-display').forEach(el => {
+        el.style.fontFamily = bodyStack;
+      });
+
+      // Font size scaling
+      document.querySelectorAll('h1').forEach(el => { el.style.fontSize = `${fontSize * 3.5}px`; });
+      document.querySelectorAll('h2').forEach(el => { el.style.fontSize = `${fontSize * 2.5}px`; });
+      document.querySelectorAll('h3').forEach(el => { el.style.fontSize = `${fontSize * 1.25}px`; });
+    }
+
+    // Initialize
+    cacheElements();
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            // 1. Background
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+            },
+            // 2. Surface
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+            },
+            // 3. Text
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+            },
+            // 4. Primary accent (red sensual)
+            {
+              get: () => config.accent_red || defaultConfig.accent_red,
+              set: (v) => { config.accent_red = v; window.elementSdk.setConfig({ accent_red: v }); }
+            },
+            // 5. Secondary accent (violet dark)
+            {
+              get: () => config.accent_violet || defaultConfig.accent_violet,
+              set: (v) => { config.accent_violet = v; window.elementSdk.setConfig({ accent_violet: v }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['brand_name', config.brand_name || defaultConfig.brand_name],
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['section_title', config.section_title || defaultConfig.section_title],
+          ['trust_heading', config.trust_heading || defaultConfig.trust_heading],
+          ['whatsapp_text', config.whatsapp_text || defaultConfig.whatsapp_text]
+        ])
+      });
+    }
+
+    // === NAV SCROLL EFFECT ===
+    const nav = document.getElementById('main-nav');
+    const wrapper = document.getElementById('app-wrapper');
+    wrapper.addEventListener('scroll', () => {
+      if (wrapper.scrollTop > 50) {
+        nav.style.background = 'rgba(10, 10, 15, 0.95)';
+        nav.style.backdropFilter = 'blur(20px)';
+      } else {
+        nav.style.background = 'transparent';
+        nav.style.backdropFilter = 'none';
+      }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cc9d135743f3ef5',t:'MTc3MDg3NTUxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

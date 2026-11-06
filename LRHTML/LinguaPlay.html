@@ -1,0 +1,1955 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinguaPlay - Learn English</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&amp;family=Fredoka+One&amp;display=swap" rel="stylesheet">
+  <style>
+body { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+
+:root {
+  --c-bg: #f0fdf4;
+  --c-surface: #ffffff;
+  --c-text: #1e293b;
+  --c-primary: #22c55e;
+  --c-secondary: #3b82f6;
+}
+
+* { box-sizing: border-box; }
+
+.app-root {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.font-brand { font-family: 'Fredoka One', 'Nunito', cursive; }
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.08); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+@keyframes confetti {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-80px) rotate(720deg); opacity: 0; }
+}
+@keyframes progressFill {
+  from { width: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(34,197,94,0.3); }
+  50% { box-shadow: 0 0 20px rgba(34,197,94,0.6); }
+}
+
+.anim-fade-up { animation: fadeInUp 0.6s ease-out both; }
+.anim-fade-in { animation: fadeIn 0.5s ease-out both; }
+.anim-scale-in { animation: scaleIn 0.4s ease-out both; }
+.anim-slide-down { animation: slideDown 0.5s ease-out both; }
+.anim-bounce-in { animation: bounceIn 0.6s ease-out both; }
+.anim-shake { animation: shake 0.5s ease-in-out; }
+.anim-float { animation: float 3s ease-in-out infinite; }
+.anim-glow { animation: glowPulse 2s ease-in-out infinite; }
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* Buttons */
+.btn-primary {
+  background: var(--c-primary);
+  color: white;
+  font-weight: 700;
+  border-radius: 16px;
+  padding: 14px 32px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 0 #16a34a;
+  position: relative;
+  top: 0;
+  font-family: 'Nunito', sans-serif;
+}
+.btn-primary:hover { top: -2px; box-shadow: 0 6px 0 #16a34a; }
+.btn-primary:active { top: 2px; box-shadow: 0 2px 0 #16a34a; }
+
+.btn-secondary {
+  background: var(--c-secondary);
+  color: white;
+  font-weight: 700;
+  border-radius: 16px;
+  padding: 14px 32px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 0 #2563eb;
+  position: relative;
+  top: 0;
+  font-family: 'Nunito', sans-serif;
+}
+.btn-secondary:hover { top: -2px; box-shadow: 0 6px 0 #2563eb; }
+.btn-secondary:active { top: 2px; box-shadow: 0 2px 0 #2563eb; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--c-primary);
+  font-weight: 700;
+  border-radius: 16px;
+  padding: 12px 28px;
+  border: 3px solid var(--c-primary);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.btn-outline:hover { background: var(--c-primary); color: white; }
+
+/* Cards */
+.card {
+  background: var(--c-surface);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 2px solid #e2e8f0;
+  transition: all 0.25s;
+}
+.card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+
+/* Progress Bar */
+.progress-track {
+  background: #e2e8f0;
+  border-radius: 100px;
+  height: 14px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--c-primary), #4ade80);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: progressFill 1s ease-out;
+}
+
+/* Lesson option buttons */
+.option-btn {
+  background: var(--c-surface);
+  border: 3px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  color: var(--c-text);
+}
+.option-btn:hover { border-color: var(--c-primary); background: #f0fdf4; transform: scale(1.02); }
+.option-btn.correct {
+  border-color: #22c55e;
+  background: #dcfce7;
+  color: #166534;
+  animation: bounceIn 0.4s;
+}
+.option-btn.incorrect {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #991b1b;
+  animation: shake 0.5s;
+}
+.option-btn:disabled { cursor: default; opacity: 0.7; }
+
+/* Lesson node on map */
+.lesson-node {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 4px solid;
+  position: relative;
+}
+.lesson-node.completed {
+  background: var(--c-primary);
+  border-color: #16a34a;
+  color: white;
+}
+.lesson-node.current {
+  background: var(--c-secondary);
+  border-color: #2563eb;
+  color: white;
+  animation: glowPulse 2s infinite;
+}
+.lesson-node.locked {
+  background: #cbd5e1;
+  border-color: #94a3b8;
+  color: #64748b;
+  cursor: default;
+}
+.lesson-node:not(.locked):hover { transform: scale(1.15); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 14px 28px;
+  border-radius: 16px;
+  font-weight: 700;
+  z-index: 9999;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Nunito', sans-serif;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: #22c55e; color: white; }
+.toast.error { background: #ef4444; color: white; }
+.toast.info { background: #3b82f6; color: white; }
+
+/* Word tiles for ordering game */
+.word-tile {
+  display: inline-flex;
+  padding: 10px 18px;
+  margin: 4px;
+  background: var(--c-surface);
+  border: 3px solid #e2e8f0;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
+  user-select: none;
+  color: var(--c-text);
+}
+.word-tile:hover { border-color: var(--c-primary); background: #f0fdf4; }
+.word-tile.selected {
+  background: var(--c-primary);
+  color: white;
+  border-color: #16a34a;
+}
+.word-tile.placed {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* Match game tiles */
+.match-tile {
+  padding: 14px;
+  border: 3px solid #e2e8f0;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+  background: var(--c-surface);
+  color: var(--c-text);
+}
+.match-tile:hover { border-color: var(--c-secondary); }
+.match-tile.active { border-color: var(--c-secondary); background: #eff6ff; }
+.match-tile.matched {
+  border-color: #22c55e;
+  background: #dcfce7;
+  color: #166534;
+  cursor: default;
+}
+.match-tile.wrong { animation: shake 0.4s; border-color: #ef4444; }
+
+/* Fill blank */
+.fill-blank {
+  display: inline-block;
+  min-width: 100px;
+  border-bottom: 3px dashed var(--c-primary);
+  padding: 4px 8px;
+  margin: 0 6px;
+  font-weight: 700;
+  color: var(--c-primary);
+  text-align: center;
+}
+
+/* Confetti particles */
+.confetti-particle {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confetti 1.2s ease-out forwards;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+}
+.modal-content {
+  background: var(--c-surface);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Avatar */
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  border: 4px solid var(--c-primary);
+  background: #dcfce7;
+}
+.avatar-option {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  border: 3px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--c-surface);
+}
+.avatar-option:hover, .avatar-option.selected { border-color: var(--c-primary); background: #dcfce7; transform: scale(1.1); }
+
+/* Achievement badge */
+.achievement-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fef9c3, #fef3c7);
+  border: 2px solid #fbbf24;
+}
+.achievement-badge.locked { opacity: 0.4; filter: grayscale(1); }
+
+/* Hide scrollbar on lesson map */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Stat card */
+.stat-card {
+  background: var(--c-surface);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  border: 2px solid #e2e8f0;
+}
+
+/* Nav */
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.nav-item.active { color: var(--c-primary); }
+.nav-item:hover { color: var(--c-primary); }
+
+/* Landing sections */
+.hero-pattern {
+  background-image: radial-gradient(circle at 20% 50%, rgba(34,197,94,0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(59,130,246,0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 60% 80%, rgba(251,191,36,0.06) 0%, transparent 50%);
+}
+
+/* Level up overlay */
+.level-up-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+/* XP popup */
+.xp-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fbbf24;
+  z-index: 9998;
+  pointer-events: none;
+  animation: fadeInUp 0.6s ease-out, fadeIn 0.3s ease-out;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 640px) {
+  .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 0.95rem; }
+  .lesson-node { width: 52px; height: 52px; font-size: 1.1rem; }
+  .card { padding: 16px; }
+}
+</style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full">
+  <div class="app-root" id="appRoot"><!-- All pages rendered here by JS -->
+  </div>
+  <div id="toastContainer"></div>
+  <script>
+// ==========================================
+// APP STATE & CONFIG
+// ==========================================
+const DEFAULT_CONFIG = {
+  app_title: 'LinguaPlay',
+  hero_headline: '¡Aprende Inglés Jugando!',
+  hero_subtitle: 'La forma divertida de dominar el inglés para estudiantes de primaria y secundaria',
+  cta_button_text: 'Comenzar Gratis',
+  dashboard_greeting: 'Welcome back',
+  background_color: '#f0fdf4',
+  surface_color: '#ffffff',
+  text_color: '#1e293b',
+  primary_color: '#22c55e',
+  secondary_color: '#3b82f6',
+  font_family: 'Nunito',
+  font_size: 16
+};
+
+let config = { ...DEFAULT_CONFIG };
+let userData = null;
+let currentPage = 'landing';
+let currentLesson = null;
+let currentQuestion = 0;
+let lessonLives = 5;
+let lessonXP = 0;
+let allRecords = [];
+
+// ==========================================
+// LESSON DATA - Complete curriculum content
+// ==========================================
+const LESSONS = [
+  {
+    id: 1, title: 'Greetings', emoji: '👋', unit: 'Basics',
+    questions: [
+      { type: 'quiz', question: 'What does "Hello" mean?', options: ['Hola', 'Adiós', 'Gracias', 'Por favor'], correct: 0 },
+      { type: 'quiz', question: 'How do you say "Buenos días" in English?', options: ['Good night', 'Good morning', 'Good bye', 'Good luck'], correct: 1 },
+      { type: 'fill', sentence: 'Nice to ___ you!', options: ['meet', 'eat', 'see', 'be'], correct: 0 },
+      { type: 'order', words: ['How', 'are', 'you', '?'], translation: '¿Cómo estás?' },
+      { type: 'quiz', question: '"Goodbye" means...', options: ['Hola', 'Adiós', 'Buenas noches', 'Hasta luego'], correct: 1 }
+    ]
+  },
+  {
+    id: 2, title: 'Colors', emoji: '🎨', unit: 'Basics',
+    questions: [
+      { type: 'quiz', question: 'What color is the sky?', options: ['Red', 'Blue', 'Green', 'Yellow'], correct: 1 },
+      { type: 'match', pairs: [['Red','Rojo'],['Blue','Azul'],['Green','Verde'],['Yellow','Amarillo']] },
+      { type: 'fill', sentence: 'The grass is ___', options: ['green', 'blue', 'red', 'white'], correct: 0 },
+      { type: 'quiz', question: '"Blanco" in English is...', options: ['Black', 'Blue', 'White', 'Brown'], correct: 2 },
+      { type: 'order', words: ['My', 'favorite', 'color', 'is', 'blue'], translation: 'Mi color favorito es azul' }
+    ]
+  },
+  {
+    id: 3, title: 'Numbers', emoji: '🔢', unit: 'Basics',
+    questions: [
+      { type: 'quiz', question: 'How do you say "cinco" in English?', options: ['Three', 'Four', 'Five', 'Six'], correct: 2 },
+      { type: 'match', pairs: [['One','1'],['Three','3'],['Seven','7'],['Ten','10']] },
+      { type: 'fill', sentence: 'I have ___ fingers', options: ['ten', 'eleven', 'eight', 'five'], correct: 0 },
+      { type: 'order', words: ['I', 'am', 'ten', 'years', 'old'], translation: 'Tengo diez años' },
+      { type: 'quiz', question: '"Twenty" is the number...', options: ['12', '20', '22', '30'], correct: 1 }
+    ]
+  },
+  {
+    id: 4, title: 'Family', emoji: '👨‍👩‍👧‍👦', unit: 'People',
+    questions: [
+      { type: 'quiz', question: '"Mother" means...', options: ['Padre', 'Madre', 'Hermana', 'Abuela'], correct: 1 },
+      { type: 'match', pairs: [['Father','Padre'],['Sister','Hermana'],['Brother','Hermano'],['Mother','Madre']] },
+      { type: 'fill', sentence: 'My ___ is my mom\'s mom', options: ['grandmother', 'aunt', 'sister', 'cousin'], correct: 0 },
+      { type: 'order', words: ['I', 'love', 'my', 'family'], translation: 'Amo a mi familia' },
+      { type: 'quiz', question: '"Uncle" in Spanish is...', options: ['Primo', 'Tío', 'Abuelo', 'Sobrino'], correct: 1 }
+    ]
+  },
+  {
+    id: 5, title: 'Animals', emoji: '🐾', unit: 'People',
+    questions: [
+      { type: 'quiz', question: '"Cat" in Spanish is...', options: ['Perro', 'Gato', 'Pájaro', 'Pez'], correct: 1 },
+      { type: 'match', pairs: [['Dog','Perro'],['Bird','Pájaro'],['Fish','Pez'],['Cat','Gato']] },
+      { type: 'fill', sentence: 'The ___ says "woof"', options: ['dog', 'cat', 'bird', 'fish'], correct: 0 },
+      { type: 'order', words: ['I', 'have', 'a', 'pet', 'dog'], translation: 'Tengo un perro mascota' },
+      { type: 'quiz', question: 'A "butterfly" is a...', options: ['Mariposa', 'Abeja', 'Mosca', 'Araña'], correct: 0 }
+    ]
+  },
+  {
+    id: 6, title: 'Food', emoji: '🍕', unit: 'Daily Life',
+    questions: [
+      { type: 'quiz', question: '"Apple" means...', options: ['Naranja', 'Manzana', 'Plátano', 'Uva'], correct: 1 },
+      { type: 'match', pairs: [['Bread','Pan'],['Milk','Leche'],['Water','Agua'],['Rice','Arroz']] },
+      { type: 'fill', sentence: 'I like to eat ___', options: ['pizza', 'chair', 'book', 'car'], correct: 0 },
+      { type: 'order', words: ['I', 'am', 'very', 'hungry'], translation: 'Tengo mucha hambre' },
+      { type: 'quiz', question: '"Cheese" in Spanish is...', options: ['Queso', 'Jamón', 'Pan', 'Huevo'], correct: 0 }
+    ]
+  },
+  {
+    id: 7, title: 'School', emoji: '📚', unit: 'Daily Life',
+    questions: [
+      { type: 'quiz', question: '"Teacher" means...', options: ['Estudiante', 'Profesor', 'Director', 'Amigo'], correct: 1 },
+      { type: 'match', pairs: [['Book','Libro'],['Pencil','Lápiz'],['Desk','Escritorio'],['School','Escuela']] },
+      { type: 'fill', sentence: 'I go to ___ every day', options: ['school', 'beach', 'park', 'moon'], correct: 0 },
+      { type: 'order', words: ['She', 'is', 'my', 'teacher'], translation: 'Ella es mi profesora' },
+      { type: 'quiz', question: '"Homework" is...', options: ['Tarea', 'Examen', 'Recreo', 'Clase'], correct: 0 }
+    ]
+  },
+  {
+    id: 8, title: 'Weather', emoji: '🌤️', unit: 'World',
+    questions: [
+      { type: 'quiz', question: '"Sunny" means...', options: ['Lluvioso', 'Soleado', 'Nublado', 'Nevado'], correct: 1 },
+      { type: 'match', pairs: [['Rain','Lluvia'],['Snow','Nieve'],['Wind','Viento'],['Cloud','Nube']] },
+      { type: 'fill', sentence: 'It is ___ today', options: ['cold', 'tall', 'fast', 'loud'], correct: 0 },
+      { type: 'order', words: ['What', 'is', 'the', 'weather', 'like', '?'], translation: '¿Cómo está el clima?' },
+      { type: 'quiz', question: '"Storm" in Spanish is...', options: ['Sol', 'Tormenta', 'Arcoíris', 'Brisa'], correct: 1 }
+    ]
+  }
+];
+
+const AVATARS = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐸', '🦉', '🐨', '🐯', '🐰', '🦄', '🐲'];
+
+const ACHIEVEMENTS = [
+  { id: 'first_lesson', title: 'First Steps', desc: 'Complete your first lesson', emoji: '🎯', xpReq: 0, lessonsReq: 1 },
+  { id: 'streak_3', title: 'On Fire!', desc: '3-day streak', emoji: '🔥', streakReq: 3 },
+  { id: 'xp_100', title: 'XP Hunter', desc: 'Earn 100 XP', emoji: '⭐', xpReq: 100 },
+  { id: 'xp_500', title: 'XP Master', desc: 'Earn 500 XP', emoji: '🏆', xpReq: 500 },
+  { id: 'lessons_5', title: 'Dedicated Learner', desc: 'Complete 5 lessons', emoji: '📚', lessonsReq: 5 },
+  { id: 'perfect', title: 'Perfect Score', desc: 'Complete a lesson without mistakes', emoji: '💎', special: 'perfect' },
+  { id: 'all_lessons', title: 'Champion', desc: 'Complete all lessons', emoji: '👑', lessonsReq: 8 },
+  { id: 'streak_7', title: 'Weekly Warrior', desc: '7-day streak', emoji: '⚡', streakReq: 7 }
+];
+
+// ==========================================
+// UTILITY FUNCTIONS
+// ==========================================
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 2500);
+}
+
+function spawnConfetti() {
+  const colors = ['#22c55e', '#3b82f6', '#fbbf24', '#ef4444', '#a855f7', '#ec4899'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (40 + Math.random() * 30) + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = Math.random() * 0.5 + 's';
+    p.style.transform = `rotate(${Math.random() * 360}deg)`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1800);
+  }
+}
+
+function showXPPopup(amount) {
+  const popup = document.createElement('div');
+  popup.className = 'xp-popup';
+  popup.textContent = `+${amount} XP ⭐`;
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1200);
+}
+
+function getLevel(xp) { return Math.floor(xp / 100) + 1; }
+function getXPForNextLevel(xp) { return 100 - (xp % 100); }
+function getXPProgress(xp) { return (xp % 100); }
+
+function getCompletedLessons() {
+  if (!userData) return [];
+  try { return JSON.parse(userData.lessons_completed || '[]'); } catch { return []; }
+}
+
+function getEarnedAchievements() {
+  if (!userData) return [];
+  try { return JSON.parse(userData.achievements || '[]'); } catch { return []; }
+}
+
+function checkNewAchievements() {
+  if (!userData) return [];
+  const earned = getEarnedAchievements();
+  const completed = getCompletedLessons();
+  const newOnes = [];
+
+  ACHIEVEMENTS.forEach(a => {
+    if (earned.includes(a.id)) return;
+    let unlocked = false;
+    if (a.xpReq !== undefined && a.lessonsReq === undefined && a.streakReq === undefined && !a.special) {
+      unlocked = userData.xp >= a.xpReq;
+    }
+    if (a.lessonsReq !== undefined) unlocked = completed.length >= a.lessonsReq;
+    if (a.streakReq !== undefined) unlocked = userData.streak >= a.streakReq;
+    if (unlocked) newOnes.push(a.id);
+  });
+
+  return newOnes;
+}
+
+// ==========================================
+// PAGE RENDERERS
+// ==========================================
+
+function renderLanding() {
+  const root = document.getElementById('appRoot');
+  root.innerHTML = `
+    <div class="hero-pattern" style="min-height: 100%;">
+      <!-- Navigation -->
+      <header>
+        <nav class="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto anim-slide-down">
+          <div class="flex items-center gap-2">
+            <span class="text-3xl">🌎</span>
+            <span class="font-brand text-2xl" style="color: var(--c-primary);" id="landingTitle">${config.app_title || DEFAULT_CONFIG.app_title}</span>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn-outline" onclick="navigateTo('login')">Iniciar Sesión</button>
+            <button class="btn-primary hidden sm:inline-block" onclick="navigateTo('register')" id="navCTA">${config.cta_button_text || DEFAULT_CONFIG.cta_button_text}</button>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <!-- Hero Section -->
+        <section class="text-center px-6 py-16 max-w-4xl mx-auto">
+          <div class="text-7xl mb-6 anim-float">🚀</div>
+          <h1 class="font-brand text-4xl sm:text-5xl lg:text-6xl mb-4 anim-fade-up" id="heroHeadline">${config.hero_headline || DEFAULT_CONFIG.hero_headline}</h1>
+          <p class="text-lg sm:text-xl opacity-80 mb-8 max-w-2xl mx-auto anim-fade-up delay-1" id="heroSubtitle">${config.hero_subtitle || DEFAULT_CONFIG.hero_subtitle}</p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center anim-fade-up delay-2">
+            <button class="btn-primary text-lg px-10 py-4" onclick="navigateTo('register')" id="heroCTA">${config.cta_button_text || DEFAULT_CONFIG.cta_button_text}</button>
+            <button class="btn-outline text-lg px-10 py-4" onclick="document.getElementById('howItWorks').scrollIntoView({behavior:'smooth'})">¿Cómo funciona?</button>
+          </div>
+          <div class="flex justify-center gap-8 mt-10 opacity-60 anim-fade-up delay-3">
+            <span class="font-bold">✅ 100% Gratis</span>
+            <span class="font-bold">🎮 Gamificado</span>
+            <span class="font-bold">📱 Mobile-first</span>
+          </div>
+        </section>
+
+        <!-- Benefits -->
+        <section class="px-6 py-16 max-w-6xl mx-auto">
+          <h2 class="font-brand text-3xl text-center mb-12 anim-fade-up">¿Por qué elegir ${config.app_title || DEFAULT_CONFIG.app_title}?</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            ${[
+              { emoji: '🎮', title: 'Aprende Jugando', desc: 'Lecciones interactivas con juegos y desafíos que hacen del aprendizaje una aventura.' },
+              { emoji: '📈', title: 'Progreso Visual', desc: 'Mapa de lecciones, XP, niveles y logros que te motivan cada día.' },
+              { emoji: '🧠', title: 'Método Científico', desc: 'Basado en repetición espaciada y aprendizaje activo para mejor retención.' },
+              { emoji: '🏆', title: 'Competencias', desc: 'Compite con amigos, gana medallas y sube en el ranking global.' }
+            ].map((b, i) => `
+              <div class="card text-center anim-fade-up delay-${i+1}">
+                <div class="text-4xl mb-3">${b.emoji}</div>
+                <h3 class="font-bold text-lg mb-2">${b.title}</h3>
+                <p class="opacity-70 text-sm">${b.desc}</p>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="px-6 py-16 max-w-4xl mx-auto" id="howItWorks">
+          <h2 class="font-brand text-3xl text-center mb-12 anim-fade-up">¿Cómo funciona?</h2>
+          <div class="space-y-8">
+            ${[
+              { num: '1', title: 'Crea tu cuenta gratis', desc: 'Regístrate en segundos y elige tu nivel inicial.', emoji: '📝' },
+              { num: '2', title: 'Elige tu lección', desc: 'Sigue el mapa de lecciones desbloqueables por temas.', emoji: '🗺️' },
+              { num: '3', title: 'Juega y aprende', desc: 'Responde quizzes, empareja palabras, ordena oraciones y más.', emoji: '🎯' },
+              { num: '4', title: 'Sube de nivel', desc: 'Gana XP, desbloquea logros y mantén tu racha diaria.', emoji: '🚀' }
+            ].map((s, i) => `
+              <div class="flex items-start gap-5 anim-fade-up delay-${i+1}">
+                <div class="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-brand text-xl text-white" style="background: var(--c-primary);">${s.num}</div>
+                <div>
+                  <h3 class="font-bold text-lg">${s.emoji} ${s.title}</h3>
+                  <p class="opacity-70">${s.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="px-6 py-16 max-w-6xl mx-auto">
+          <h2 class="font-brand text-3xl text-center mb-12">Lo que dicen nuestros estudiantes</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            ${[
+              { name: 'María, 12 años', text: '¡Me encanta! Aprendí los colores en inglés en un día. Los juegos son súper divertidos.', avatar: '👧' },
+              { name: 'Carlos, 14 años', text: 'Llevo una racha de 30 días. Es adictivo pero de forma educativa.', avatar: '👦' },
+              { name: 'Profa. López', text: 'Lo recomiendo a mis alumnos. La gamificación realmente funciona para motivarlos.', avatar: '👩‍🏫' }
+            ].map((t, i) => `
+              <div class="card anim-fade-up delay-${i+1}">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-3xl">${t.avatar}</span>
+                  <span class="font-bold">${t.name}</span>
+                </div>
+                <p class="opacity-80 text-sm italic">"${t.text}"</p>
+                <div class="mt-2 text-yellow-400">⭐⭐⭐⭐⭐</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="px-6 py-16 max-w-4xl mx-auto">
+          <h2 class="font-brand text-3xl text-center mb-12">Planes</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div class="card text-center anim-fade-up">
+              <div class="text-2xl mb-2">🆓</div>
+              <h3 class="font-brand text-2xl mb-1">Gratis</h3>
+              <p class="text-3xl font-bold mb-4" style="color: var(--c-primary);">$0<span class="text-sm opacity-60">/mes</span></p>
+              <ul class="text-left space-y-2 mb-6 text-sm">
+                <li>✅ Todas las lecciones básicas</li>
+                <li>✅ Sistema de XP y niveles</li>
+                <li>✅ 5 vidas por lección</li>
+                <li>✅ Racha diaria</li>
+                <li>❌ Sin vidas ilimitadas</li>
+                <li>❌ Sin contenido premium</li>
+              </ul>
+              <button class="btn-primary w-full" onclick="navigateTo('register')">Comenzar Gratis</button>
+            </div>
+            <div class="card text-center border-2 anim-fade-up delay-1" style="border-color: var(--c-secondary);">
+              <div class="text-2xl mb-2">💎</div>
+              <h3 class="font-brand text-2xl mb-1" style="color: var(--c-secondary);">Premium</h3>
+              <p class="text-3xl font-bold mb-4" style="color: var(--c-secondary);">$4.99<span class="text-sm opacity-60">/mes</span></p>
+              <ul class="text-left space-y-2 mb-6 text-sm">
+                <li>✅ Todo lo del plan gratis</li>
+                <li>✅ Vidas ilimitadas ❤️</li>
+                <li>✅ Lecciones avanzadas</li>
+                <li>✅ Sin publicidad</li>
+                <li>✅ Certificado de nivel</li>
+                <li>✅ Soporte prioritario</li>
+              </ul>
+              <button class="btn-secondary w-full" onclick="showToast('Premium coming soon! 💎', 'info')">Próximamente</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="px-6 py-20 text-center">
+          <h2 class="font-brand text-3xl mb-4">¿Listo para comenzar?</h2>
+          <p class="opacity-70 mb-8 text-lg">Únete a miles de estudiantes aprendiendo inglés de forma divertida</p>
+          <button class="btn-primary text-lg px-10 py-4" onclick="navigateTo('register')">🚀 ${config.cta_button_text || DEFAULT_CONFIG.cta_button_text}</button>
+        </section>
+      </main>
+
+      <footer class="text-center py-8 px-6 opacity-60 text-sm">
+        <p>© 2025 ${config.app_title || DEFAULT_CONFIG.app_title}. Aprende inglés jugando. 🌎</p>
+      </footer>
+    </div>
+  `;
+}
+
+function renderRegister() {
+  const root = document.getElementById('appRoot');
+  root.innerHTML = `
+    <div class="flex items-center justify-center min-h-full px-4 py-8" style="min-height: 100%;">
+      <main class="w-full max-w-md">
+        <div class="text-center mb-8 anim-fade-up">
+          <span class="text-5xl">🌎</span>
+          <h1 class="font-brand text-3xl mt-3" id="registerTitle">${config.app_title || DEFAULT_CONFIG.app_title}</h1>
+          <p class="opacity-70 mt-1">Crea tu cuenta gratis</p>
+        </div>
+        <form class="card anim-scale-in" id="registerForm" onsubmit="handleRegister(event)">
+          <div class="space-y-4">
+            <div>
+              <label for="regName" class="block font-bold mb-1 text-sm">Nombre de usuario</label>
+              <input type="text" id="regName" required minlength="2" maxlength="20" placeholder="Tu nombre" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-400 outline-none font-bold transition-colors" style="font-family: Nunito, sans-serif;">
+            </div>
+            <div>
+              <label for="regEmail" class="block font-bold mb-1 text-sm">Email</label>
+              <input type="email" id="regEmail" required placeholder="tu@email.com" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-400 outline-none font-bold transition-colors" style="font-family: Nunito, sans-serif;">
+            </div>
+            <div>
+              <label for="regLevel" class="block font-bold mb-1 text-sm">¿Cuál es tu nivel de inglés?</label>
+              <select id="regLevel" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-400 outline-none font-bold transition-colors bg-white" style="font-family: Nunito, sans-serif;">
+                <option value="beginner">🌱 Principiante - Sé muy poco</option>
+                <option value="basic">📗 Básico - Conozco algunas palabras</option>
+                <option value="intermediate">📘 Intermedio - Puedo formar oraciones</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-2 text-sm">Elige tu avatar</label>
+              <div class="flex flex-wrap gap-2 justify-center" id="avatarGrid">
+                ${AVATARS.map((a, i) => `
+                  <div class="avatar-option ${i === 0 ? 'selected' : ''}" data-avatar="${a}" onclick="selectAvatar(this, '${a}')">${a}</div>
+                `).join('')}
+              </div>
+              <input type="hidden" id="regAvatar" value="${AVATARS[0]}">
+            </div>
+          </div>
+          <button type="submit" class="btn-primary w-full mt-6" id="registerBtn">🚀 Crear Cuenta</button>
+          <p class="text-center mt-4 text-sm opacity-70">
+            ¿Ya tienes cuenta? <a href="#" onclick="event.preventDefault(); navigateTo('login')" class="font-bold" style="color: var(--c-primary);">Inicia sesión</a>
+          </p>
+        </form>
+        <button onclick="navigateTo('landing')" class="block mx-auto mt-4 opacity-60 hover:opacity-100 transition-opacity font-bold text-sm" style="background: none; border: none; cursor: pointer; font-family: Nunito;">← Volver al inicio</button>
+      </main>
+    </div>
+  `;
+}
+
+function renderLogin() {
+  const root = document.getElementById('appRoot');
+  root.innerHTML = `
+    <div class="flex items-center justify-center min-h-full px-4 py-8" style="min-height: 100%;">
+      <main class="w-full max-w-md">
+        <div class="text-center mb-8 anim-fade-up">
+          <span class="text-5xl">🌎</span>
+          <h1 class="font-brand text-3xl mt-3">${config.app_title || DEFAULT_CONFIG.app_title}</h1>
+          <p class="opacity-70 mt-1">¡Bienvenido de nuevo!</p>
+        </div>
+        <form class="card anim-scale-in" id="loginForm" onsubmit="handleLogin(event)">
+          <div class="space-y-4">
+            <div>
+              <label for="loginEmail" class="block font-bold mb-1 text-sm">Email</label>
+              <input type="email" id="loginEmail" required placeholder="tu@email.com" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-400 outline-none font-bold transition-colors" style="font-family: Nunito, sans-serif;">
+            </div>
+          </div>
+          <button type="submit" class="btn-primary w-full mt-6" id="loginBtn">Iniciar Sesión</button>
+          <p class="text-center mt-4 text-sm opacity-70">
+            ¿No tienes cuenta? <a href="#" onclick="event.preventDefault(); navigateTo('register')" class="font-bold" style="color: var(--c-primary);">Regístrate gratis</a>
+          </p>
+        </form>
+        <button onclick="navigateTo('landing')" class="block mx-auto mt-4 opacity-60 hover:opacity-100 transition-opacity font-bold text-sm" style="background: none; border: none; cursor: pointer; font-family: Nunito;">← Volver al inicio</button>
+      </main>
+    </div>
+  `;
+}
+
+function renderDashboard() {
+  if (!userData) { navigateTo('login'); return; }
+  const completed = getCompletedLessons();
+  const level = getLevel(userData.xp);
+  const xpProgress = getXPProgress(userData.xp);
+  const root = document.getElementById('appRoot');
+
+  // Find next lesson
+  let nextLesson = LESSONS.find(l => !completed.includes(l.id));
+  if (!nextLesson) nextLesson = LESSONS[LESSONS.length - 1];
+
+  root.innerHTML = `
+    <div style="min-height: 100%;" class="pb-20">
+      <header class="px-4 py-3 flex items-center justify-between max-w-lg mx-auto anim-slide-down" style="background: var(--c-surface); border-bottom: 2px solid #e2e8f0;">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">${userData.avatar || '🦊'}</span>
+          <div>
+            <div class="font-bold text-sm" id="dashUser">${userData.username}</div>
+            <div class="text-xs opacity-60">Nivel ${level}</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 text-sm font-bold">
+          <span title="Racha diaria">🔥 ${userData.streak || 0}</span>
+          <span title="XP">⭐ ${userData.xp || 0}</span>
+          <span title="Vidas">❤️ ${userData.lives || 5}</span>
+        </div>
+      </header>
+
+      <main class="px-4 max-w-lg mx-auto">
+        <!-- Greeting -->
+        <section class="mt-6 mb-4 anim-fade-up">
+          <h1 class="font-brand text-2xl" id="dashGreeting">${config.dashboard_greeting || DEFAULT_CONFIG.dashboard_greeting}, ${userData.username}! 👋</h1>
+          <p class="opacity-70 text-sm mt-1">Nivel ${level} · ${getXPForNextLevel(userData.xp)} XP para nivel ${level + 1}</p>
+        </section>
+
+        <!-- XP Progress -->
+        <section class="card mb-4 anim-fade-up delay-1">
+          <div class="flex justify-between text-sm font-bold mb-2">
+            <span>Nivel ${level}</span>
+            <span>${xpProgress}/100 XP</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${xpProgress}%;"></div>
+          </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="grid grid-cols-4 gap-3 mb-6 anim-fade-up delay-2">
+          <div class="stat-card">
+            <div class="text-xl">🔥</div>
+            <div class="font-bold">${userData.streak || 0}</div>
+            <div class="text-xs opacity-60">Racha</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-xl">⭐</div>
+            <div class="font-bold">${userData.xp || 0}</div>
+            <div class="text-xs opacity-60">XP</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-xl">📚</div>
+            <div class="font-bold">${completed.length}</div>
+            <div class="text-xs opacity-60">Lecciones</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-xl">❤️</div>
+            <div class="font-bold">${userData.lives || 5}</div>
+            <div class="text-xs opacity-60">Vidas</div>
+          </div>
+        </section>
+
+        <!-- Continue Button -->
+        <section class="mb-6 anim-fade-up delay-3">
+          <button class="btn-primary w-full text-lg py-4 anim-glow" onclick="startLesson(${nextLesson.id})">
+            ▶️ Continuar: ${nextLesson.emoji} ${nextLesson.title}
+          </button>
+        </section>
+
+        <!-- Lesson Map -->
+        <section class="mb-6">
+          <h2 class="font-bold text-lg mb-4">🗺️ Mapa de Lecciones</h2>
+          <div class="space-y-3">
+            ${buildLessonMap(completed)}
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Navigation -->
+      <nav class="fixed bottom-0 left-0 w-full flex justify-around py-3 px-2" style="background: var(--c-surface); border-top: 2px solid #e2e8f0; z-index: 50;">
+        <div class="nav-item active" onclick="navigateTo('dashboard')">
+          <span class="text-xl">🏠</span>
+          <span>Inicio</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('profile')">
+          <span class="text-xl">👤</span>
+          <span>Perfil</span>
+        </div>
+        <div class="nav-item" onclick="showToast('Ranking próximamente!', 'info')">
+          <span class="text-xl">🏆</span>
+          <span>Ranking</span>
+        </div>
+        <div class="nav-item" onclick="showToast('Tienda próximamente!', 'info')">
+          <span class="text-xl">🛒</span>
+          <span>Tienda</span>
+        </div>
+      </nav>
+    </div>
+  `;
+}
+
+function buildLessonMap(completed) {
+  let currentUnit = '';
+  let html = '';
+
+  LESSONS.forEach((lesson, idx) => {
+    if (lesson.unit !== currentUnit) {
+      currentUnit = lesson.unit;
+      html += `<div class="font-bold text-sm opacity-60 uppercase tracking-wide mt-4 mb-2">${currentUnit}</div>`;
+    }
+
+    const isCompleted = completed.includes(lesson.id);
+    const isLocked = idx > 0 && !completed.includes(LESSONS[idx - 1].id) && !isCompleted;
+    const isCurrent = !isCompleted && !isLocked;
+    const status = isCompleted ? 'completed' : isCurrent ? 'current' : 'locked';
+
+    html += `
+      <div class="flex items-center gap-4 anim-fade-up delay-${Math.min(idx, 6)}" style="animation-delay: ${idx * 0.08}s;">
+        <div class="lesson-node ${status}" ${!isLocked ? `onclick="startLesson(${lesson.id})"` : ''}>
+          ${isCompleted ? '✓' : lesson.emoji}
+        </div>
+        <div class="flex-1">
+          <div class="font-bold ${isLocked ? 'opacity-40' : ''}">${lesson.title}</div>
+          <div class="text-xs opacity-60">${isCompleted ? '✅ Completada' : isCurrent ? '▶️ Disponible' : '🔒 Bloqueada'}</div>
+        </div>
+        ${isCompleted ? '<span class="text-green-500 font-bold text-sm">+20 XP</span>' : ''}
+      </div>
+    `;
+  });
+
+  return html;
+}
+
+function renderProfile() {
+  if (!userData) { navigateTo('login'); return; }
+  const completed = getCompletedLessons();
+  const earned = getEarnedAchievements();
+  const level = getLevel(userData.xp);
+  const accuracy = userData.total_answered > 0 ? Math.round((userData.total_correct / userData.total_answered) * 100) : 0;
+  const root = document.getElementById('appRoot');
+
+  root.innerHTML = `
+    <div style="min-height: 100%;" class="pb-20">
+      <header class="px-4 py-3 flex items-center gap-3 max-w-lg mx-auto" style="background: var(--c-surface); border-bottom: 2px solid #e2e8f0;">
+        <button onclick="navigateTo('dashboard')" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">←</button>
+        <h1 class="font-bold text-lg">Mi Perfil</h1>
+      </header>
+
+      <main class="px-4 max-w-lg mx-auto">
+        <!-- Avatar & Info -->
+        <section class="text-center mt-8 mb-6 anim-fade-up">
+          <div class="avatar-circle mx-auto mb-3" id="profileAvatar">${userData.avatar || '🦊'}</div>
+          <h2 class="font-brand text-2xl">${userData.username}</h2>
+          <p class="opacity-60">Nivel ${level} · ${userData.xp || 0} XP</p>
+          <button class="btn-outline mt-3 text-sm py-2 px-4" onclick="showAvatarModal()">Cambiar Avatar</button>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-2 gap-3 mb-6 anim-fade-up delay-1">
+          <div class="stat-card">
+            <div class="text-2xl mb-1">🔥</div>
+            <div class="font-bold text-xl">${userData.streak || 0}</div>
+            <div class="text-xs opacity-60">Racha de días</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-2xl mb-1">📚</div>
+            <div class="font-bold text-xl">${completed.length}/${LESSONS.length}</div>
+            <div class="text-xs opacity-60">Lecciones</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-2xl mb-1">🎯</div>
+            <div class="font-bold text-xl">${accuracy}%</div>
+            <div class="text-xs opacity-60">Precisión</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-2xl mb-1">💬</div>
+            <div class="font-bold text-xl">${userData.total_answered || 0}</div>
+            <div class="text-xs opacity-60">Respuestas</div>
+          </div>
+        </section>
+
+        <!-- Level Progress -->
+        <section class="card mb-6 anim-fade-up delay-2">
+          <h3 class="font-bold mb-3">📊 Progreso de Nivel</h3>
+          <div class="flex justify-between text-sm font-bold mb-2">
+            <span>Nivel ${level}</span>
+            <span>Nivel ${level + 1}</span>
+          </div>
+          <div class="progress-track" style="height: 18px;">
+            <div class="progress-fill" style="width: ${getXPProgress(userData.xp)}%;"></div>
+          </div>
+          <p class="text-sm opacity-60 mt-2 text-center">${getXPForNextLevel(userData.xp)} XP para el siguiente nivel</p>
+        </section>
+
+        <!-- Achievements -->
+        <section class="mb-6 anim-fade-up delay-3">
+          <h3 class="font-bold text-lg mb-3">🏅 Logros (${earned.length}/${ACHIEVEMENTS.length})</h3>
+          <div class="space-y-3">
+            ${ACHIEVEMENTS.map(a => {
+              const isEarned = earned.includes(a.id);
+              return `
+                <div class="achievement-badge ${isEarned ? '' : 'locked'}">
+                  <span class="text-2xl">${a.emoji}</span>
+                  <div>
+                    <div class="font-bold text-sm">${a.title}</div>
+                    <div class="text-xs opacity-70">${a.desc}</div>
+                  </div>
+                  ${isEarned ? '<span class="ml-auto text-green-600 font-bold text-sm">✓</span>' : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </section>
+
+        <!-- Lesson History -->
+        <section class="mb-8 anim-fade-up delay-4">
+          <h3 class="font-bold text-lg mb-3">📝 Lecciones Completadas</h3>
+          ${completed.length === 0 ? '<p class="opacity-60 text-sm">Aún no has completado ninguna lección. ¡Comienza ahora!</p>' : ''}
+          <div class="space-y-2">
+            ${completed.map(id => {
+              const lesson = LESSONS.find(l => l.id === id);
+              if (!lesson) return '';
+              return `
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="background: var(--c-surface); border: 2px solid #e2e8f0;">
+                  <span class="text-xl">${lesson.emoji}</span>
+                  <span class="font-bold flex-1">${lesson.title}</span>
+                  <span class="text-green-500 text-sm font-bold">✅ +20 XP</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Navigation -->
+      <nav class="fixed bottom-0 left-0 w-full flex justify-around py-3 px-2" style="background: var(--c-surface); border-top: 2px solid #e2e8f0; z-index: 50;">
+        <div class="nav-item" onclick="navigateTo('dashboard')">
+          <span class="text-xl">🏠</span>
+          <span>Inicio</span>
+        </div>
+        <div class="nav-item active" onclick="navigateTo('profile')">
+          <span class="text-xl">👤</span>
+          <span>Perfil</span>
+        </div>
+        <div class="nav-item" onclick="showToast('Ranking próximamente!', 'info')">
+          <span class="text-xl">🏆</span>
+          <span>Ranking</span>
+        </div>
+        <div class="nav-item" onclick="showToast('Tienda próximamente!', 'info')">
+          <span class="text-xl">🛒</span>
+          <span>Tienda</span>
+        </div>
+      </nav>
+    </div>
+  `;
+}
+
+// ==========================================
+// LESSON ENGINE
+// ==========================================
+
+function startLesson(lessonId) {
+  if (!userData) { navigateTo('login'); return; }
+
+  const completed = getCompletedLessons();
+  const lessonIdx = LESSONS.findIndex(l => l.id === lessonId);
+
+  // Check if locked
+  if (lessonIdx > 0 && !completed.includes(LESSONS[lessonIdx - 1].id) && !completed.includes(lessonId)) {
+    showToast('¡Completa la lección anterior primero! 🔒', 'error');
+    return;
+  }
+
+  if ((userData.lives || 0) <= 0) {
+    showToast('¡No te quedan vidas! Espera o consigue más ❤️', 'error');
+    return;
+  }
+
+  currentLesson = LESSONS.find(l => l.id === lessonId);
+  currentQuestion = 0;
+  lessonLives = Math.min(userData.lives || 5, 5);
+  lessonXP = 0;
+
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (!currentLesson) return;
+  const root = document.getElementById('appRoot');
+  const q = currentLesson.questions[currentQuestion];
+  const total = currentLesson.questions.length;
+  const progress = ((currentQuestion) / total) * 100;
+
+  let questionHTML = '';
+  switch (q.type) {
+    case 'quiz': questionHTML = renderQuizQuestion(q); break;
+    case 'fill': questionHTML = renderFillQuestion(q); break;
+    case 'order': questionHTML = renderOrderQuestion(q); break;
+    case 'match': questionHTML = renderMatchQuestion(q); break;
+  }
+
+  root.innerHTML = `
+    <div style="min-height: 100%;" class="flex flex-col">
+      <header class="px-4 py-3" style="background: var(--c-surface); border-bottom: 2px solid #e2e8f0;">
+        <div class="max-w-lg mx-auto">
+          <div class="flex items-center justify-between mb-2">
+            <button onclick="exitLesson()" style="background: none; border: none; cursor: pointer; font-size: 1.3rem; opacity: 0.5;">✕</button>
+            <div class="flex items-center gap-1">
+              ${Array.from({length: 5}, (_, i) => `<span style="opacity: ${i < lessonLives ? 1 : 0.2};">❤️</span>`).join('')}
+            </div>
+            <span class="font-bold text-sm" style="color: var(--c-primary);">⭐ +${lessonXP}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${progress}%;"></div>
+          </div>
+          <div class="text-xs text-center opacity-60 mt-1">${currentQuestion + 1} / ${total}</div>
+        </div>
+      </header>
+
+      <main class="flex-1 px-4 py-6 max-w-lg mx-auto w-full flex flex-col">
+        <div class="anim-fade-up">
+          ${questionHTML}
+        </div>
+      </main>
+    </div>
+  `;
+}
+
+function renderQuizQuestion(q) {
+  return `
+    <div class="text-center mb-8">
+      <span class="text-4xl mb-3 block">${currentLesson.emoji}</span>
+      <h2 class="font-brand text-xl sm:text-2xl">${q.question}</h2>
+    </div>
+    <div class="space-y-3" id="optionsContainer">
+      ${q.options.map((opt, i) => `
+        <button class="option-btn" onclick="answerQuiz(${i}, ${q.correct})" id="opt_${i}">${opt}</button>
+      `).join('')}
+    </div>
+    <div id="feedback" class="text-center mt-6"></div>
+  `;
+}
+
+function renderFillQuestion(q) {
+  const parts = q.sentence.split('___');
+  return `
+    <div class="text-center mb-8">
+      <span class="text-4xl mb-3 block">✍️</span>
+      <h2 class="font-brand text-xl mb-4">Completa la oración</h2>
+      <p class="text-xl font-bold">
+        ${parts[0]}<span class="fill-blank" id="fillBlank">___</span>${parts[1] || ''}
+      </p>
+    </div>
+    <div class="grid grid-cols-2 gap-3" id="optionsContainer">
+      ${q.options.map((opt, i) => `
+        <button class="option-btn" onclick="answerFill(${i}, ${q.correct}, '${opt}')" id="opt_${i}">${opt}</button>
+      `).join('')}
+    </div>
+    <div id="feedback" class="text-center mt-6"></div>
+  `;
+}
+
+function renderOrderQuestion(q) {
+  const shuffled = [...q.words].sort(() => Math.random() - 0.5);
+  return `
+    <div class="text-center mb-6">
+      <span class="text-4xl mb-3 block">🔤</span>
+      <h2 class="font-brand text-xl mb-2">Ordena la oración</h2>
+      <p class="opacity-70">${q.translation}</p>
+    </div>
+    <div class="min-h-[56px] p-3 rounded-xl border-2 border-dashed border-gray-300 mb-4 flex flex-wrap gap-1" id="sentenceArea">
+      <span class="opacity-40 text-sm" id="sentencePlaceholder">Toca las palabras en orden...</span>
+    </div>
+    <div class="flex flex-wrap justify-center gap-2" id="wordBank">
+      ${shuffled.map((w, i) => `
+        <span class="word-tile" data-word="${w}" data-idx="${i}" onclick="placeWord(this)">${w}</span>
+      `).join('')}
+    </div>
+    <div class="mt-4 text-center">
+      <button class="btn-primary" id="checkOrderBtn" onclick="checkOrder()" style="display: none;">Verificar ✓</button>
+    </div>
+    <div id="feedback" class="text-center mt-4"></div>
+  `;
+}
+
+function renderMatchQuestion(q) {
+  const leftItems = q.pairs.map(p => p[0]).sort(() => Math.random() - 0.5);
+  const rightItems = q.pairs.map(p => p[1]).sort(() => Math.random() - 0.5);
+
+  return `
+    <div class="text-center mb-6">
+      <span class="text-4xl mb-3 block">🔗</span>
+      <h2 class="font-brand text-xl mb-2">Empareja las palabras</h2>
+    </div>
+    <div class="grid grid-cols-2 gap-3" id="matchGrid">
+      <div class="space-y-3" id="leftCol">
+        ${leftItems.map(w => `<div class="match-tile" data-side="left" data-word="${w}" onclick="selectMatch(this)">${w}</div>`).join('')}
+      </div>
+      <div class="space-y-3" id="rightCol">
+        ${rightItems.map(w => `<div class="match-tile" data-side="right" data-word="${w}" onclick="selectMatch(this)">${w}</div>`).join('')}
+      </div>
+    </div>
+    <div id="feedback" class="text-center mt-6"></div>
+  `;
+}
+
+// ==========================================
+// ANSWER HANDLERS
+// ==========================================
+let answerLocked = false;
+
+function answerQuiz(selected, correct) {
+  if (answerLocked) return;
+  answerLocked = true;
+
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if (selected === correct) {
+    document.getElementById(`opt_${selected}`).classList.add('correct');
+    handleCorrectAnswer();
+  } else {
+    document.getElementById(`opt_${selected}`).classList.add('incorrect');
+    document.getElementById(`opt_${correct}`).classList.add('correct');
+    handleWrongAnswer();
+  }
+}
+
+function answerFill(selected, correct, word) {
+  if (answerLocked) return;
+  answerLocked = true;
+
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  document.getElementById('fillBlank').textContent = word;
+
+  if (selected === correct) {
+    document.getElementById(`opt_${selected}`).classList.add('correct');
+    document.getElementById('fillBlank').style.color = '#22c55e';
+    document.getElementById('fillBlank').style.borderColor = '#22c55e';
+    handleCorrectAnswer();
+  } else {
+    document.getElementById(`opt_${selected}`).classList.add('incorrect');
+    document.getElementById(`opt_${correct}`).classList.add('correct');
+    document.getElementById('fillBlank').style.color = '#ef4444';
+    document.getElementById('fillBlank').style.borderColor = '#ef4444';
+    handleWrongAnswer();
+  }
+}
+
+let placedWords = [];
+function placeWord(el) {
+  if (el.classList.contains('placed') || answerLocked) return;
+
+  el.classList.add('placed');
+  const word = el.dataset.word;
+  placedWords.push(word);
+
+  const area = document.getElementById('sentenceArea');
+  const placeholder = document.getElementById('sentencePlaceholder');
+  if (placeholder) placeholder.remove();
+
+  const tile = document.createElement('span');
+  tile.className = 'word-tile selected';
+  tile.textContent = word;
+  tile.onclick = function() {
+    if (answerLocked) return;
+    tile.remove();
+    placedWords = placedWords.filter(w => w !== word);
+    el.classList.remove('placed');
+    if (placedWords.length === 0) {
+      area.innerHTML = '<span class="opacity-40 text-sm" id="sentencePlaceholder">Toca las palabras en orden...</span>';
+    }
+    const checkBtn = document.getElementById('checkOrderBtn');
+    const q = currentLesson.questions[currentQuestion];
+    checkBtn.style.display = placedWords.length === q.words.length ? 'inline-block' : 'none';
+  };
+  area.appendChild(tile);
+
+  const q = currentLesson.questions[currentQuestion];
+  const checkBtn = document.getElementById('checkOrderBtn');
+  checkBtn.style.display = placedWords.length === q.words.length ? 'inline-block' : 'none';
+}
+
+function checkOrder() {
+  if (answerLocked) return;
+  answerLocked = true;
+
+  const q = currentLesson.questions[currentQuestion];
+  const isCorrect = placedWords.join(' ') === q.words.join(' ');
+
+  document.getElementById('checkOrderBtn').style.display = 'none';
+
+  if (isCorrect) {
+    handleCorrectAnswer();
+  } else {
+    handleWrongAnswer();
+    // Show correct answer
+    const fb = document.getElementById('feedback');
+    fb.innerHTML += `<p class="text-sm opacity-70 mt-2">Respuesta correcta: <b>${q.words.join(' ')}</b></p>`;
+  }
+
+  placedWords = [];
+}
+
+let matchSelection = null;
+let matchedCount = 0;
+
+function selectMatch(el) {
+  if (el.classList.contains('matched') || answerLocked) return;
+
+  if (matchSelection && matchSelection.dataset.side === el.dataset.side) {
+    matchSelection.classList.remove('active');
+    matchSelection = el;
+    el.classList.add('active');
+    return;
+  }
+
+  if (!matchSelection) {
+    matchSelection = el;
+    el.classList.add('active');
+    return;
+  }
+
+  // Check pair
+  const q = currentLesson.questions[currentQuestion];
+  const word1 = matchSelection.dataset.word;
+  const word2 = el.dataset.word;
+
+  const isPair = q.pairs.some(p =>
+    (p[0] === word1 && p[1] === word2) || (p[0] === word2 && p[1] === word1)
+  );
+
+  if (isPair) {
+    matchSelection.classList.remove('active');
+    matchSelection.classList.add('matched');
+    el.classList.add('matched');
+    matchedCount++;
+
+    if (matchedCount === q.pairs.length) {
+      matchedCount = 0;
+      matchSelection = null;
+      handleCorrectAnswer();
+    } else {
+      matchSelection = null;
+    }
+  } else {
+    matchSelection.classList.add('wrong');
+    el.classList.add('wrong');
+    setTimeout(() => {
+      matchSelection.classList.remove('active', 'wrong');
+      el.classList.remove('wrong');
+      matchSelection = null;
+    }, 600);
+  }
+}
+
+function handleCorrectAnswer() {
+  lessonXP += 4;
+  showXPPopup(4);
+
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `
+    <div class="anim-bounce-in" style="color: #22c55e;">
+      <span class="text-3xl">✅</span>
+      <p class="font-bold text-lg mt-1">¡Correcto!</p>
+    </div>
+  `;
+
+  setTimeout(() => {
+    answerLocked = false;
+    currentQuestion++;
+    if (currentQuestion >= currentLesson.questions.length) {
+      finishLesson();
+    } else {
+      renderQuestion();
+    }
+  }, 1200);
+}
+
+function handleWrongAnswer() {
+  lessonLives--;
+
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `
+    <div class="anim-shake" style="color: #ef4444;">
+      <span class="text-3xl">❌</span>
+      <p class="font-bold text-lg mt-1">¡Incorrecto!</p>
+    </div>
+  `;
+
+  if (lessonLives <= 0) {
+    setTimeout(() => {
+      answerLocked = false;
+      showLessonFailed();
+    }, 1200);
+    return;
+  }
+
+  setTimeout(() => {
+    answerLocked = false;
+    currentQuestion++;
+    if (currentQuestion >= currentLesson.questions.length) {
+      finishLesson();
+    } else {
+      renderQuestion();
+    }
+  }, 1500);
+}
+
+async function finishLesson() {
+  if (!userData || !currentLesson) return;
+
+  const completed = getCompletedLessons();
+  const wasAlreadyCompleted = completed.includes(currentLesson.id);
+  if (!wasAlreadyCompleted) completed.push(currentLesson.id);
+
+  const bonusXP = lessonXP;
+  const completionXP = wasAlreadyCompleted ? 0 : 20;
+  const totalXP = bonusXP + completionXP;
+  const oldLevel = getLevel(userData.xp);
+  const newXP = (userData.xp || 0) + totalXP;
+  const newLevel = getLevel(newXP);
+  const totalCorrect = (userData.total_correct || 0) + Math.round(lessonXP / 4);
+  const totalAnswered = (userData.total_answered || 0) + currentLesson.questions.length;
+
+  // Check streak
+  const today = new Date().toISOString().split('T')[0];
+  const lastActive = userData.last_active ? userData.last_active.split('T')[0] : '';
+  let streak = userData.streak || 0;
+  if (lastActive !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    streak = (lastActive === yesterday) ? streak + 1 : 1;
+  }
+
+  // Check achievements
+  const updatedUser = { ...userData, xp: newXP, streak, lessons_completed: JSON.stringify(completed), total_correct: totalCorrect, total_answered: totalAnswered, last_active: new Date().toISOString(), lives: Math.max(lessonLives, 1) };
+  const oldAchievements = getEarnedAchievements();
+
+  // Perfect score check
+  if (lessonLives === 5 && !oldAchievements.includes('perfect')) {
+    oldAchievements.push('perfect');
+  }
+
+  // Check others
+  userData = updatedUser;
+  const newAch = checkNewAchievements();
+  const allAch = [...new Set([...oldAchievements, ...newAch])];
+  userData.achievements = JSON.stringify(allAch);
+
+  // Save to SDK
+  const result = await window.dataSdk.update({
+    ...userData,
+    xp: newXP,
+    streak,
+    lives: Math.max(lessonLives, 1),
+    lessons_completed: JSON.stringify(completed),
+    achievements: JSON.stringify(allAch),
+    total_correct: totalCorrect,
+    total_answered: totalAnswered,
+    last_active: new Date().toISOString()
+  });
+
+  if (!result.isOk) {
+    showToast('Error saving progress', 'error');
+  }
+
+  // Show completion screen
+  spawnConfetti();
+  const root = document.getElementById('appRoot');
+  root.innerHTML = `
+    <div class="flex items-center justify-center px-4" style="min-height: 100%;">
+      <main class="text-center max-w-md w-full anim-bounce-in">
+        <div class="text-7xl mb-4">🎉</div>
+        <h1 class="font-brand text-3xl mb-2">¡Lección Completada!</h1>
+        <p class="opacity-70 mb-6">${currentLesson.emoji} ${currentLesson.title}</p>
+
+        <div class="card mb-6">
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <div class="text-2xl">⭐</div>
+              <div class="font-bold text-xl" style="color: var(--c-primary);">+${totalXP}</div>
+              <div class="text-xs opacity-60">XP Ganados</div>
+            </div>
+            <div>
+              <div class="text-2xl">❤️</div>
+              <div class="font-bold text-xl">${lessonLives}/5</div>
+              <div class="text-xs opacity-60">Vidas restantes</div>
+            </div>
+            <div>
+              <div class="text-2xl">🎯</div>
+              <div class="font-bold text-xl">${Math.round((Math.round(lessonXP / 4) / currentLesson.questions.length) * 100)}%</div>
+              <div class="text-xs opacity-60">Precisión</div>
+            </div>
+          </div>
+        </div>
+
+        ${newLevel > oldLevel ? `
+          <div class="card mb-4" style="background: linear-gradient(135deg, #fef9c3, #fbbf24); border-color: #f59e0b;">
+            <div class="text-3xl mb-1">🆙</div>
+            <p class="font-bold text-lg">¡Subiste al Nivel ${newLevel}!</p>
+          </div>
+        ` : ''}
+
+        ${newAch.length > 0 ? `
+          <div class="card mb-4">
+            <p class="font-bold mb-2">🏅 ¡Nuevos logros!</p>
+            ${newAch.map(aId => {
+              const a = ACHIEVEMENTS.find(x => x.id === aId);
+              return a ? `<p class="text-sm">${a.emoji} ${a.title} - ${a.desc}</p>` : '';
+            }).join('')}
+          </div>
+        ` : ''}
+
+        <button class="btn-primary w-full text-lg py-4 mb-3" onclick="navigateTo('dashboard')">Continuar ▶️</button>
+        <button class="btn-outline w-full" onclick="startLesson(${currentLesson.id})">Repetir Lección 🔄</button>
+      </main>
+    </div>
+  `;
+
+  currentLesson = null;
+}
+
+function showLessonFailed() {
+  const root = document.getElementById('appRoot');
+  root.innerHTML = `
+    <div class="flex items-center justify-center px-4" style="min-height: 100%;">
+      <main class="text-center max-w-md w-full anim-bounce-in">
+        <div class="text-7xl mb-4">💔</div>
+        <h1 class="font-brand text-3xl mb-2">¡Sin vidas!</h1>
+        <p class="opacity-70 mb-6">No te preocupes, puedes intentarlo de nuevo.</p>
+
+        <div class="card mb-6">
+          <p class="font-bold">Ganaste <span style="color: var(--c-primary);">+${lessonXP} XP</span> en esta sesión</p>
+        </div>
+
+        <button class="btn-primary w-full text-lg py-4 mb-3" onclick="retryAfterFail()">Intentar de Nuevo ❤️</button>
+        <button class="btn-outline w-full" onclick="navigateTo('dashboard')">Volver al Inicio</button>
+      </main>
+    </div>
+  `;
+}
+
+async function retryAfterFail() {
+  if (userData) {
+    await window.dataSdk.update({ ...userData, lives: 5 });
+    userData.lives = 5;
+  }
+  if (currentLesson) {
+    startLesson(currentLesson.id);
+  } else {
+    navigateTo('dashboard');
+  }
+}
+
+function exitLesson() {
+  // Show inline confirmation
+  const root = document.getElementById('appRoot');
+  root.innerHTML = `
+    <div class="flex items-center justify-center px-4" style="min-height: 100%;">
+      <main class="text-center max-w-md w-full anim-scale-in">
+        <div class="card">
+          <div class="text-5xl mb-4">🤔</div>
+          <h2 class="font-brand text-2xl mb-2">¿Salir de la lección?</h2>
+          <p class="opacity-70 mb-6">Perderás el progreso de esta lección.</p>
+          <div class="flex gap-3">
+            <button class="btn-outline flex-1" onclick="renderQuestion()">Continuar</button>
+            <button class="btn-primary flex-1" onclick="navigateTo('dashboard')">Salir</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  `;
+}
+
+function showAvatarModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'avatarModal';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `
+    <div class="modal-content" role="dialog" aria-label="Change Avatar">
+      <h2 class="font-brand text-xl text-center mb-4">Elige tu Avatar</h2>
+      <div class="flex flex-wrap gap-3 justify-center mb-6">
+        ${AVATARS.map(a => `
+          <div class="avatar-option ${userData.avatar === a ? 'selected' : ''}" onclick="changeAvatar('${a}')">${a}</div>
+        `).join('')}
+      </div>
+      <button class="btn-outline w-full" onclick="document.getElementById('avatarModal').remove()">Cerrar</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+async function changeAvatar(emoji) {
+  if (!userData) return;
+  userData.avatar = emoji;
+  const result = await window.dataSdk.update({ ...userData, avatar: emoji });
+  if (result.isOk) {
+    showToast('¡Avatar actualizado! ' + emoji, 'success');
+    document.getElementById('avatarModal').remove();
+    renderProfile();
+  } else {
+    showToast('Error updating avatar', 'error');
+  }
+}
+
+function selectAvatar(el, avatar) {
+  document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('regAvatar').value = avatar;
+}
+
+// ==========================================
+// AUTH HANDLERS
+// ==========================================
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const avatar = document.getElementById('regAvatar').value;
+
+  if (!name || !email) {
+    showToast('Por favor completa todos los campos', 'error');
+    return;
+  }
+
+  // Check if user already exists
+  const existing = allRecords.find(r => r.email === email);
+  if (existing) {
+    showToast('Este email ya está registrado. ¡Inicia sesión!', 'error');
+    return;
+  }
+
+  if (allRecords.length >= 999) {
+    showToast('Límite de registros alcanzado', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true;
+  btn.textContent = 'Creando cuenta...';
+
+  const result = await window.dataSdk.create({
+    type: 'user',
+    username: name,
+    email: email,
+    level: 1,
+    xp: 0,
+    streak: 0,
+    lives: 5,
+    lessons_completed: '[]',
+    achievements: '[]',
+    avatar: avatar,
+    last_active: new Date().toISOString(),
+    total_correct: 0,
+    total_answered: 0
+  });
+
+  btn.disabled = false;
+  btn.textContent = '🚀 Crear Cuenta';
+
+  if (result.isOk) {
+    showToast('¡Cuenta creada! Bienvenido, ' + name + '! 🎉', 'success');
+    spawnConfetti();
+    // Wait briefly for data to update
+    setTimeout(() => {
+      userData = allRecords.find(r => r.email === email) || null;
+      if (userData) navigateTo('dashboard');
+    }, 800);
+  } else {
+    showToast('Error creating account', 'error');
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+
+  if (!email) {
+    showToast('Ingresa tu email', 'error');
+    return;
+  }
+
+  const user = allRecords.find(r => r.email === email);
+  if (!user) {
+    showToast('No encontramos esa cuenta. ¡Regístrate primero!', 'error');
+    return;
+  }
+
+  userData = user;
+  showToast('¡Bienvenido de vuelta, ' + user.username + '! 🎉', 'success');
+  navigateTo('dashboard');
+}
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+function navigateTo(page) {
+  currentPage = page;
+  matchSelection = null;
+  matchedCount = 0;
+  placedWords = [];
+  answerLocked = false;
+
+  const root = document.getElementById('appRoot');
+  root.scrollTop = 0;
+
+  switch (page) {
+    case 'landing': renderLanding(); break;
+    case 'register': renderRegister(); break;
+    case 'login': renderLogin(); break;
+    case 'dashboard': renderDashboard(); break;
+    case 'profile': renderProfile(); break;
+    default: renderLanding();
+  }
+}
+
+// ==========================================
+// APPLY CONFIG (colors, fonts, text)
+// ==========================================
+function applyConfig(c) {
+  const root = document.documentElement;
+  root.style.setProperty('--c-bg', c.background_color || DEFAULT_CONFIG.background_color);
+  root.style.setProperty('--c-surface', c.surface_color || DEFAULT_CONFIG.surface_color);
+  root.style.setProperty('--c-text', c.text_color || DEFAULT_CONFIG.text_color);
+  root.style.setProperty('--c-primary', c.primary_color || DEFAULT_CONFIG.primary_color);
+  root.style.setProperty('--c-secondary', c.secondary_color || DEFAULT_CONFIG.secondary_color);
+
+  document.querySelector('.app-root').style.background = c.background_color || DEFAULT_CONFIG.background_color;
+  document.querySelector('.app-root').style.color = c.text_color || DEFAULT_CONFIG.text_color;
+
+  const font = c.font_family || DEFAULT_CONFIG.font_family;
+  document.body.style.fontFamily = `${font}, Nunito, sans-serif`;
+
+  const baseSize = c.font_size || DEFAULT_CONFIG.font_size;
+  document.body.style.fontSize = `${baseSize}px`;
+
+  // Update text elements if they exist
+  const heroHeadline = document.getElementById('heroHeadline');
+  if (heroHeadline) heroHeadline.textContent = c.hero_headline || DEFAULT_CONFIG.hero_headline;
+
+  const heroSubtitle = document.getElementById('heroSubtitle');
+  if (heroSubtitle) heroSubtitle.textContent = c.hero_subtitle || DEFAULT_CONFIG.hero_subtitle;
+
+  const heroCTA = document.getElementById('heroCTA');
+  if (heroCTA) heroCTA.textContent = c.cta_button_text || DEFAULT_CONFIG.cta_button_text;
+
+  const navCTA = document.getElementById('navCTA');
+  if (navCTA) navCTA.textContent = c.cta_button_text || DEFAULT_CONFIG.cta_button_text;
+
+  const landingTitle = document.getElementById('landingTitle');
+  if (landingTitle) landingTitle.textContent = c.app_title || DEFAULT_CONFIG.app_title;
+
+  const registerTitle = document.getElementById('registerTitle');
+  if (registerTitle) registerTitle.textContent = c.app_title || DEFAULT_CONFIG.app_title;
+
+  const dashGreeting = document.getElementById('dashGreeting');
+  if (dashGreeting && userData) dashGreeting.textContent = `${c.dashboard_greeting || DEFAULT_CONFIG.dashboard_greeting}, ${userData.username}! 👋`;
+}
+
+// ==========================================
+// SDK INITIALIZATION
+// ==========================================
+
+const dataHandler = {
+  onDataChanged(data) {
+    allRecords = data;
+    // If we had a user, find their updated record
+    if (userData && userData.__backendId) {
+      const updated = data.find(r => r.__backendId === userData.__backendId);
+      if (updated) userData = updated;
+    } else if (userData && userData.email) {
+      const updated = data.find(r => r.email === userData.email);
+      if (updated) userData = updated;
+    }
+  }
+};
+
+async function initApp() {
+  // Init Element SDK
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig: DEFAULT_CONFIG,
+      onConfigChange: async (c) => {
+        config = c;
+        applyConfig(c);
+      },
+      mapToCapabilities: (c) => ({
+        recolorables: [
+          {
+            get: () => c.background_color || DEFAULT_CONFIG.background_color,
+            set: (v) => { c.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+          },
+          {
+            get: () => c.surface_color || DEFAULT_CONFIG.surface_color,
+            set: (v) => { c.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+          },
+          {
+            get: () => c.text_color || DEFAULT_CONFIG.text_color,
+            set: (v) => { c.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+          },
+          {
+            get: () => c.primary_color || DEFAULT_CONFIG.primary_color,
+            set: (v) => { c.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
+          },
+          {
+            get: () => c.secondary_color || DEFAULT_CONFIG.secondary_color,
+            set: (v) => { c.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family || DEFAULT_CONFIG.font_family,
+          set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size || DEFAULT_CONFIG.font_size,
+          set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (c) => new Map([
+        ['app_title', c.app_title || DEFAULT_CONFIG.app_title],
+        ['hero_headline', c.hero_headline || DEFAULT_CONFIG.hero_headline],
+        ['hero_subtitle', c.hero_subtitle || DEFAULT_CONFIG.hero_subtitle],
+        ['cta_button_text', c.cta_button_text || DEFAULT_CONFIG.cta_button_text],
+        ['dashboard_greeting', c.dashboard_greeting || DEFAULT_CONFIG.dashboard_greeting]
+      ])
+    });
+  }
+
+  // Init Data SDK
+  const initResult = await window.dataSdk.init(dataHandler);
+  if (!initResult.isOk) {
+    console.error('Failed to init Data SDK');
+  }
+
+  // Start on landing
+  navigateTo('landing');
+  applyConfig(config);
+}
+
+initApp();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cc9278913f6f77a',t:'MTc3MDg2ODU2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

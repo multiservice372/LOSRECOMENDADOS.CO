@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA IRIS | Estilista Profesional</title>
+    <style>
+        /* --- ESTILOS GENERALES (CSS) --- */
+        :root {
+            --primary: #d63384; /* Rosa fuerte */
+            --secondary: #f8d7da; /* Rosa suave */
+            --dark: #333;
+            --light: #fff;
+            --bg-gray: #f4f4f4;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-main);
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--bg-gray);
+        }
+
+        /* --- NAVEGACIÓN --- */
+        header {
+            background: var(--light);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li { margin-left: 20px; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- SECCIONES COMUNES --- */
+        section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary);
+            font-size: 2rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--dark);
+            margin: 10px auto 0;
+        }
+
+        /* --- HERO (BIENVENIDA) --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--light);
+            margin-top: 0;
+            padding-top: 60px; /* offset for fixed header */
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 20px; }
+        
+        .btn {
+            padding: 10px 30px;
+            background: var(--primary);
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { background: #b02a6b; }
+
+        /* --- GALERÍA --- */
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            background: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover { transform: translateY(-5px); }
+
+        .gallery-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #ddd; /* Placeholder color */
+        }
+
+        .gallery-info { padding: 15px; text-align: center; }
+
+        /* --- BLOG --- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .blog-card {
+            background: var(--light);
+            padding: 20px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .blog-date { color: #888; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .blog-title { font-size: 1.2rem; margin-bottom: 10px; color: var(--dark); }
+
+        /* --- FORMULARIO DE CITAS --- */
+        .contact-container {
+            background: var(--light);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        
+        /* Mobile adjustment */
+        @media(max-width: 768px) {
+            .nav-links { display: none; } /* En una app real, aquí iría un menú hamburguesa */
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="C:\Users\usuario\OneDrive\Escritorio\SPA IRIS">SPA IRIS
+
+            </div>
+        
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#citas" class="btn">Reservar Cita</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <h1>Belleza y Estilo</h1>
+        <p>Especialista en peinados modernos y diseño de uñas.</p>
+        <a href="#citas" class="btn">Agenda tu cita hoy</a>
+    </section>
+
+    <section id="galeria">
+        <h2>Mi Trabajo</h2>
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterGallery('all')">Todo</button>
+            <button class="filter-btn" onclick="filterGallery('uñas')">Uñas</button>
+            <button class="filter-btn" onclick="filterGallery('peinados')">Peinados</button>
+        </div>
+        <div class="gallery-grid" id="gallery-container">
+            </div>
+    </section>
+
+    <section id="blog">
+        <h2>Blog de Belleza</h2>
+        <div class="blog-grid" id="blog-container">
+            </div>
+    </section>
+
+    <section id="citas">
+        <h2>Solicitud de Citas</h2>
+        <div class="contact-container">
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" required placeholder="Ej: Maria Perez">
+                </div>
+                <div class="form-group">
+                    <label for="service">Servicio Deseado</label>
+                    <select id="service" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="manicure">Manicure / Uñas</option>
+                        <option value="pedicure">Pedicure</option>
+                        <option value="corte">Corte de Cabello</option>
+                        <option value="peinado">Peinado Especial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Fecha Preferida</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono / WhatsApp</label>
+                    <input type="tel" id="phone" required placeholder="Para confirmar tu cita">
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Enviar Solicitud</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SPA IRIS - Estilistas Profesionales. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // --- 1. DATOS DE EJEMPLO (Simulando Base de Datos) ---
+        
+        // Datos de la Galería
+        const galleryData = [
+            { id: 1, type: 'uñas', title: 'Acrílicas Neón', img: 'https://placehold.co/400x300/ff99cc/white?text=Uñas+Neon' },
+            { id: 2, type: 'peinados', title: 'Trenzas Boxeadoras', img: 'https://placehold.co/400x300/99ccff/white?text=Trenzas' },
+            { id: 3, type: 'uñas', title: 'Elegancia Nude', img: 'https://placehold.co/400x300/e6e6fa/black?text=Uñas+Nude' },
+            { id: 4, type: 'peinados', title: 'Ondas al Agua', img: 'https://placehold.co/400x300/f0e68c/black?text=Ondas' },
+            { id: 5, type: 'uñas', title: 'Diseño Geométrico', img: 'https://placehold.co/400x300/ffb6c1/black?text=Uñas+Geo' },
+            { id: 6, type: 'peinados', title: 'Recogido Novia', img: 'https://placehold.co/400x300/d8bfd8/black?text=Novia' }
+        ];
+
+        // Datos del Blog
+        const blogData = [
+            { title: 'Tendencias de Uñas 2025', date: '20 Nov, 2024', excerpt: 'Descubre los colores que dominarán esta temporada, desde el rosa pastel hasta el negro mate.' },
+            { title: 'Cuidados para tu cabello tinturado', date: '15 Nov, 2024', excerpt: '5 tips esenciales para mantener el color vivo y el cabello hidratado después de un tinte.' },
+            { title: '¿Gel o Acrílico?', date: '01 Nov, 2024', excerpt: 'Te explico las diferencias principales para que elijas la mejor opción para tus manos.' }
+        ];
+
+        // --- 2. FUNCIONES DE RENDERIZADO ---
+
+        // Renderizar Galería
+        const galleryContainer = document.getElementById('gallery-container');
+
+        function renderGallery(filter = 'all') {
+            galleryContainer.innerHTML = ''; // Limpiar
+            
+            const filteredData = filter === 'all' 
+                ? galleryData 
+                : galleryData.filter(item => item.type === filter);
+
+            filteredData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `
+                    <img src="${item.img}" alt="${item.title}" class="gallery-img">
+                    <div class="gallery-info">
+                        <h3>${item.title}</h3>
+                        <small>${item.type.toUpperCase()}</small>
+                    </div>
+                `;
+                galleryContainer.appendChild(div);
+            });
+        }
+
+        // Renderizar Blog
+        const blogContainer = document.getElementById('blog-container');
+
+        function renderBlog() {
+            blogData.forEach(post => {
+                const article = document.createElement('article');
+                article.className = 'blog-card';
+                article.innerHTML = `
+                    <span class="blog-date">${post.date}</span>
+                    <h3 class="blog-title">${post.title}</h3>
+                    <p>${post.excerpt}</p>
+                    <a href="#" style="color:var(--primary); font-weight:bold; margin-top:10px; display:inline-block;">Leer más &rarr;</a>
+                `;
+                blogContainer.appendChild(article);
+            });
+        }
+
+        // --- 3. LÓGICA DE INTERACCIÓN ---
+
+        // Filtrado de botones
+        function filterGallery(type) {
+            // Actualizar estilo de botones
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Renderizar nuevas imágenes
+            renderGallery(type);
+        }
+
+        // Manejo del Formulario
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Evita que la página se recargue
+
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+
+            // Simulación de envío exitoso
+            alert(`¡Gracias ${name}! \nTu solicitud para ${service} el día ${date} ha sido recibida.\nLeidy se pondrá en contacto contigo pronto.`);
+            
+            this.reset(); // Limpiar formulario
+        });
+
+        // --- 4. INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGallery(); // Cargar todas las imágenes al inicio
+            renderBlog();    // Cargar blog
+        });
+
+    </script>
+</body>
+</html>

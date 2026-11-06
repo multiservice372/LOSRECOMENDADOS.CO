@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los RECOMENDADOS.CO - Directorio Comercial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* YouTube Section */
+        .youtube-section {
+            background: white;
+            padding: 30px 20px;
+            margin: 30px auto;
+            max-width: 1200px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .youtube-title {
+            font-size: 1.3rem;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .youtube-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .youtube-container:hover {
+            opacity: 0.9;
+        }
+
+        .youtube-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .youtube-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+        }
+
+        .youtube-placeholder::before {
+            content: "▶";
+            font-size: 4rem;
+            opacity: 0.5;
+            margin-bottom: 10px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .company-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .company-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .company-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: #2a5298;
+        }
+
+        .company-card:active {
+            transform: translateY(-4px);
+        }
+
+        .company-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .company-card:hover .company-logo {
+            transform: scale(1.1);
+        }
+
+        .company-name {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .company-category {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-bottom: 12px;
+        }
+
+        .visit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .company-card:hover .visit-badge {
+            background: #2e7d32;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .company-card {
+                padding: 20px 15px;
+                min-height: 180px;
+            }
+
+            .company-logo {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .company-name {
+                font-size: 0.95rem;
+            }
+
+            .youtube-section {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .company-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .company-card:nth-child(1) { animation-delay: 0.1s; }
+        .company-card:nth-child(2) { animation-delay: 0.2s; }
+        .company-card:nth-child(3) { animation-delay: 0.3s; }
+        .company-card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>🏆 LOS RECOMENDADOS.CO</h1>
+            <p class="tagline">Directorio Comercial de Empresas Colombianas</p>
+        </div>
+    </header>
+
+    <!-- YouTube Section -->
+    <div class="youtube-section">
+        <h2 class="youtube-title">📺 Conoce Nuestras Empresas Recomendadas</h2>
+        <div class="youtube-container">
+            <!-- El canal se abre en una pestaña nueva al hacer clic (ver script) -->
+            <div class="youtube-placeholder">
+                <span>Canal de YouTube</span>
+                <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Videos y contenido de nuestras empresas</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2 class="section-title">Empresas Destacadas</h2>
+        
+        <div class="cards-grid">
+            <!-- Empresa 1 -->
+            <a href="tecniconfort.html" class="company-card">
+                <div class="company-logo">📊</div>
+                <h3 class="company-name">TECNICONFORT</h3>
+                <p class="company-category">Todo lo relacionado con celulares y muchos mas productos de tecnologia</p>
+                <span class="visit-badge">Visitar sitio web →</span>
+            </a>
+
+            <!-- Empresa 2 -->
+            <a href="cosmetologa.html" class="company-card">
+                <div class="company-logo">🎯</div>
+                <h3 class="company-name">Cosmetóloga</h3>
+                <p class="company-category">Experta en belleza</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <!-- Empresa 3 -->
+            <a href="BARBERIA.html" class="company-card">
+                <div class="company-logo">🏢</div>
+                <h3 class="company-name">BARBERIA</h3>
+                <p class="company-category">Barberos con reconocidos</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <!-- Empresa 4 -->
+            <a href="Erotic%20shop.html" class="company-card">
+                <div class="company-logo">💼</div>
+                <h3 class="company-name">TIENDA EROTICA</h3>
+                <p class="company-category">Venta de productos eróticos</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <!-- Puedes agregar más empresas aquí -->
+            <a href="EsenciaPura.html" class="company-card">
+                <div class="company-logo">🚀</div>
+                <h3 class="company-name">INSUMOS PARA PERFUMERIA</h3>
+                <p class="company-category">Insumos para la industria de la perfumería</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="K10.html" class="company-card">
+                <div class="company-logo">🛒</div>
+                <h3 class="company-name">K10</h3>
+                <p class="company-category">Compraventa de vehículos</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="Lineas%20%26%20saldos.html" class="company-card">
+                <div class="company-logo">📱</div>
+                <h3 class="company-name">LINEAS & SALDOS</h3>
+                <p class="company-category">Venta de textiles</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="Perfumeria%20Premiun.html" class="company-card">
+                <div class="company-logo">🎨</div>
+                <h3 class="company-name">Perfumería Premium</h3>
+                <p class="company-category">Perfumería de alta gama</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="NITIMOTOS.html" class="company-card">
+                <div class="company-logo">🎨</div>
+                <h3 class="company-name">NITIMOTOS</h3>
+                <p class="company-category">Mecanica respaldada</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="SPAIRIS.html" class="company-card">
+                <div class="company-logo">💆</div>
+                <h3 class="company-name">SPA IRIS</h3>
+                <p class="company-category">Belleza, bienestar y cuidado personal</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="ropa.html" class="company-card">
+                <div class="company-logo">👗</div>
+                <h3 class="company-name">Tienda de Ropa</h3>
+                <p class="company-category">Moda y prendas para toda ocasión</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="recuperadorajc.html" class="company-card">
+                <div class="company-logo">♻️</div>
+                <h3 class="company-name">Recuperadora J&amp;C</h3>
+                <p class="company-category">Reciclaje y cuidado del medio ambiente</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="Recuperadora-J%26C.html" class="company-card">
+                <div class="company-logo">🚛</div>
+                <h3 class="company-name">Recuperadora J&amp;C</h3>
+                <p class="company-category">Recogida de reciclaje a domicilio</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="Pisos%20Zafiro.html" class="company-card">
+                <div class="company-logo">✨</div>
+                <h3 class="company-name">Pisos Zafiro</h3>
+                <p class="company-category">Brillado y pulido profesional de pisos</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="LinguaPlay.html" class="company-card">
+                <div class="company-logo">🌎</div>
+                <h3 class="company-name">LinguaPlay</h3>
+                <p class="company-category">Aprende inglés de forma práctica y divertida</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="Lineas%20%26%20saldos2.html" class="company-card">
+                <div class="company-logo">🧵</div>
+                <h3 class="company-name">Líneas y Saldos</h3>
+                <p class="company-category">Telas y textiles al por mayor</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="inmobiliaria.html" class="company-card">
+                <div class="company-logo">🏠</div>
+                <h3 class="company-name">HomeSpace</h3>
+                <p class="company-category">Propiedades y asesoría inmobiliaria</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="happycell.html" class="company-card">
+                <div class="company-logo">📲</div>
+                <h3 class="company-name">Happy Cell</h3>
+                <p class="company-category">Tecnología y servicio técnico a domicilio</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="gorras.html" class="company-card">
+                <div class="company-logo">🧢</div>
+                <h3 class="company-name">Gorras Originales</h3>
+                <p class="company-category">Gorras y accesorios de moda</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+            <a href="carpintero.html" class="company-card">
+                <div class="company-logo">🪵</div>
+                <h3 class="company-name">Carpintería Artesanal</h3>
+                <p class="company-category">Diseño y fabricación de muebles en madera</p>
+                <span class="visit-badge">Visitar sitio →</span>
+            </a>
+
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>LOS RECOMENDADOS.CO</strong></p>
+        <p>Directorio Comercial de Empresas Colombianas</p>
+        <p>© 2026 - Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        // Redirigir al canal de YouTube al hacer click en el youtube-container
+        const youtubeContainer = document.querySelector('.youtube-container');
+        if (youtubeContainer) {
+            youtubeContainer.addEventListener('click', function() {
+                window.location.href = 'https://www.youtube.com/@losrecomendados-co';
+            });
+        }
+
+        // Efecto de scroll suave para toda la página
+        document.querySelectorAll('.company-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Añadir feedback visual al hacer click
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Log de analytics (opcional)
+        document.querySelectorAll('.company-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const companyName = this.querySelector('.company-name').textContent;
+                console.log('Click en:', companyName);
+                // Aquí puedes agregar Google Analytics o similar
+            });
+        });
+    </script>
+</body>
+</html>

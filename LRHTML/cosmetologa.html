@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmetóloga Profesional | Belleza y Bienestar</title>
+    <!-- Fuentes de Google: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- VARIABLES DE COLOR (Paleta Solicitada) --- */
+        :root {
+            --color-white: #FFFFFF;
+            --color-pink: #F7DDE2;       /* Acentos elegantes */
+            --color-pink-dark: #ebd0d5;  /* Hover para rosa */
+            --color-mint: #C8E8E0;       /* Frescura */
+            --color-mint-dark: #b0dcd1;  /* Hover para menta */
+            --color-gray-light: #F9F9F9; /* Fondos secundarios muy suaves */
+            --color-gray-text: #555555;  /* Texto importante */
+            --color-shadow: rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* --- RESET Y BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-gray-text);
+            background-color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- UTILIDADES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding { padding: 80px 0; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--color-gray-text);
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            display: block;
+            margin-bottom: 50px;
+            color: #888;
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .btn-mint {
+            background-color: var(--color-mint);
+            color: var(--color-gray-text);
+        }
+
+        .btn-mint:hover {
+            background-color: var(--color-mint-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-pink {
+            background-color: var(--color-pink);
+            color: var(--color-gray-text);
+        }
+
+        .btn-pink:hover {
+            background-color: var(--color-pink-dark);
+            transform: translateY(-2px);
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--color-white);
+            box-shadow: 0 2px 15px var(--color-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-gray-text);
+            letter-spacing: 0.5px;
+        }
+        
+        .logo span { color: #dcb3bc; /* Un tono rosado más oscuro para contraste */ }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.95rem; font-weight: 500; }
+        .nav-links a:hover { color: #dcb3bc; }
+
+        .mobile-menu-btn { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- HERO --- */
+        .hero {
+            background-image: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.6)), url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* --- SOBRE MÍ --- */
+        .about { background-color: var(--color-white); }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-img {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 10px 10px 0px var(--color-pink);
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--color-gray-text);
+        }
+
+        .feature-list { margin-top: 20px; }
+        .feature-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .feature-list i {
+            color: #8bcbc4; /* Mint más fuerte */
+            margin-right: 10px;
+        }
+
+        /* --- SERVICIOS --- */
+        .services { background-color: var(--color-gray-light); }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--color-white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 20px var(--color-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .service-card:hover { transform: translateY(-5px); }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--color-mint); /* Iconos Menta */
+            margin-bottom: 20px;
+        }
+
+        .service-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        /* --- SEPARACIÓN DE CITAS (AGENDA) --- */
+        .booking { background-color: var(--color-white); }
+
+        .booking-container {
+            background-color: var(--color-pink); /* Fondo rosado suave */
+            border-radius: 20px;
+            padding: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .booking-info { flex: 1; min-width: 300px; }
+        .booking-info h2 { font-size: 2rem; margin-bottom: 15px; }
+        .booking-form-wrapper { flex: 1; min-width: 300px; }
+
+        .booking-form {
+            background: var(--color-white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 500; }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            background-color: #fafafa;
+        }
+
+        .form-control:focus { outline: 1px solid var(--color-mint); background: #fff; }
+
+        .whatsapp-note {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 15px;
+            text-align: center;
+            background: var(--color-gray-light);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* --- TESTIMONIOS --- */
+        .testimonials { background-color: var(--color-gray-light); }
+        
+        .testimonial-card {
+            background: var(--color-white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px var(--color-shadow);
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: 2rem;
+            color: var(--color-pink);
+            margin-bottom: 15px;
+        }
+
+        .client-name {
+            font-weight: 600;
+            margin-top: 15px;
+            text-align: right;
+            color: var(--color-mint-dark); /* Texto menta oscuro */
+        }
+
+        /* --- GALERÍA --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            height: 250px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--color-white);
+            border-top: 1px solid #eee;
+            padding: 60px 0 20px;
+            text-align: center;
+        }
+
+        .footer-logo { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; display: inline-block; }
+        
+        .social-icons { margin-bottom: 30px; }
+        .social-icons a {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            color: var(--color-gray-text);
+        }
+        .social-icons a:hover { color: var(--color-pink-dark); }
+
+        .contact-details p { margin-bottom: 10px; }
+        .contact-details i { color: var(--color-mint); margin-right: 8px; }
+
+        .copyright {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* En producción se usaría JS para el toggle */
+            .mobile-menu-btn { display: block; }
+            
+            .hero-content h1 { font-size: 2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .booking-container { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Elena <span>Cosmetología</span></div>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#reserva">Agenda tu Cita</a></li>
+                    <li><a href="#galeria">Galería</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="container hero-content">
+            <h1>Cuidado profesional para resaltar<br>tu belleza natural</h1>
+            <p>Descubre un espacio diseñado para tu bienestar, donde la higiene, la técnica profesional y la relajación se unen.</p>
+            <a href="#reserva" class="btn btn-mint">Agendar Cita</a>
+        </div>
+    </section>
+
+    <!-- Sobre Mí -->
+    <section class="section-padding about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img">
+                    <img src="https://images.unsplash.com/photo-1559599076-9c61d8e1b9f5?q=80&w=2070&auto=format&fit=crop" alt="Cosmetóloga Profesional">
+                </div>
+                <div class="about-text">
+                    <span style="color: var(--color-pink-dark); font-weight: 600;">SOBRE MÍ</span>
+                    <h3>Comprometida con tu Bienestar y Seguridad</h3>
+                    <p>Soy Elena, cosmetóloga certificada con más de 10 años de experiencia en el cuidado de la piel. Mi filosofía se centra en tratamientos personalizados que respetan la biología natural de tu piel.</p>
+                    <p style="margin-top: 15px;">Mi consultorio cumple con los más altos estándares de bioseguridad:</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Esterilización de grado médico</li>
+                        <li><i class="fas fa-check-circle"></i> Productos hipoalergénicos de alta gama</li>
+                        <li><i class="fas fa-check-circle"></i> Ambiente privado y relajante</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="section-padding services">
+        <div class="container">
+            <h2 class="section-title">Mis Servicios</h2>
+            <span class="section-subtitle">Tratamientos diseñados para renovar tu cuerpo y mente</span>
+            
+            <div class="services-grid">
+                <!-- Tarjeta 1 -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-spa"></i></div>
+                    <h4>Limpieza Facial Profunda</h4>
+                    <p>Eliminación de impurezas y células muertas con aparatología ultrasónica suave.</p>
+                    <a href="#reserva" class="btn btn-pink" style="font-size: 0.8rem;">Reservar</a>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-hands"></i></div>
+                    <h4>Masajes Relajantes</h4>
+                    <p>Técnicas manuales con aromaterapia para liberar tensión y estrés acumulado.</p>
+                    <a href="#reserva" class="btn btn-pink" style="font-size: 0.8rem;">Reservar</a>
+                </div>
+                <!-- Tarjeta 3 -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-pump-soap"></i></div>
+                    <h4>Spa de Manos y Pies</h4>
+                    <p>Hidratación intensiva, exfoliación y masaje reflexológico.</p>
+                    <a href="#reserva" class="btn btn-pink" style="font-size: 0.8rem;">Reservar</a>
+                </div>
+                <!-- Tarjeta 4 -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-feather-alt"></i></div>
+                    <h4>Depilación Profesional</h4>
+                    <p>Sistema higiénico con cera suave para pieles sensibles o hilo.</p>
+                    <a href="#reserva" class="btn btn-pink" style="font-size: 0.8rem;">Reservar</a>
+                </div>
+                <!-- Tarjeta 5 -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-gem"></i></div>
+                    <h4>Rejuvenecimiento</h4>
+                    <p>Tratamientos anti-edad con radiofrecuencia y mascarillas de colágeno.</p>
+                    <a href="#reserva" class="btn btn-pink" style="font-size: 0.8rem;">Reservar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sistema de Citas -->
+    <section id="reserva" class="section-padding booking">
+        <div class="container">
+            <div class="booking-container">
+                <div class="booking-info">
+                    <h2>Reserva tu momento de paz</h2>
+                    <p>Selecciona el tratamiento que deseas y el horario que mejor se adapte a ti. Te espero para consentirte.</p>
+                    <br>
+                    <p><i class="fas fa-clock" style="color: #fff;"></i> Lun - Sáb: 9:00 AM - 7:00 PM</p>
+                </div>
+
+                <div class="booking-form-wrapper">
+                    <form class="booking-form" onsubmit="event.preventDefault(); alert('Gracias. Te contactaré por WhatsApp para confirmar.');">
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" class="form-control" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono / WhatsApp</label>
+                            <input type="tel" class="form-control" placeholder="Ej: +52 123 456 7890" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Servicio Deseado</label>
+                            <select class="form-control">
+                                <option>Limpieza Facial</option>
+                                <option>Masaje Relajante</option>
+                                <option>Spa de Manos/Pies</option>
+                                <option>Depilación</option>
+                                <option>Tratamiento Rejuvenecedor</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label>Fecha</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div style="flex: 1;">
+                                <label>Hora</label>
+                                <input type="time" class="form-control" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-mint" style="width: 100%; margin-top: 10px;">Confirmar Solicitud</button>
+                        <div class="whatsapp-note">
+                            <i class="fab fa-whatsapp"></i> Tu cita será confirmada vía WhatsApp.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="section-padding testimonials">
+        <div class="container">
+            <h2 class="section-title">Testimonios</h2>
+            <div class="services-grid">
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"El lugar es inmaculado y huele delicioso. La limpieza facial me dejó la piel radiante. Elena es súper profesional."</p>
+                    <div class="client-name">- Mariana G.</div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Me encanta que todo es esterilizado y se siente muy seguro. Los masajes son lo mejor para el estrés de la semana."</p>
+                    <div class="client-name">- Sofía R.</div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Atención 10/10. Me hice el spa de manos y pies y fue una experiencia súper relajante. Muy recomendado."</p>
+                    <div class="client-name">- Carolina M.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería -->
+    <section id="galeria" class="section-padding" style="background-color: var(--color-white);">
+        <div class="container">
+            <h2 class="section-title">Galería</h2>
+            <span class="section-subtitle">Un vistazo a nuestro espacio y resultados</span>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=2070&auto=format&fit=crop" alt="Spa Interior"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070&auto=format&fit=crop" alt="Tratamiento Facial"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=1974&auto=format&fit=crop" alt="Productos Naturales"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop" alt="Masaje"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-logo">Elena <span>Cosmetología</span></div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <div class="contact-details">
+                <p><i class="fas fa-map-marker-alt"></i> Calle 123, Colonia Centro, Ciudad</p>
+                <p><i class="fas fa-phone-alt"></i> +52 555 123 4567</p>
+                <p><i class="fas fa-envelope"></i> contacto@elenacosmetologia.com</p>
+            </div>
+            <p class="copyright">&copy; 2024 Elena Cosmetología Profesional. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

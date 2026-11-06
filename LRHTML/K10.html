@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K10 — Compraventa de Usados</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; width: 100%; }
+    body { font-family: 'Sora', sans-serif; }
+
+    .k10-wrapper {
+      height: 100%;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .space-grotesk { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Hero gradient - Gold & Black */
+    .hero-bg {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2d1a0a 70%, #0a0a0a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 800px 400px at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 600px 300px at 80% 100%, rgba(184, 134, 11, 0.06) 0%, transparent 50%);
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(10px, -10px); }
+    }
+
+    /* Animated accent line */
+    .accent-line {
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #d4af37, #f5d77a, #d4af37);
+      border-radius: 2px;
+      animation: lineExpand 2.5s ease-in-out infinite;
+    }
+    @keyframes lineExpand {
+      0%, 100% { width: 60px; opacity: 0.6; }
+      50% { width: 90px; opacity: 1; }
+    }
+
+    /* Vehicle card hover */
+    .vehicle-card {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+    .vehicle-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+    }
+    .vehicle-card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(212, 175, 55, 0.4);
+      box-shadow: 0 25px 50px rgba(212, 175, 55, 0.15);
+    }
+    .vehicle-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Fade up animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; }
+    .delay-4 { animation-delay: 0.55s; }
+    .delay-5 { animation-delay: 0.7s; }
+    .delay-6 { animation-delay: 0.85s; }
+
+    /* Badge pulse */
+    .badge-pulse {
+      animation: badge-pulse-anim 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes badge-pulse-anim {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    }
+
+    /* Scroll animation */
+    .scroll-indicator {
+      animation: scroll-bounce 2s infinite;
+    }
+    @keyframes scroll-bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .mobile-menu.open {
+      max-height: 400px;
+      padding: 1rem 0;
+    }
+
+    /* Feature cards */
+    .feature-card {
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: scale(1.05);
+    }
+
+    /* Input styling */
+    .form-input {
+      transition: all 0.3s ease;
+      background: rgba(42, 42, 42, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .form-input:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+      outline: none;
+      background: rgba(42, 42, 42, 0.8);
+    }
+
+    /* CTA Button glow */
+    .cta-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      left: -100%;
+      transition: left 0.6s;
+    }
+    .cta-btn:hover::before {
+      left: 100%;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Badge styles */
+    .badge-new {
+      background: linear-gradient(135deg, #d4af37, #f5d77a);
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .badge-sale {
+      background: linear-gradient(135deg, #d4af37, #c9a227);
+    }
+
+    /* Scrollbar */
+    .k10-wrapper::-webkit-scrollbar {
+      width: 8px;
+    }
+    .k10-wrapper::-webkit-scrollbar-track {
+      background: #0a0a0a;
+    }
+    .k10-wrapper::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #d4af37, #b8962e);
+      border-radius: 4px;
+    }
+
+    /* Type badges */
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .type-car {
+      background: rgba(212, 175, 55, 0.15);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    .type-moto {
+      background: rgba(184, 134, 11, 0.15);
+      color: #f5d77a;
+      border: 1px solid rgba(184, 134, 11, 0.3);
+    }
+
+    /* Stat pulse */
+    .stat-item {
+      transition: transform 0.3s ease;
+    }
+    .stat-item:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Nav link underline */
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #d4af37, #f5d77a);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Product Page Styles */
+    .product-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      overflow-y: auto;
+      background: #0a0a0a;
+    }
+    .product-page.active {
+      display: block;
+    }
+
+    .product-gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .product-gallery-main {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+      border-radius: 1.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      overflow: hidden;
+    }
+    .product-gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 0.75rem;
+    }
+    .product-gallery-thumb {
+      aspect-ratio: 1;
+      background: rgba(42, 42, 42, 0.6);
+      border-radius: 0.75rem;
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .product-gallery-thumb:hover,
+    .product-gallery-thumb.active {
+      border-color: #d4af37;
+      background: rgba(212, 175, 55, 0.15);
+    }
+
+    .product-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    .spec-item {
+      padding: 1.5rem;
+      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 1rem;
+      text-align: center;
+    }
+    .spec-label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.5rem;
+    }
+    .spec-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #d4af37;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 90;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .close-btn:hover {
+      background: rgba(212, 175, 55, 0.3);
+      transform: rotate(90deg);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div class="k10-wrapper" id="app-wrapper" style="background: #0a0a0a;"><!-- NAVIGATION -->
+   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16 sm:h-20"><!-- Logo --> <a href="#hero" class="flex items-center gap-3 group">
+       <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center font-black text-lg sm:text-xl space-grotesk" style="background: linear-gradient(135deg, #d4af37, #f5d77a); color: #0a0a0a;">
+        K10
+       </div>
+       <div class="hidden sm:block"><span class="text-white font-bold text-lg space-grotesk tracking-tight">K10</span> <span class="block text-xs font-light" style="color: #d4af37;">COMPRAVENTA</span>
+       </div></a> <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8"><a href="#hero" class="nav-link text-white text-sm font-medium">INICIO</a> <a href="#ventajas" class="nav-link text-white text-sm font-medium">VENTAJAS</a> <a href="#catalogo" class="nav-link text-white text-sm font-medium">CATÁLOGO</a> <a href="#contacto" class="nav-link text-white text-sm font-medium">CONTACTO</a> <a href="#contacto" class="cta-btn px-5 py-2.5 rounded-lg text-sm font-semibold" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; border: none;"> VENDER </a>
+      </div><!-- Mobile Hamburger --> <button id="hamburger" class="md:hidden text-white p-2">
+       <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="8" x2="24" y2="8" style="transition: all 0.3s;" /> <line x1="4" y1="14" x2="24" y2="14" style="transition: all 0.3s;" /> <line x1="4" y1="20" x2="24" y2="20" style="transition: all 0.3s;" />
+       </svg></button>
+     </div><!-- Mobile Menu -->
+     <div class="mobile-menu md:hidden border-t" style="border-color: rgba(212, 175, 55, 0.1);" id="mobile-menu"><a href="#hero" class="block py-3 text-white text-sm font-medium" style="border-bottom: 1px solid rgba(212, 175, 55, 0.1);">INICIO</a> <a href="#ventajas" class="block py-3 text-white text-sm font-medium" style="border-bottom: 1px solid rgba(212, 175, 55, 0.1);">VENTAJAS</a> <a href="#catalogo" class="block py-3 text-white text-sm font-medium" style="border-bottom: 1px solid rgba(212, 175, 55, 0.1);">CATÁLOGO</a> <a href="#contacto" class="block py-3 text-white text-sm font-medium" style="border-bottom: 1px solid rgba(212, 175, 55, 0.1);">CONTACTO</a> <a href="#contacto" class="inline-block mt-3 px-5 py-2.5 rounded-lg text-sm font-semibold" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a;">VENDER</a>
+     </div>
+    </nav>
+   </header>
+   <main><!-- HERO SECTION -->
+    <section id="hero" class="hero-bg relative" style="min-height: 700px; padding-top: 120px; padding-bottom: 60px;">
+     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center" style="min-height: 580px;"><!-- Hero Text -->
+       <div class="text-center lg:text-left">
+        <div class="fade-up delay-1"><span class="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wider mb-6 badge-pulse" style="background: rgba(212, 175, 55, 0.15); color: #d4af37; border: 1px solid rgba(212, 175, 55, 0.3);"> ⚡ LIQUIDACIÓN DE USADOS </span>
+        </div>
+        <h1 id="hero-title" class="space-grotesk text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 fade-up delay-2">Encuentra tu vehículo ideal</h1>
+        <div class="accent-line mx-auto lg:mx-0 mb-6 fade-up delay-3"></div>
+        <p id="hero-subtitle" class="text-base sm:text-lg font-light leading-relaxed max-w-xl mx-auto lg:mx-0 mb-8 fade-up delay-3" style="color: rgba(255,255,255,0.6);">Compra y venta de carros y motos usados certificados. Vehículos inspecccionados, garantizados y con financiación disponible.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-up delay-4"><a href="#catalogo" class="cta-btn px-8 py-4 rounded-xl text-sm font-bold tracking-wider text-center" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; border: none;"> VER CATÁLOGO </a> <a href="#contacto" class="px-8 py-4 rounded-xl text-sm font-bold tracking-wider text-center text-white transition-colors hover:bg-white/5" style="border: 2px solid rgba(212, 175, 55, 0.4);"> VENDER MI VEHÍCULO </a>
+        </div><!-- Quick Stats -->
+        <div class="mt-12 grid grid-cols-3 gap-4 fade-up delay-5">
+         <div class="stat-item text-center">
+          <div class="text-2xl font-bold" style="color: #d4af37;">
+           150+
+          </div>
+          <div class="text-xs font-light mt-1" style="color: rgba(255,255,255,0.4);">
+           Vehículos
+          </div>
+         </div>
+         <div class="stat-item text-center">
+          <div class="text-2xl font-bold" style="color: #f5d77a;">
+           1500+
+          </div>
+          <div class="text-xs font-light mt-1" style="color: rgba(255,255,255,0.4);">
+           Clientes
+          </div>
+         </div>
+         <div class="stat-item text-center">
+          <div class="text-2xl font-bold" style="color: #d4af37;">
+           99%
+          </div>
+          <div class="text-xs font-light mt-1" style="color: rgba(255,255,255,0.4);">
+           Satisfacción
+          </div>
+         </div>
+        </div>
+       </div><!-- Hero Vehicles Visual -->
+       <div class="hidden lg:grid grid-cols-2 gap-6 fade-up delay-5"><!-- Car Card -->
+        <div class="p-6 rounded-2xl" style="background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <div class="text-3xl mb-3">
+          🚗
+         </div>
+         <h3 class="text-white font-semibold mb-2">Carros</h3>
+         <p class="text-xs font-light" style="color: rgba(255,255,255,0.5);">Sedanes, SUVs, camionetas y más</p>
+         <div class="mt-4 text-xl font-bold" style="color: #d4af37;">
+          +80 Opciones
+         </div>
+        </div><!-- Moto Card -->
+        <div class="p-6 rounded-2xl" style="background: rgba(184, 134, 11, 0.08); border: 1px solid rgba(184, 134, 11, 0.2);">
+         <div class="text-3xl mb-3">
+          🏍️
+         </div>
+         <h3 class="text-white font-semibold mb-2">Motos</h3>
+         <p class="text-xs font-light" style="color: rgba(255,255,255,0.5);">Deportivas, urbanas y clásicas</p>
+         <div class="mt-4 text-xl font-bold" style="color: #f5d77a;">
+          +70 Opciones
+         </div>
+        </div><!-- Financing Card -->
+        <div class="p-6 rounded-2xl col-span-2" style="background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <div class="text-3xl mb-3">
+          💰
+         </div>
+         <h3 class="text-white font-semibold mb-2">Financiación</h3>
+         <p class="text-xs font-light" style="color: rgba(255,255,255,0.5);">Planes flexibles desde 24 hasta 84 meses</p>
+        </div>
+       </div>
+      </div><!-- Scroll Indicator -->
+      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 fade-up delay-6">
+       <div class="scroll-indicator text-white opacity-40 text-sm">
+        ↓ Desliza hacia abajo
+       </div>
+      </div>
+     </div>
+    </section><!-- VENTAJAS SECTION -->
+    <section id="ventajas" class="py-20 sm:py-28" style="background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16"><span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-4" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">POR QUÉ ELEGIRNOS</span>
+       <h2 id="about-title" class="space-grotesk text-4xl sm:text-5xl lg:text-6xl font-bold text-white">¿Por qué confiar en K10?</h2>
+       <div class="accent-line mx-auto mt-6"></div>
+       <p id="about-description" class="mt-6 text-base sm:text-lg font-light max-w-2xl mx-auto leading-relaxed" style="color: rgba(255,255,255,0.6);">Somos expertos en compraventa de usados. Cada vehículo pasa por inspección detallada y te garantizamos transparencia total en cada transacción.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Feature 1 -->
+       <div class="feature-card p-8 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15); border-left: 4px solid #d4af37;">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(212, 175, 55, 0.15);"><span class="text-2xl">✅</span>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">Inspección Completa</h3>
+        <p class="text-sm font-light leading-relaxed" style="color: rgba(255,255,255,0.5);">Cada vehículo pasa por revisión mecánica exhaustiva. Reporte detallado incluido.</p>
+       </div><!-- Feature 2 -->
+       <div class="feature-card p-8 rounded-2xl" style="background: rgba(184, 134, 11, 0.06); border: 1px solid rgba(184, 134, 11, 0.15); border-left: 4px solid #f5d77a;">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(184, 134, 11, 0.15);"><span class="text-2xl">💳</span>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">Financiación Flexible</h3>
+        <p class="text-sm font-light leading-relaxed" style="color: rgba(255,255,255,0.5);">Aprobación inmediata sin codeudor. Plazos de 24 a 84 meses disponibles.</p>
+       </div><!-- Feature 3 -->
+       <div class="feature-card p-8 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15); border-left: 4px solid #d4af37;">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(212, 175, 55, 0.15);"><span class="text-2xl">🛡️</span>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">Garantía Extendida</h3>
+        <p class="text-sm font-light leading-relaxed" style="color: rgba(255,255,255,0.5);">Hasta 2 años de garantía en partes mecánicas principales.</p>
+       </div><!-- Feature 4 -->
+       <div class="feature-card p-8 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15); border-left: 4px solid #d4af37;">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(212, 175, 55, 0.15);"><span class="text-2xl">📄</span>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">Papeles en Orden</h3>
+        <p class="text-sm font-light leading-relaxed" style="color: rgba(255,255,255,0.5);">Traspaso facilitado. Documentación legal completa y verificada.</p>
+       </div><!-- Feature 5 -->
+       <div class="feature-card p-8 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15); border-left: 4px solid #d4af37;">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(212, 175, 55, 0.15);"><span class="text-2xl">💰</span>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">Mejor Precio</h3>
+        <p class="text-sm font-light leading-relaxed" style="color: rgba(255,255,255,0.5);">Tasación justa y sin comisiones ocultas. Comparamos con el mercado.</p>
+       </div><!-- Feature 6 -->
+       <div class="feature-card p-8 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15); border-left: 4px solid #d4af37;">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(212, 175, 55, 0.15);"><span class="text-2xl">⚡</span>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">Proceso Rápido</h3>
+        <p class="text-sm font-light leading-relaxed" style="color: rgba(255,255,255,0.5);">De consulta a cierre en menos de 48 horas. Sin burocracia.</p>
+       </div>
+      </div>
+     </div>
+    </section><!-- CATALOG SECTION -->
+    <section id="catalogo" class="py-20 sm:py-28" style="background: #0a0a0a;">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16"><span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-4" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">DISPONIBLES AHORA</span>
+       <h2 id="catalog-title" class="space-grotesk text-4xl sm:text-5xl lg:text-6xl font-bold text-white">Vehículos Disponibles</h2>
+       <div class="accent-line mx-auto mt-6"></div>
+      </div><!-- Filter Tabs -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12"><button class="filter-tab active px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all" data-filter="all" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; border: none;">TODOS</button> <button class="filter-tab px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all text-white" data-filter="car" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);">🚗 CARROS</button> <button class="filter-tab px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all text-white" data-filter="moto" style="background: rgba(184, 134, 11, 0.1); border: 1px solid rgba(184, 134, 11, 0.3);">🏍️ MOTOS</button> <button class="filter-tab px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all text-white" data-filter="sale" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);">⚡ OFERTA</button>
+      </div><!-- Vehicles Grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="vehicles-grid"><!-- Cards inserted by JS -->
+      </div>
+     </div>
+    </section><!-- TESTIMONIALS -->
+    <section class="py-20 sm:py-28" style="background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);">
+     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12"><span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-4" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">CLIENTES SATISFECHOS</span>
+       <h2 class="space-grotesk text-4xl sm:text-5xl font-bold text-white">Lo que dicen de K10</h2>
+       <div class="accent-line mx-auto mt-6"></div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+       <div class="p-6 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15);">
+        <div class="flex gap-1 mb-4"><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span>
+        </div>
+        <p class="text-sm font-light leading-relaxed mb-6" style="color: rgba(255,255,255,0.6);">"Encontré mi carro en K10. El proceso fue rápido, transparente y sin sorpresas. Muy recomendado para comprar con confianza."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a;">
+          JM
+         </div>
+         <div>
+          <div class="text-white text-sm font-semibold">
+           Juan Martínez
+          </div>
+          <div class="text-xs" style="color: rgba(255,255,255,0.4);">
+           Medellín
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="p-6 rounded-2xl" style="background: rgba(184, 134, 11, 0.06); border: 1px solid rgba(184, 134, 11, 0.15);">
+        <div class="flex gap-1 mb-4"><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span>
+        </div>
+        <p class="text-sm font-light leading-relaxed mb-6" style="color: rgba(255,255,255,0.6);">"Vendí mi moto en 3 días. La tasación fue justa y me dieron el dinero de inmediato. Excelente atención."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold" style="background: linear-gradient(135deg, #f5d77a, #d4af37); color: #0a0a0a;">
+          LR
+         </div>
+         <div>
+          <div class="text-white text-sm font-semibold">
+           Laura Ruiz
+          </div>
+          <div class="text-xs" style="color: rgba(255,255,255,0.4);">
+           Envigado
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="p-6 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15);">
+        <div class="flex gap-1 mb-4"><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span><span style="color:#fbbf24;">★</span>
+        </div>
+        <p class="text-sm font-light leading-relaxed mb-6" style="color: rgba(255,255,255,0.6);">"Financiación súper flexible. Sin codeudor y aprobado en 24 horas. K10 es de confianza, compré con seguridad."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a;">
+          CL
+         </div>
+         <div>
+          <div class="text-white text-sm font-semibold">
+           Carlos López
+          </div>
+          <div class="text-xs" style="color: rgba(255,255,255,0.4);">
+           Sabaneta
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- CONTACT SECTION -->
+    <section id="contacto" class="py-20 sm:py-28" style="background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16"><span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-4" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">CONVERSEMOS</span>
+       <h2 id="contact-title" class="space-grotesk text-4xl sm:text-5xl lg:text-6xl font-bold text-white">¿Listo para tu próximo vehículo?</h2>
+       <div class="accent-line mx-auto mt-6"></div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-8"><!-- Contact Form -->
+       <div class="p-8 rounded-2xl" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15);">
+        <h3 class="text-xl font-semibold text-white mb-6">Contáctanos</h3>
+        <form id="contact-form" class="space-y-4">
+         <div><label for="contact-name" class="block text-xs font-semibold tracking-wider mb-2" style="color: #d4af37;">NOMBRE</label> <input type="text" id="contact-name" required class="form-input w-full px-4 py-3 rounded-xl text-white text-sm" placeholder="Tu nombre completo">
+         </div>
+         <div><label for="contact-phone" class="block text-xs font-semibold tracking-wider mb-2" style="color: #d4af37;">TELÉFONO</label> <input type="tel" id="contact-phone" required class="form-input w-full px-4 py-3 rounded-xl text-white text-sm" placeholder="+57 300 000 0000">
+         </div>
+         <div><label for="contact-interest" class="block text-xs font-semibold tracking-wider mb-2" style="color: #d4af37;">¿QUÉ BUSCAS?</label> <select id="contact-interest" required class="form-input w-full px-4 py-3 rounded-xl text-white text-sm" style="color: rgba(255,255,255,0.5);"> <option value="">Selecciona una opción</option> <option value="comprar_carro">Quiero comprar un carro</option> <option value="comprar_moto">Quiero comprar una moto</option> <option value="vender">Quiero vender mi vehículo</option> <option value="financiacion">Info sobre financiación</option> </select>
+         </div>
+         <div><label for="contact-message" class="block text-xs font-semibold tracking-wider mb-2" style="color: #d4af37;">MENSAJE</label> <textarea id="contact-message" rows="4" class="form-input w-full px-4 py-3 rounded-xl text-white text-sm resize-none" placeholder="Cuéntanos más sobre lo que buscas..." style="color: rgba(255,255,255,0.7);"></textarea>
+         </div><button type="submit" class="cta-btn w-full py-4 rounded-xl font-bold text-sm tracking-wider" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; border: none;"> ENVIAR MENSAJE </button>
+         <div id="form-success" class="hidden text-center py-4 rounded-xl text-sm font-semibold" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">
+          ✓ ¡Mensaje enviado! Te contactaremos en breve.
+         </div>
+        </form>
+       </div><!-- Contact Info -->
+       <div class="flex flex-col gap-6">
+        <div class="p-6 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15);">
+         <div class="flex items-start gap-4">
+          <div class="text-3xl">
+           📍
+          </div>
+          <div>
+           <h4 class="text-white font-semibold mb-2">Ubicación Principal</h4>
+           <p id="address-text" class="text-sm font-light" style="color: rgba(255,255,255,0.6);">Cra 43A #1Sur-100, Medellín</p>
+           <p class="text-xs mt-2" style="color: rgba(255,255,255,0.4);">Centro Comercial El Tesoro - Local 210</p>
+          </div>
+         </div>
+        </div>
+        <div class="p-6 rounded-2xl" style="background: rgba(184, 134, 11, 0.06); border: 1px solid rgba(184, 134, 11, 0.15);">
+         <div class="flex items-start gap-4">
+          <div class="text-3xl">
+           📞
+          </div>
+          <div>
+           <h4 class="text-white font-semibold mb-2">Teléfono</h4>
+           <p id="phone-text" class="text-sm font-light" style="color: rgba(255,255,255,0.6);">+57 304 555 1234</p>
+           <p class="text-xs mt-2" style="color: rgba(255,255,255,0.4);">Lun - Sáb: 8:00 AM - 7:00 PM / Dom: 10:00 AM - 4:00 PM</p>
+          </div>
+         </div>
+        </div>
+        <div class="p-6 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15);">
+         <div class="flex items-start gap-4">
+          <div class="text-3xl">
+           💬
+          </div>
+          <div>
+           <h4 class="text-white font-semibold mb-3">WhatsApp</h4>
+           <p class="text-xs mb-3 font-light" style="color: rgba(255,255,255,0.5);">Respuesta inmediata. Envía tu consulta.</p><span class="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-bold cursor-pointer transition-all hover:opacity-90" style="background: #22c55e; color: white;"> 💬 Abrir WhatsApp </span>
+          </div>
+         </div>
+        </div>
+        <div class="p-6 rounded-2xl" style="background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15);">
+         <div class="flex items-start gap-4">
+          <div class="text-3xl">
+           📱
+          </div>
+          <div>
+           <h4 class="text-white font-semibold mb-2">Síguenos en Redes</h4>
+           <div class="flex gap-3 mt-3"><span class="w-10 h-10 rounded-lg flex items-center justify-center text-lg cursor-pointer hover:opacity-80 transition-opacity" style="background: rgba(212, 175, 55, 0.15);">📷</span> <span class="w-10 h-10 rounded-lg flex items-center justify-center text-lg cursor-pointer hover:opacity-80 transition-opacity" style="background: rgba(212, 175, 55, 0.15);">📘</span> <span class="w-10 h-10 rounded-lg flex items-center justify-center text-lg cursor-pointer hover:opacity-80 transition-opacity" style="background: rgba(212, 175, 55, 0.15);">𝕏</span>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main><!-- FOOTER -->
+   <footer class="py-8 sm:py-12" style="background: #080808; border-top: 1px solid rgba(212, 175, 55, 0.1);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+       <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs space-grotesk" style="background: linear-gradient(135deg, #d4af37, #f5d77a); color: #0a0a0a;">
+        K10
+       </div><span class="text-white/30 text-xs font-light">COMPRAVENTA DE USADOS</span>
+      </div>
+      <p id="footer-text" class="text-xs text-center" style="color: rgba(255,255,255,0.25);">© 2024 K10 Compraventa. Todos los derechos reservados.</p>
+      <div class="flex gap-4"><a href="#hero" class="text-xs transition-colors hover:text-white" style="color: rgba(255,255,255,0.3);">Inicio</a> <a href="#catalogo" class="text-xs transition-colors hover:text-white" style="color: rgba(255,255,255,0.3);">Catálogo</a> <a href="#contacto" class="text-xs transition-colors hover:text-white" style="color: rgba(255,255,255,0.3);">Contacto</a>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div><!-- PRODUCT PAGE MODAL -->
+  <div class="modal-overlay" id="product-modal-overlay"></div>
+  <div class="product-page" id="product-page">
+   <header class="fixed top-0 left-0 w-full z-50" style="background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding: 1rem;">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+     <h1 id="product-name" class="space-grotesk text-2xl font-bold text-white"></h1><button id="close-product" class="close-btn">×</button>
+    </div>
+   </header>
+   <div class="pt-24 pb-12 px-4">
+    <div class="max-w-6xl mx-auto"><!-- Gallery -->
+     <div class="mb-12">
+      <div class="product-gallery-main" id="product-gallery-main">
+       🚗
+      </div>
+      <div class="product-gallery-thumbs mt-4">
+       <div class="product-gallery-thumb active" data-thumb="0">
+        🚗
+       </div>
+       <div class="product-gallery-thumb" data-thumb="1">
+        🔧
+       </div>
+       <div class="product-gallery-thumb" data-thumb="2">
+        🛠️
+       </div>
+       <div class="product-gallery-thumb" data-thumb="3">
+        📋
+       </div>
+       <div class="product-gallery-thumb" data-thumb="4">
+        ✨
+       </div>
+      </div>
+     </div><!-- Price & Info -->
+     <div class="grid lg:grid-cols-3 gap-8 mb-12">
+      <div class="lg:col-span-2"><!-- Specifications -->
+       <h2 class="text-2xl font-bold text-white mb-6">Especificaciones</h2>
+       <div class="product-specs-grid mb-12">
+        <div class="spec-item">
+         <div class="spec-label">
+          AÑO
+         </div>
+         <div class="spec-value" id="spec-year">
+          2023
+         </div>
+        </div>
+        <div class="spec-item">
+         <div class="spec-label">
+          KILÓMETROS
+         </div>
+         <div class="spec-value" id="spec-km">
+          12.500
+         </div>
+        </div>
+        <div class="spec-item">
+         <div class="spec-label">
+          COMBUSTIBLE
+         </div>
+         <div class="spec-value" id="spec-fuel">
+          Gasolina
+         </div>
+        </div>
+        <div class="spec-item">
+         <div class="spec-label">
+          TRANSMISIÓN
+         </div>
+         <div class="spec-value" id="spec-trans">
+          Automático
+         </div>
+        </div>
+        <div class="spec-item">
+         <div class="spec-label">
+          TIPO
+         </div>
+         <div class="spec-value" id="spec-type">
+          Carro
+         </div>
+        </div>
+        <div class="spec-item">
+         <div class="spec-label">
+          CONDICIÓN
+         </div>
+         <div class="spec-value" id="spec-condition">
+          Excelente
+         </div>
+        </div>
+       </div><!-- Description -->
+       <h2 class="text-2xl font-bold text-white mb-4">Descripción General</h2>
+       <p class="text-base font-light leading-relaxed mb-8" style="color: rgba(255,255,255,0.6);">Este vehículo está en perfectas condiciones mecánicas y estéticas. Ha sido inspeccionado exhaustivamente por nuestro equipo de expertos. Todos los servicios de mantenimiento están al día. Ideal para quien busca calidad, confiabilidad y un excelente precio.</p><!-- Features -->
+       <h2 class="text-2xl font-bold text-white mb-4">Características</h2>
+       <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-white text-sm">✓ Aire Acondicionado</p>
+        </div>
+        <div class="p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-white text-sm">✓ Dirección Eléctrica</p>
+        </div>
+        <div class="p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-white text-sm">✓ Cierre Centralizado</p>
+        </div>
+        <div class="p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-white text-sm">✓ Vidrios Eléctricos</p>
+        </div>
+        <div class="p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-white text-sm">✓ Radio Bluetooth</p>
+        </div>
+        <div class="p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-white text-sm">✓ Llantas Nuevas</p>
+        </div>
+       </div>
+      </div><!-- Price & Contact -->
+      <div>
+       <div class="p-6 rounded-2xl sticky" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2); top: 100px;">
+        <p class="text-xs font-light mb-2" style="color: rgba(255,255,255,0.5);">PRECIO</p>
+        <h3 id="product-price" class="text-3xl font-bold mb-6" style="color: #d4af37;">$79.900.000</h3>
+        <div class="space-y-3 mb-6">
+         <p class="text-xs font-light" style="color: rgba(255,255,255,0.5);">Financiación disponible:</p>
+         <div class="p-3 rounded-lg" style="background: rgba(212, 175, 55, 0.15);">
+          <p class="text-sm font-semibold text-white">24 meses: $3.329.166/mes</p>
+         </div>
+         <div class="p-3 rounded-lg" style="background: rgba(212, 175, 55, 0.15);">
+          <p class="text-sm font-semibold text-white">36 meses: $2.219.444/mes</p>
+         </div>
+         <div class="p-3 rounded-lg" style="background: rgba(212, 175, 55, 0.15);">
+          <p class="text-sm font-semibold text-white">60 meses: $1.331.667/mes</p>
+         </div>
+        </div><button id="contact-product-btn" class="cta-btn w-full py-4 rounded-xl font-bold text-sm tracking-wider mb-3" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; border: none;"> CONTACTAR AHORA </button> <button id="whatsapp-product-btn" class="w-full py-4 rounded-xl font-bold text-sm tracking-wider text-white" style="background: #22c55e; border: none;"> 💬 WHATSAPP </button>
+        <div class="mt-6 p-4 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+         <p class="text-xs font-semibold text-white mb-2">✓ Inspección Completa</p>
+         <p class="text-xs font-semibold text-white mb-2">✓ Garantía 2 años</p>
+         <p class="text-xs font-semibold text-white">✓ Papeles en orden</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // ====== VEHICLE DATA ======
+    const vehicles = [
+      { id: 1, name: 'Mazda 3 2023', price: '79.900.000', km: '12.500', type: 'car', year: 2023, fuel: 'Gasolina', trans: 'Automático', sale: false, condition: 'Excelente' },
+      { id: 2, name: 'Toyota RAV4 2022', price: '135.000.000', km: '28.000', type: 'car', year: 2022, fuel: 'Híbrido', trans: 'Automático', sale: true, condition: 'Excelente' },
+      { id: 3, name: 'Yamaha MT-09 2021', price: '28.500.000', km: '8.200', type: 'moto', year: 2021, fuel: 'Gasolina', trans: 'Manual', sale: false, condition: 'Muy buena' },
+      { id: 4, name: 'Honda CB500 2022', price: '22.000.000', km: '5.100', type: 'moto', year: 2022, fuel: 'Gasolina', trans: 'Manual', sale: true, condition: 'Excelente' },
+      { id: 5, name: 'Chevrolet Colorado 2023', price: '155.000.000', km: '8.500', type: 'car', year: 2023, fuel: 'Diésel', trans: 'Mecánico', sale: false, condition: 'Excelente' },
+      { id: 6, name: 'Kawasaki Ninja 400 2023', price: '18.900.000', km: '2.500', type: 'moto', year: 2023, fuel: 'Gasolina', trans: 'Manual', sale: false, condition: 'Excelente' },
+      { id: 7, name: 'Kia Forte 2022', price: '68.500.000', km: '35.000', type: 'car', year: 2022, fuel: 'Gasolina', trans: 'Mecánico', sale: true, condition: 'Muy buena' },
+      { id: 8, name: 'Hyundai Tucson 2023', price: '120.000.000', km: '15.000', type: 'car', year: 2023, fuel: 'Gasolina', trans: 'Automático', sale: false, condition: 'Excelente' },
+      { id: 9, name: 'Harley-Davidson Street 2020', price: '65.000.000', km: '22.000', type: 'moto', year: 2020, fuel: 'Gasolina', trans: 'Manual', sale: false, condition: 'Muy buena' },
+    ];
+
+    let currentVehicle = null;
+
+    // ====== RENDER VEHICLES ======
+    function renderVehicles(filter = 'all') {
+      const grid = document.getElementById('vehicles-grid');
+      let filtered = vehicles;
+
+      if (filter === 'car') filtered = vehicles.filter(v => v.type === 'car');
+      else if (filter === 'moto') filtered = vehicles.filter(v => v.type === 'moto');
+      else if (filter === 'sale') filtered = vehicles.filter(v => v.sale);
+
+      grid.innerHTML = '';
+      filtered.forEach(v => {
+        const icon = v.type === 'car' ? '🚗' : '🏍️';
+        const typeClass = v.type === 'car' ? 'type-car' : 'type-moto';
+
+        const card = document.createElement('div');
+        card.className = 'vehicle-card rounded-2xl overflow-hidden cursor-pointer';
+        card.style.cssText = 'background: rgba(212, 175, 55, 0.04); border: 1px solid rgba(212, 175, 55, 0.15);';
+
+        card.innerHTML = `
+          <div class="p-4 flex items-center justify-between" style="background: rgba(42, 42, 42, 0.6); border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+            <span class="type-badge ${typeClass}">${icon} ${v.type.toUpperCase()}</span>
+            ${v.sale ? `<span class="badge-new px-3 py-1 rounded-full text-xs font-bold text-white">⚡ OFERTA</span>` : ''}
+          </div>
+          <div style="height: 200px; background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(184,134,11,0.1)); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+            <div class="text-6xl">${icon}</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-semibold text-white mb-3">${v.name}</h3>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="px-3 py-1 rounded-lg text-xs" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">${v.year}</span>
+              <span class="px-3 py-1 rounded-lg text-xs" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">${v.km} km</span>
+              <span class="px-3 py-1 rounded-lg text-xs" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">${v.fuel}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xl font-bold" style="color: #d4af37;">$${v.price}</p>
+              </div>
+              <button class="cta-btn px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider" style="background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; border: none;">VER</button>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => openProductPage(v));
+        grid.appendChild(card);
+      });
+    }
+
+    // ====== PRODUCT PAGE ======
+    function openProductPage(vehicle) {
+      currentVehicle = vehicle;
+      const page = document.getElementById('product-page');
+      const overlay = document.getElementById('product-modal-overlay');
+
+      document.getElementById('product-name').textContent = vehicle.name;
+      document.getElementById('product-price').textContent = `$${vehicle.price}`;
+      document.getElementById('spec-year').textContent = vehicle.year;
+      document.getElementById('spec-km').textContent = vehicle.km;
+      document.getElementById('spec-fuel').textContent = vehicle.fuel;
+      document.getElementById('spec-trans').textContent = vehicle.trans;
+      document.getElementById('spec-type').textContent = vehicle.type === 'car' ? 'Carro' : 'Moto';
+      document.getElementById('spec-condition').textContent = vehicle.condition;
+
+      const icon = vehicle.type === 'car' ? '🚗' : '🏍️';
+      document.getElementById('product-gallery-main').textContent = icon;
+
+      page.classList.add('active');
+      overlay.style.display = 'block';
+      document.querySelector('.k10-wrapper').style.overflow = 'hidden';
+    }
+
+    function closeProductPage() {
+      const page = document.getElementById('product-page');
+      const overlay = document.getElementById('product-modal-overlay');
+      page.classList.remove('active');
+      overlay.style.display = 'none';
+      document.querySelector('.k10-wrapper').style.overflow = 'auto';
+    }
+
+    document.getElementById('close-product').addEventListener('click', closeProductPage);
+    document.getElementById('product-modal-overlay').addEventListener('click', closeProductPage);
+
+    document.getElementById('contact-product-btn').addEventListener('click', () => {
+      closeProductPage();
+      document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('whatsapp-product-btn').addEventListener('click', () => {
+      const message = `Hola, estoy interesado en el ${currentVehicle.name} (${currentVehicle.price})`;
+      window.open(`https://wa.me/573045551234?text=${encodeURIComponent(message)}`, '_blank');
+    });
+
+    // ====== GALLERY THUMBS ======
+    document.querySelectorAll('.product-gallery-thumb').forEach(thumb => {
+      thumb.addEventListener('click', (e) => {
+        document.querySelectorAll('.product-gallery-thumb').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+      });
+    });
+
+    // ====== FILTER TABS ======
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.filter-tab').forEach(t => {
+          t.style.background = 'rgba(212, 175, 55, 0.1)';
+          t.style.border = '1px solid rgba(212, 175, 55, 0.3)';
+          t.style.color = 'white';
+        });
+        e.target.style.background = 'linear-gradient(135deg, #d4af37, #b8962e)';
+        e.target.style.border = 'none';
+        e.target.style.color = '#0a0a0a';
+        renderVehicles(e.target.dataset.filter);
+      });
+    });
+
+    // ====== MOBILE MENU ======
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.remove('open');
+      });
+    });
+
+    // ====== CONTACT FORM ======
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'ENVIANDO...';
+      btn.style.opacity = '0.7';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.textContent = 'ENVIAR MENSAJE';
+        btn.style.opacity = '1';
+        btn.disabled = false;
+        document.getElementById('form-success').classList.remove('hidden');
+        document.getElementById('contact-form').reset();
+
+        setTimeout(() => {
+          document.getElementById('form-success').classList.add('hidden');
+        }, 4000);
+      }, 1500);
+    });
+
+    // ====== ELEMENT SDK ======
+    const defaultConfig = {
+      background_color: '#0a0a0a',
+      surface_color: '#1a1a1a',
+      text_color: '#ffffff',
+      primary_action_color: '#d4af37',
+      secondary_action_color: '#b8962e',
+      font_family: 'Sora',
+      font_size: 16,
+      hero_title: 'Encuentra tu vehículo ideal',
+      hero_subtitle: 'Compra y venta de carros y motos usados certificados. Vehículos inspecccionados, garantizados y con financiación disponible.',
+      about_title: '¿Por qué confiar en K10?',
+      about_description: 'Somos expertos en compraventa de usados. Cada vehículo pasa por inspección detallada y te garantizamos transparencia total en cada transacción.',
+      catalog_title: 'Vehículos Disponibles',
+      contact_title: '¿Listo para tu próximo vehículo?',
+      address_text: 'Cra 43A #1Sur-100, Medellín',
+      phone_text: '+57 304 555 1234',
+      footer_text: '© 2024 K10 Compraventa. Todos los derechos reservados.',
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+
+      document.getElementById('hero-title').textContent = c.hero_title;
+      document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+      document.getElementById('about-title').textContent = c.about_title;
+      document.getElementById('about-description').textContent = c.about_description;
+      document.getElementById('catalog-title').textContent = c.catalog_title;
+      document.getElementById('contact-title').textContent = c.contact_title;
+      document.getElementById('address-text').textContent = c.address_text;
+      document.getElementById('phone-text').textContent = c.phone_text;
+      document.getElementById('footer-text').textContent = c.footer_text;
+
+      const font = c.font_family || defaultConfig.font_family;
+      document.body.style.fontFamily = `'${font}', Arial, sans-serif`;
+
+      const baseSize = c.font_size || defaultConfig.font_size;
+      document.getElementById('hero-subtitle').style.fontSize = `${baseSize * 1.1}px`;
+      document.getElementById('about-description').style.fontSize = `${baseSize * 1.05}px`;
+    }
+
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => {
+        applyConfig(config);
+      },
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+          },
+          {
+            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+            set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }
+          },
+          {
+            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }
+          },
+          {
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+          },
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['about_title', config.about_title || defaultConfig.about_title],
+        ['about_description', config.about_description || defaultConfig.about_description],
+        ['catalog_title', config.catalog_title || defaultConfig.catalog_title],
+        ['contact_title', config.contact_title || defaultConfig.contact_title],
+        ['address_text', config.address_text || defaultConfig.address_text],
+        ['phone_text', config.phone_text || defaultConfig.phone_text],
+        ['footer_text', config.footer_text || defaultConfig.footer_text],
+      ])
+    });
+
+    renderVehicles();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ccb92a784623ef5',t:'MTc3MDg5MzkyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

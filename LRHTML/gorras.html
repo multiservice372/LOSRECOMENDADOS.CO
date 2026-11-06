@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda de Gorras</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    .product-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+    
+    .cart-badge {
+      animation: bounce 0.5s;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    
+    .checkout-overlay {
+      backdrop-filter: blur(4px);
+    }
+    
+    .demo-watermark {
+      position: relative;
+    }
+    
+    .demo-watermark::before {
+      content: 'DEMO';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-15deg);
+      font-size: 4rem;
+      font-weight: bold;
+      color: rgba(239, 68, 68, 0.15);
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"><!-- Header -->
+   <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+     <div class="flex justify-between items-center">
+      <div>
+       <h1 id="store-name" class="text-3xl font-bold" style="color: #667eea;">Gorras Originales</h1>
+       <p id="welcome-message" class="text-gray-600 text-sm mt-1">Descubre nuestra colección exclusiva</p>
+      </div><button id="cart-button" class="relative bg-white border-2 px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all" style="border-color: #667eea; color: #667eea;"> <span class="mr-2">🛒</span> <span>Carrito</span> <span id="cart-count" class="absolute -top-2 -right-2 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold cart-badge" style="background-color: #ef4444; display: none;">0</span> </button>
+     </div>
+    </div>
+   </header><!-- Products Grid -->
+   <main class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold text-white mb-8 text-center">Nuestras Gorras</h2>
+    <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Products will be inserted here -->
+    </div>
+   </main><!-- Cart Sidebar -->
+   <div id="cart-sidebar" class="fixed top-0 right-0 h-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50" style="width: 400px; max-width: 90vw;">
+    <div class="h-full flex flex-col">
+     <div class="p-6 border-b flex justify-between items-center" style="background-color: #667eea;">
+      <h2 class="text-2xl font-bold text-white">Mi Carrito</h2><button id="close-cart" class="text-white text-3xl hover:opacity-80">×</button>
+     </div>
+     <div id="cart-items" class="flex-1 overflow-auto p-6">
+      <p class="text-gray-500 text-center py-8">Tu carrito está vacío</p>
+     </div>
+     <div class="border-t p-6 bg-gray-50">
+      <div class="flex justify-between text-xl font-bold mb-4"><span>Total:</span> <span id="cart-total" style="color: #667eea;">$0.00</span>
+      </div><button id="checkout-button" class="w-full text-white py-4 rounded-lg font-bold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: #667eea;" disabled> Proceder al Pago </button>
+     </div>
+    </div>
+   </div><!-- Checkout Modal -->
+   <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 checkout-overlay items-center justify-center z-50" style="display: none;">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-auto demo-watermark">
+     <div class="p-6 border-b" style="background-color: #667eea;">
+      <div class="flex justify-between items-center">
+       <div>
+        <h2 class="text-2xl font-bold text-white">Checkout - DEMO</h2>
+        <p class="text-white text-sm mt-1">⚠️ Esta es una demostración. No se procesarán pagos reales.</p>
+       </div><button id="close-checkout" class="text-white text-3xl hover:opacity-80">×</button>
+      </div>
+     </div>
+     <div class="p-6">
+      <form id="checkout-form"><!-- Shipping Information -->
+       <div class="mb-6">
+        <h3 class="text-xl font-bold mb-4" style="color: #667eea;">Información de Envío</h3>
+        <div class="space-y-4">
+         <div><label for="full-name" class="block text-sm font-semibold text-gray-700 mb-1">Nombre Completo</label> <input type="text" id="full-name" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:border-[#667eea]" style="border-color: #e5e7eb;" required>
+         </div>
+         <div><label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email</label> <input type="email" id="email" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" required>
+         </div>
+         <div><label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label> <input type="text" id="address" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" required>
+         </div>
+         <div class="grid grid-cols-2 gap-4">
+          <div><label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Ciudad</label> <input type="text" id="city" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" required>
+          </div>
+          <div><label for="postal-code" class="block text-sm font-semibold text-gray-700 mb-1">Código Postal</label> <input type="text" id="postal-code" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" required>
+          </div>
+         </div>
+        </div>
+       </div><!-- Payment Information (DEMO) -->
+       <div class="mb-6">
+        <h3 class="text-xl font-bold mb-4" style="color: #667eea;">Información de Pago (DEMO)</h3>
+        <div class="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-4 mb-4">
+         <p class="text-yellow-800 text-sm font-semibold">⚠️ Este es un formulario de demostración. No introduzcas datos reales de tarjetas.</p>
+        </div>
+        <div class="space-y-4">
+         <div><label for="card-number" class="block text-sm font-semibold text-gray-700 mb-1">Número de Tarjeta (Demo)</label> <input type="text" id="card-number" placeholder="1234 5678 9012 3456" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" maxlength="19">
+         </div>
+         <div class="grid grid-cols-2 gap-4">
+          <div><label for="expiry" class="block text-sm font-semibold text-gray-700 mb-1">Fecha de Expiración</label> <input type="text" id="expiry" placeholder="MM/AA" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" maxlength="5">
+          </div>
+          <div><label for="cvv" class="block text-sm font-semibold text-gray-700 mb-1">CVV</label> <input type="text" id="cvv" placeholder="123" class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none" style="border-color: #e5e7eb;" maxlength="3">
+          </div>
+         </div>
+        </div>
+       </div><!-- Order Summary -->
+       <div class="mb-6 bg-gray-50 rounded-lg p-4">
+        <h3 class="text-lg font-bold mb-3" style="color: #667eea;">Resumen del Pedido</h3>
+        <div id="checkout-summary" class="space-y-2 text-sm"><!-- Summary items will be inserted here -->
+        </div>
+        <div class="border-t mt-3 pt-3 flex justify-between text-xl font-bold"><span>Total:</span> <span id="checkout-total" style="color: #667eea;">$0.00</span>
+        </div>
+       </div><button type="submit" class="w-full text-white py-4 rounded-lg font-bold text-lg hover:opacity-90 transition-opacity" style="background-color: #667eea;"> Completar Compra (DEMO) </button>
+      </form>
+     </div>
+    </div>
+   </div><!-- Success Message -->
+   <div id="success-message" class="fixed top-24 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+    <p class="font-semibold">✓ ¡Pedido completado con éxito! (DEMO)</p>
+   </div><!-- Product Detail Modal -->
+   <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-75 checkout-overlay items-center justify-center z-50" style="display: none;">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-auto">
+     <div class="relative"><button id="close-product-modal" class="absolute top-4 right-4 text-white bg-black bg-opacity-50 hover:bg-opacity-70 w-10 h-10 rounded-full text-2xl z-10">×</button> <!-- Image Gallery -->
+      <div class="relative">
+       <div id="product-image-display" class="text-center py-32 text-9xl" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        🧢
+       </div><!-- Navigation Arrows --> <button id="prev-image" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 w-12 h-12 rounded-full shadow-lg font-bold text-2xl">‹</button> <button id="next-image" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 w-12 h-12 rounded-full shadow-lg font-bold text-2xl">›</button> <!-- Image Counter -->
+       <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-60 text-white px-4 py-2 rounded-full text-sm font-semibold"><span id="current-image-index">1</span> / <span id="total-images">3</span>
+       </div>
+      </div><!-- Product Details -->
+      <div class="p-8">
+       <h2 id="modal-product-name" class="text-3xl font-bold mb-3" style="color: #667eea;">Producto</h2>
+       <p id="modal-product-description" class="text-gray-600 text-lg mb-6">Descripción del producto</p><!-- Image Thumbnails -->
+       <div class="mb-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-3">Vistas del producto:</h3>
+        <div id="image-thumbnails" class="flex gap-3 overflow-x-auto pb-2"><!-- Thumbnails will be inserted here -->
+        </div>
+       </div>
+       <div class="flex items-center justify-between"><span id="modal-product-price" class="text-4xl font-bold" style="color: #667eea;">$0.00</span> <button id="modal-add-to-cart" class="text-white px-8 py-3 rounded-lg font-bold text-lg hover:opacity-90 transition-opacity" style="background-color: #667eea;"> Añadir al Carrito </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      store_name: "Gorras Originales",
+      welcome_message: "Descubre nuestra colección exclusiva",
+      primary_color: "#00d9ff",
+      secondary_color: "#ff00ea",
+      background_color: "#ffffff",
+      text_color: "#1a1a1a",
+      accent_color: "#ffeb00"
+    };
+
+    const products = [
+      {
+        id: 1,
+        name: "Gorra Snapback Clásica",
+        price: 29.99,
+        image: "🧢",
+        images: ["🧢", "🎯", "⭐"],
+        description: "Estilo urbano con ajuste perfecto"
+      },
+      {
+        id: 2,
+        name: "Gorra Trucker Vintage",
+        price: 24.99,
+        image: "🎩",
+        images: ["🎩", "🎪", "🎭"],
+        description: "Diseño retro con malla transpirable"
+      },
+      {
+        id: 3,
+        name: "Gorra Dad Hat Soft",
+        price: 19.99,
+        image: "👒",
+        images: ["👒", "🌸", "🌺"],
+        description: "Comodidad casual todo el día"
+      },
+      {
+        id: 4,
+        name: "Gorra Deportiva Pro",
+        price: 34.99,
+        image: "⛑️",
+        images: ["⛑️", "⚡", "🏆"],
+        description: "Perfecta para entrenamientos"
+      },
+      {
+        id: 5,
+        name: "Gorra Bucket Street",
+        price: 27.99,
+        image: "🎓",
+        images: ["🎓", "🎨", "🎸"],
+        description: "Tendencia urbana moderna"
+      },
+      {
+        id: 6,
+        name: "Gorra Flat Brim Edition",
+        price: 32.99,
+        image: "🧢",
+        images: ["🧢", "💎", "🔥"],
+        description: "Visera plana, estilo definido"
+      }
+    ];
+
+    let cart = [];
+    let currentProduct = null;
+    let currentImageIndex = 0;
+
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      const config = window.elementSdk?.config || defaultConfig;
+      
+      grid.innerHTML = products.map(product => `
+        <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer" onclick="openProductModal(${product.id})">
+          <div class="text-center py-12 text-8xl" style="background: linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color} 0%, ${config.secondary_color || defaultConfig.secondary_color} 100%);">
+            ${product.image}
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2" style="color: ${config.text_color || defaultConfig.text_color};">${product.name}</h3>
+            <p class="text-gray-600 text-sm mb-4">${product.description}</p>
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold" style="color: ${config.primary_color || defaultConfig.primary_color};">$${product.price.toFixed(2)}</span>
+              <button onclick="event.stopPropagation(); addToCart(${product.id})" class="text-white px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity" style="background-color: ${config.primary_color || defaultConfig.primary_color};">
+                Añadir
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      
+      updateCart();
+      
+      const badge = document.getElementById('cart-count');
+      badge.classList.remove('cart-badge');
+      void badge.offsetWidth;
+      badge.classList.add('cart-badge');
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const cartTotal = document.getElementById('cart-total');
+      const checkoutButton = document.getElementById('checkout-button');
+      const config = window.elementSdk?.config || defaultConfig;
+      
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      cartCount.textContent = totalItems;
+      cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+      cartTotal.textContent = `$${total.toFixed(2)}`;
+      
+      checkoutButton.disabled = cart.length === 0;
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Tu carrito está vacío</p>';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="flex items-center gap-4 mb-4 pb-4 border-b">
+            <div class="text-4xl">${item.image}</div>
+            <div class="flex-1">
+              <h4 class="font-semibold" style="color: ${config.text_color || defaultConfig.text_color};">${item.name}</h4>
+              <p class="text-sm text-gray-600">$${item.price.toFixed(2)}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 rounded-full font-bold" style="background-color: ${config.background_color || defaultConfig.background_color}; color: ${config.primary_color || defaultConfig.primary_color}; border: 2px solid ${config.primary_color || defaultConfig.primary_color};">-</button>
+              <span class="w-8 text-center font-semibold">${item.quantity}</span>
+              <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 rounded-full text-white font-bold" style="background-color: ${config.primary_color || defaultConfig.primary_color};">+</button>
+            </div>
+            <button onclick="removeFromCart(${item.id})" class="text-2xl hover:opacity-70" style="color: ${config.accent_color || defaultConfig.accent_color};">×</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function updateQuantity(productId, change) {
+      const item = cart.find(i => i.id === productId);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+          removeFromCart(productId);
+        } else {
+          updateCart();
+        }
+      }
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCart();
+    }
+
+    function openCheckout() {
+      const modal = document.getElementById('checkout-modal');
+      const summary = document.getElementById('checkout-summary');
+      const checkoutTotal = document.getElementById('checkout-total');
+      
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      summary.innerHTML = cart.map(item => `
+        <div class="flex justify-between">
+          <span>${item.name} x${item.quantity}</span>
+          <span class="font-semibold">$${(item.price * item.quantity).toFixed(2)}</span>
+        </div>
+      `).join('');
+      
+      checkoutTotal.textContent = `$${total.toFixed(2)}`;
+      modal.style.display = 'flex';
+    }
+
+    function openProductModal(productId) {
+      currentProduct = products.find(p => p.id === productId);
+      if (!currentProduct) return;
+      
+      currentImageIndex = 0;
+      updateProductModal();
+      
+      document.getElementById('product-modal').style.display = 'flex';
+    }
+
+    function updateProductModal() {
+      if (!currentProduct) return;
+      
+      const config = window.elementSdk?.config || defaultConfig;
+      
+      document.getElementById('modal-product-name').textContent = currentProduct.name;
+      document.getElementById('modal-product-name').style.color = config.primary_color || defaultConfig.primary_color;
+      
+      document.getElementById('modal-product-description').textContent = currentProduct.description;
+      document.getElementById('modal-product-price').textContent = `$${currentProduct.price.toFixed(2)}`;
+      document.getElementById('modal-product-price').style.color = config.primary_color || defaultConfig.primary_color;
+      
+      // Update main image
+      const imageDisplay = document.getElementById('product-image-display');
+      imageDisplay.textContent = currentProduct.images[currentImageIndex];
+      imageDisplay.style.background = `linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color} 0%, ${config.secondary_color || defaultConfig.secondary_color} 100%)`;
+      
+      // Update counter
+      document.getElementById('current-image-index').textContent = currentImageIndex + 1;
+      document.getElementById('total-images').textContent = currentProduct.images.length;
+      
+      // Update thumbnails
+      const thumbnailsContainer = document.getElementById('image-thumbnails');
+      thumbnailsContainer.innerHTML = currentProduct.images.map((img, idx) => `
+        <button 
+          onclick="changeImage(${idx})" 
+          class="flex-shrink-0 w-20 h-20 text-4xl rounded-lg border-4 transition-all ${idx === currentImageIndex ? 'border-opacity-100' : 'border-opacity-30 hover:border-opacity-60'}"
+          style="background: linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color} 0%, ${config.secondary_color || defaultConfig.secondary_color} 100%); border-color: ${config.primary_color || defaultConfig.primary_color};"
+        >
+          ${img}
+        </button>
+      `).join('');
+      
+      // Update add to cart button
+      const addButton = document.getElementById('modal-add-to-cart');
+      addButton.style.backgroundColor = config.primary_color || defaultConfig.primary_color;
+      addButton.onclick = () => {
+        addToCart(currentProduct.id);
+        document.getElementById('product-modal').style.display = 'none';
+      };
+    }
+
+    function changeImage(index) {
+      if (!currentProduct) return;
+      currentImageIndex = index;
+      updateProductModal();
+    }
+
+    function nextImage() {
+      if (!currentProduct) return;
+      currentImageIndex = (currentImageIndex + 1) % currentProduct.images.length;
+      updateProductModal();
+    }
+
+    function prevImage() {
+      if (!currentProduct) return;
+      currentImageIndex = (currentImageIndex - 1 + currentProduct.images.length) % currentProduct.images.length;
+      updateProductModal();
+    }
+
+    // Event Listeners
+    document.getElementById('cart-button').addEventListener('click', () => {
+      document.getElementById('cart-sidebar').style.transform = 'translateX(0)';
+    });
+
+    document.getElementById('close-cart').addEventListener('click', () => {
+      document.getElementById('cart-sidebar').style.transform = 'translateX(100%)';
+    });
+
+    document.getElementById('checkout-button').addEventListener('click', openCheckout);
+
+    document.getElementById('close-checkout').addEventListener('click', () => {
+      document.getElementById('checkout-modal').style.display = 'none';
+    });
+
+    document.getElementById('checkout-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      document.getElementById('checkout-modal').style.display = 'none';
+      
+      const successMsg = document.getElementById('success-message');
+      successMsg.style.transform = 'translateX(0)';
+      
+      setTimeout(() => {
+        successMsg.style.transform = 'translateX(150%)';
+      }, 3000);
+      
+      cart = [];
+      updateCart();
+      document.getElementById('cart-sidebar').style.transform = 'translateX(100%)';
+    });
+
+    // Product Modal Event Listeners
+    document.getElementById('close-product-modal').addEventListener('click', () => {
+      document.getElementById('product-modal').style.display = 'none';
+    });
+
+    document.getElementById('prev-image').addEventListener('click', () => {
+      prevImage();
+    });
+
+    document.getElementById('next-image').addEventListener('click', () => {
+      nextImage();
+    });
+
+    // Format card number input
+    document.getElementById('card-number').addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\s/g, '');
+      let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+      e.target.value = formattedValue;
+    });
+
+    // Format expiry input
+    document.getElementById('expiry').addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+      }
+      e.target.value = value;
+    });
+
+    // Element SDK Implementation
+    async function onConfigChange(config) {
+      const storeNameEl = document.getElementById('store-name');
+      const welcomeMessageEl = document.getElementById('welcome-message');
+      const appEl = document.getElementById('app');
+      
+      storeNameEl.textContent = config.store_name || defaultConfig.store_name;
+      storeNameEl.style.color = config.primary_color || defaultConfig.primary_color;
+      
+      welcomeMessageEl.textContent = config.welcome_message || defaultConfig.welcome_message;
+      
+      appEl.style.background = `linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color} 0%, ${config.secondary_color || defaultConfig.secondary_color} 100%)`;
+      
+      renderProducts();
+      updateCart();
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["store_name", config.store_name || defaultConfig.store_name],
+          ["welcome_message", config.welcome_message || defaultConfig.welcome_message]
+        ])
+      });
+    }
+
+    // Initialize
+    renderProducts();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b261cfff643f7a4',t:'MTc2NjQ3NDYwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

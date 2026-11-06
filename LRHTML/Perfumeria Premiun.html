@@ -1,0 +1,1373 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Perfumería Premium - Fragancias originales con envío a todo Colombia. Ubicados en Medellín.">
+  <title>Perfumería Premium</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+body { box-sizing: border-box; }
+:root {
+  --gold: #C5A258;
+  --gold-light: #D4B76A;
+  --dark: #0A0A0A;
+  --dark-card: #141414;
+  --text-light: #E8E8E8;
+  --text-muted: #999999;
+  --surface: #1A1A1A;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--dark);
+  color: var(--text-light);
+  overflow-x: hidden;
+}
+.font-display { font-family: 'Cormorant Garamond', serif; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(197,162,88,0.4); }
+  50% { box-shadow: 0 0 20px 5px rgba(197,162,88,0.1); }
+}
+
+.anim-fade-up { animation: fadeUp 0.8s ease forwards; }
+.anim-fade-in { animation: fadeIn 0.6s ease forwards; }
+.anim-slide-down { animation: slideDown 0.5s ease forwards; }
+.anim-scale-in { animation: scaleIn 0.4s ease forwards; }
+.anim-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.anim-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.anim-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.anim-delay-4 { animation-delay: 0.4s; opacity: 0; }
+.anim-delay-5 { animation-delay: 0.5s; opacity: 0; }
+.anim-delay-6 { animation-delay: 0.6s; opacity: 0; }
+
+.gold-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gold-shimmer {
+  background: linear-gradient(90deg, var(--gold) 0%, #E8D5A0 25%, var(--gold) 50%, #E8D5A0 75%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--dark);
+  font-weight: 600;
+  padding: 12px 32px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(197,162,88,0.3);
+}
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+.btn-gold:hover::after { left: 100%; }
+
+.btn-outline {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  padding: 10px 28px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+}
+.btn-outline:hover {
+  background: var(--gold);
+  color: var(--dark);
+}
+
+.card-product {
+  background: var(--dark-card);
+  border: 1px solid #222;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+.card-product:hover {
+  border-color: var(--gold);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.nav-link {
+  position: relative;
+  color: var(--text-muted);
+  transition: color 0.3s;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.nav-link:hover, .nav-link.active { color: var(--gold); }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.hero-bg {
+  background: radial-gradient(ellipse at 30% 50%, rgba(197,162,88,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 20%, rgba(197,162,88,0.05) 0%, transparent 50%),
+              var(--dark);
+}
+
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+
+.input-field {
+  background: var(--surface);
+  border: 1px solid #333;
+  color: var(--text-light);
+  padding: 12px 16px;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  transition: border-color 0.3s;
+  outline: none;
+}
+.input-field:focus { border-color: var(--gold); }
+.input-field::placeholder { color: var(--text-muted); }
+
+.toast-notification {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--dark-card);
+  border: 1px solid var(--gold);
+  color: var(--text-light);
+  padding: 16px 24px;
+  z-index: 9999;
+  animation: slideDown 0.4s ease;
+  display: none;
+  max-width: 350px;
+}
+.toast-notification.show { display: flex; }
+
+.badge-count {
+  position: absolute;
+  top: -8px; right: -8px;
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 100;
+  backdrop-filter: blur(5px);
+  display: none;
+}
+.overlay-backdrop.show { display: block; }
+
+.modal-panel {
+  position: fixed;
+  top: 0; right: -450px;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: var(--dark-card);
+  border-left: 1px solid #222;
+  z-index: 101;
+  transition: right 0.4s ease;
+  overflow-y: auto;
+}
+.modal-panel.show { right: 0; }
+
+.promo-bar {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  color: var(--dark);
+  text-align: center;
+  padding: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.star { color: var(--gold); }
+.star-empty { color: #444; }
+
+.quantity-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid #333;
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+.quantity-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.filter-chip {
+  padding: 6px 16px;
+  border: 1px solid #333;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.filter-chip:hover, .filter-chip.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(197,162,88,0.08);
+}
+
+.perfume-svg {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Page sections */
+.page-section { display: none; }
+.page-section.active-section { display: block; }
+
+@media (max-width: 768px) {
+  .modal-panel { max-width: 100%; }
+}
+</style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full" style="min-height:100%; display:flex; flex-direction:column;"><!-- Promo Bar -->
+   <div class="promo-bar" id="promo-bar">
+    🎁 ENVÍO GRATIS en compras superiores a $250.000 COP — Código: <strong>PREMIUM25</strong> para 25% OFF
+   </div><!-- Navigation -->
+   <header id="main-nav" style="position:sticky;top:0;z-index:50;background:rgba(10,10,10,0.95);backdrop-filter:blur(12px);border-bottom:1px solid #1a1a1a;">
+    <nav class="w-full" style="max-width:1200px;margin:0 auto;padding:16px 24px;">
+     <div style="display:flex;align-items:center;justify-content:space-between;"><!-- Logo -->
+      <div style="cursor:pointer;" onclick="navigateTo('home')"><span class="font-display gold-shimmer" style="font-size:1.4rem;font-weight:600;letter-spacing:2px;" id="nav-brand">Perfumería Premium</span>
+      </div><!-- Desktop Nav -->
+      <div class="hidden md:flex" style="gap:32px;align-items:center;"><span class="nav-link active" data-nav="home" onclick="navigateTo('home')">Inicio</span> <span class="nav-link" data-nav="shop" onclick="navigateTo('shop')">Tienda</span> <span class="nav-link" data-nav="about" onclick="navigateTo('about')">Nosotros</span> <span class="nav-link" data-nav="contact" onclick="navigateTo('contact')">Contacto</span>
+      </div><!-- Icons -->
+      <div style="display:flex;gap:20px;align-items:center;"><button onclick="openSearch()" aria-label="Buscar" style="background:none;border:none;cursor:pointer;color:var(--text-muted);transition:color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+         <circle cx="11" cy="11" r="7" /><path d="m21 21-4.35-4.35" />
+        </svg></button> <button onclick="openCart()" aria-label="Carrito de compras" style="background:none;border:none;cursor:pointer;color:var(--text-muted);transition:color 0.3s;position:relative;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+         <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
+        </svg><span class="badge-count" id="cart-badge" style="display:none;">0</span> </button> <!-- Mobile menu --> <button class="md:hidden" onclick="toggleMobileMenu()" aria-label="Menú" style="background:none;border:none;cursor:pointer;color:var(--text-muted);">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+         <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg></button>
+      </div>
+     </div><!-- Mobile Menu -->
+     <div id="mobile-menu" style="display:none;padding-top:20px;border-top:1px solid #222;margin-top:16px;">
+      <div style="display:flex;flex-direction:column;gap:16px;"><span class="nav-link active" data-nav="home" onclick="navigateTo('home');toggleMobileMenu()">Inicio</span> <span class="nav-link" data-nav="shop" onclick="navigateTo('shop');toggleMobileMenu()">Tienda</span> <span class="nav-link" data-nav="about" onclick="navigateTo('about');toggleMobileMenu()">Nosotros</span> <span class="nav-link" data-nav="contact" onclick="navigateTo('contact');toggleMobileMenu()">Contacto</span>
+      </div>
+     </div>
+    </nav>
+   </header><!-- Search Overlay -->
+   <div id="search-overlay" class="overlay-backdrop" onclick="closeSearch()">
+    <div style="max-width:600px;margin:120px auto 0;padding:0 24px;" onclick="event.stopPropagation()">
+     <div style="position:relative;" class="anim-scale-in"><label for="search-input" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Buscar perfumes</label> <input type="text" id="search-input" class="input-field" placeholder="Buscar perfumes, marcas..." style="font-size:1.1rem;padding:20px 60px 20px 24px;border-color:var(--gold);" oninput="handleSearch(this.value)"> <button onclick="closeSearch()" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;" aria-label="Cerrar búsqueda">
+       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12" />
+       </svg></button>
+     </div>
+     <div id="search-results" style="margin-top:12px;"></div>
+    </div>
+   </div><!-- Cart Sidebar -->
+   <div id="cart-backdrop" class="overlay-backdrop" onclick="closeCart()"></div>
+   <aside id="cart-panel" class="modal-panel" aria-label="Carrito de compras">
+    <div style="padding:24px;">
+     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h2 class="font-display" style="font-size:1.5rem;color:var(--gold);">Tu Carrito</h2><button onclick="closeCart()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);" aria-label="Cerrar carrito">
+       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12" />
+       </svg></button>
+     </div>
+     <div id="cart-items"></div>
+     <div id="cart-summary" style="display:none;border-top:1px solid #333;padding-top:20px;margin-top:20px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:var(--text-muted);font-size:0.85rem;">Subtotal</span> <span id="cart-subtotal" style="font-size:0.85rem;">$0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:var(--text-muted);font-size:0.85rem;">Envío</span> <span id="cart-shipping" style="font-size:0.85rem;color:var(--gold);">Gratis</span>
+      </div>
+      <div id="discount-row" style="display:none;justify-content:space-between;margin-bottom:8px;"><span style="color:var(--gold);font-size:0.85rem;">Descuento (25%)</span> <span id="cart-discount" style="font-size:0.85rem;color:var(--gold);">-$0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #333;"><span style="font-weight:600;font-size:1rem;">Total</span> <span id="cart-total" style="font-weight:700;font-size:1.1rem;color:var(--gold);">$0</span>
+      </div><!-- Discount code -->
+      <div style="margin-top:16px;"><label for="discount-code-input" style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px;">Código de descuento</label>
+       <div style="display:flex;gap:8px;"><input type="text" id="discount-code-input" class="input-field" placeholder="PREMIUM25" style="flex:1;padding:8px 12px;font-size:0.8rem;"> <button onclick="applyDiscount()" class="btn-outline" style="padding:8px 16px;font-size:0.7rem;white-space:nowrap;">Aplicar</button>
+       </div>
+       <p id="discount-msg" style="font-size:0.7rem;margin-top:4px;display:none;"></p>
+      </div><button onclick="proceedToCheckout()" class="btn-gold" style="width:100%;margin-top:16px;padding:14px;text-align:center;">Proceder al Pago</button>
+     </div>
+     <div id="cart-empty" style="text-align:center;padding:60px 0;">
+      <svg width="64" height="64" fill="none" stroke="#333" stroke-width="1" viewbox="0 0 24 24" style="margin:0 auto 16px;">
+       <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
+      </svg>
+      <p style="color:var(--text-muted);font-size:0.9rem;">Tu carrito está vacío</p><button onclick="navigateTo('shop');closeCart();" class="btn-outline" style="margin-top:16px;font-size:0.7rem;">Explorar Tienda</button>
+     </div>
+    </div>
+   </aside><!-- ==================== HOME PAGE ==================== -->
+   <main id="page-home" class="page-section active-section" style="flex:1;"><!-- Hero Section -->
+    <section class="hero-bg" style="padding:80px 24px 100px;position:relative;overflow:hidden;">
+     <div style="position:absolute;top:20%;right:5%;opacity:0.06;">
+      <svg class="perfume-svg" width="300" height="400" viewbox="0 0 120 180" fill="var(--gold)"><rect x="45" y="10" width="30" height="12" rx="2" /> <rect x="55" y="0" width="10" height="14" rx="2" /> <rect x="35" y="22" width="50" height="130" rx="8" /> <rect x="40" y="30" width="40" height="50" rx="4" fill="rgba(255,255,255,0.1)" />
+      </svg>
+     </div>
+     <div style="max-width:800px;margin:0 auto;text-align:center;position:relative;z-index:1;">
+      <p class="anim-fade-up anim-delay-1" style="color:var(--gold);font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:24px;">Medellín, Colombia — Envíos Nacionales</p>
+      <h1 id="hero-tagline" class="font-display anim-fade-up anim-delay-2" style="font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;line-height:1.1;margin-bottom:24px;">Fragancias que definen <span class="gold-shimmer">tu esencia</span></h1>
+      <p id="hero-subtitle" class="anim-fade-up anim-delay-3" style="color:var(--text-muted);font-size:clamp(0.9rem,2vw,1.1rem);max-width:500px;margin:0 auto 40px;line-height:1.7;">Perfumes 100% originales con envío a todo Colombia. Descubre la fragancia perfecta para cada momento.</p>
+      <div class="anim-fade-up anim-delay-4" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><button onclick="navigateTo('shop')" class="btn-gold">Comprar Ahora</button> <button onclick="navigateTo('about')" class="btn-outline">Nuestra Historia</button>
+      </div>
+     </div>
+    </section><!-- Featured Products -->
+    <section style="padding:80px 24px;background:var(--dark);">
+     <div style="max-width:1100px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:50px;">
+       <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Colección Exclusiva</p>
+       <h2 class="font-display" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;">Productos Destacados</h2>
+       <div class="section-divider" style="margin-top:20px;"></div>
+      </div>
+      <div id="featured-products" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;"></div>
+     </div>
+    </section><!-- Benefits -->
+    <section style="padding:80px 24px;background:var(--surface);border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;">
+     <div style="max-width:1000px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px;text-align:center;">
+       <div class="anim-fade-up anim-delay-1">
+        <div style="font-size:2.2rem;margin-bottom:12px;">
+         🚚
+        </div>
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:8px;">Envíos Nacionales</h3>
+        <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.6;">Entregamos en todo Colombia. Envío gratis en compras superiores a $250.000 COP.</p>
+       </div>
+       <div class="anim-fade-up anim-delay-2">
+        <div style="font-size:2.2rem;margin-bottom:12px;">
+         ✨
+        </div>
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:8px;">100% Originales</h3>
+        <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.6;">Garantía de autenticidad en cada fragancia. Trabajamos directamente con distribuidores autorizados.</p>
+       </div>
+       <div class="anim-fade-up anim-delay-3">
+        <div style="font-size:2.2rem;margin-bottom:12px;">
+         🔒
+        </div>
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:8px;">Pagos Seguros</h3>
+        <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.6;">Múltiples métodos de pago con tecnología de encriptación SSL para tu seguridad.</p>
+       </div>
+      </div>
+     </div>
+    </section><!-- Promotional Banner -->
+    <section style="padding:60px 24px;background:linear-gradient(135deg, rgba(197,162,88,0.12) 0%, var(--dark) 50%, rgba(197,162,88,0.08) 100%);">
+     <div style="max-width:700px;margin:0 auto;text-align:center;">
+      <p style="font-size:0.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">Oferta Especial</p>
+      <h2 class="font-display" style="font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:300;margin-bottom:16px;">25% de Descuento en tu Primera Compra</h2>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:24px;">Usa el código <strong style="color:var(--gold);">PREMIUM25</strong> al finalizar tu compra</p><button onclick="navigateTo('shop')" class="btn-gold">Ver Colección</button>
+     </div>
+    </section><!-- Testimonials -->
+    <section style="padding:80px 24px;background:var(--dark);">
+     <div style="max-width:1000px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:50px;">
+       <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Testimonios</p>
+       <h2 class="font-display" style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:300;">Lo Que Dicen Nuestros Clientes</h2>
+       <div class="section-divider" style="margin-top:20px;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+       <div style="background:var(--dark-card);border:1px solid #222;padding:28px;">
+        <div style="margin-bottom:12px;">
+         ★★★★★
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-style:italic;margin-bottom:16px;">"Excelente servicio y perfumes 100% originales. El envío a Bogotá fue super rápido."</p>
+        <p style="color:var(--gold);font-size:0.8rem;font-weight:500;">— María García, Bogotá</p>
+       </div>
+       <div style="background:var(--dark-card);border:1px solid #222;padding:28px;">
+        <div style="margin-bottom:12px;">
+         ★★★★★
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-style:italic;margin-bottom:16px;">"Encontré mi fragancia favorita a un precio increíble. ¡Totalmente recomendados!"</p>
+        <p style="color:var(--gold);font-size:0.8rem;font-weight:500;">— Carlos Rodríguez, Cali</p>
+       </div>
+       <div style="background:var(--dark-card);border:1px solid #222;padding:28px;">
+        <div style="margin-bottom:12px;">
+         ★★★★★
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-style:italic;margin-bottom:16px;">"La atención por WhatsApp es impecable. Me ayudaron a elegir el perfume perfecto."</p>
+        <p style="color:var(--gold);font-size:0.8rem;font-weight:500;">— Laura Martínez, Medellín</p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main><!-- ==================== SHOP PAGE ==================== -->
+   <section id="page-shop" class="page-section" style="flex:1;">
+    <div style="padding:40px 24px 80px;max-width:1200px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:40px;">
+      <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Nuestra Colección</p>
+      <h1 class="font-display" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;">Tienda de Perfumes</h1>
+      <div class="section-divider" style="margin-top:20px;"></div>
+     </div><!-- Filters -->
+     <div style="margin-bottom:32px;">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;"><span style="color:var(--text-muted);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;padding:8px 0;width:100%;text-align:center;">Género</span> <button class="filter-chip active" data-filter="gender" data-value="all" onclick="setFilter('gender','all',this)">Todos</button> <button class="filter-chip" data-filter="gender" data-value="mujer" onclick="setFilter('gender','mujer',this)">Mujer</button> <button class="filter-chip" data-filter="gender" data-value="hombre" onclick="setFilter('gender','hombre',this)">Hombre</button> <button class="filter-chip" data-filter="gender" data-value="unisex" onclick="setFilter('gender','unisex',this)">Unisex</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;"><span style="color:var(--text-muted);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;padding:8px 0;width:100%;text-align:center;">Marca</span> <button class="filter-chip active" data-filter="brand" data-value="all" onclick="setFilter('brand','all',this)">Todas</button> <button class="filter-chip" data-filter="brand" data-value="chanel" onclick="setFilter('brand','chanel',this)">Chanel</button> <button class="filter-chip" data-filter="brand" data-value="dior" onclick="setFilter('brand','dior',this)">Dior</button> <button class="filter-chip" data-filter="brand" data-value="tom_ford" onclick="setFilter('brand','tom_ford',this)">Tom Ford</button> <button class="filter-chip" data-filter="brand" data-value="ysl" onclick="setFilter('brand','ysl',this)">YSL</button> <button class="filter-chip" data-filter="brand" data-value="versace" onclick="setFilter('brand','versace',this)">Versace</button> <button class="filter-chip" data-filter="brand" data-value="carolina_herrera" onclick="setFilter('brand','carolina_herrera',this)">Carolina Herrera</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;"><span style="color:var(--text-muted);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;padding:8px 0;width:100%;text-align:center;">Precio</span> <button class="filter-chip active" data-filter="price" data-value="all" onclick="setFilter('price','all',this)">Todos</button> <button class="filter-chip" data-filter="price" data-value="low" onclick="setFilter('price','low',this)">Hasta $300K</button> <button class="filter-chip" data-filter="price" data-value="mid" onclick="setFilter('price','mid',this)">$300K - $600K</button> <button class="filter-chip" data-filter="price" data-value="high" onclick="setFilter('price','high',this)">+$600K</button>
+      </div>
+     </div>
+     <p id="results-count" style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-bottom:24px;"></p>
+     <div id="shop-products" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;"></div>
+    </div>
+   </section><!-- ==================== PRODUCT DETAIL PAGE ==================== -->
+   <section id="page-product" class="page-section" style="flex:1;">
+    <div style="padding:40px 24px 80px;max-width:1000px;margin:0 auto;"><button onclick="navigateTo('shop')" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:0.8rem;margin-bottom:24px;display:flex;align-items:center;gap:6px;">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+       <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg> Volver a la tienda </button>
+     <div id="product-detail-content"></div>
+    </div>
+   </section><!-- ==================== ABOUT PAGE ==================== -->
+   <section id="page-about" class="page-section" style="flex:1;">
+    <div style="padding:60px 24px 80px;max-width:900px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:50px;">
+      <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Conócenos</p>
+      <h1 id="about-title" class="font-display" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;">Nuestra Historia</h1>
+      <div class="section-divider" style="margin-top:20px;"></div>
+     </div>
+     <div style="display:grid;grid-template-columns:1fr;gap:40px;">
+      <div style="background:var(--dark-card);border:1px solid #222;padding:40px;">
+       <p id="about-text" style="color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:20px;">Desde 2015, Perfumería Premium ha sido el destino preferido de los amantes de las fragancias en Medellín y toda Colombia. Nacimos con la misión de acercar las mejores marcas internacionales de perfumería a nuestros clientes, garantizando siempre autenticidad y calidad excepcional.</p>
+       <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:20px;">Trabajamos directamente con distribuidores autorizados de marcas como Chanel, Dior, Tom Ford, YSL, Versace y Carolina Herrera, asegurando que cada fragancia que llega a tus manos sea 100% original.</p>
+       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin-top:32px;">
+        <div style="text-align:center;padding:20px;border:1px solid #222;">
+         <p class="font-display gold-gradient" style="font-size:2rem;font-weight:600;">+8</p>
+         <p style="color:var(--text-muted);font-size:0.8rem;">Años de experiencia</p>
+        </div>
+        <div style="text-align:center;padding:20px;border:1px solid #222;">
+         <p class="font-display gold-gradient" style="font-size:2rem;font-weight:600;">+5K</p>
+         <p style="color:var(--text-muted);font-size:0.8rem;">Clientes satisfechos</p>
+        </div>
+        <div style="text-align:center;padding:20px;border:1px solid #222;">
+         <p class="font-display gold-gradient" style="font-size:2rem;font-weight:600;">100%</p>
+         <p style="color:var(--text-muted);font-size:0.8rem;">Originales garantizado</p>
+        </div>
+       </div>
+      </div><!-- Mission & Vision -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;">
+       <div style="background:var(--dark-card);border:1px solid #222;padding:32px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1.3rem;margin-bottom:12px;">Misión</h3>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Ofrecer a nuestros clientes las mejores fragancias del mundo con autenticidad garantizada, precios justos y un servicio excepcional que llegue a cada rincón de Colombia.</p>
+       </div>
+       <div style="background:var(--dark-card);border:1px solid #222;padding:32px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1.3rem;margin-bottom:12px;">Visión</h3>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Ser la perfumería online líder en Colombia, reconocida por la calidad, confianza y la experiencia única que brindamos a cada persona que busca su fragancia ideal.</p>
+       </div>
+      </div><!-- Location -->
+      <div style="background:var(--dark-card);border:1px solid #222;padding:32px;">
+       <h3 class="font-display" style="color:var(--gold);font-size:1.3rem;margin-bottom:16px;">📍 Nuestra Ubicación</h3>
+       <p id="about-address" style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Calle 10 #43-12, El Poblado, Medellín, Antioquia, Colombia</p>
+       <div style="background:#222;height:250px;display:flex;align-items:center;justify-content:center;border:1px solid #333;">
+        <div style="text-align:center;">
+         <svg width="48" height="48" fill="none" stroke="var(--gold)" stroke-width="1" viewbox="0 0 24 24">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
+         </svg>
+         <p style="color:var(--text-muted);font-size:0.8rem;margin-top:8px;">El Poblado, Medellín</p>
+         <p style="color:var(--text-muted);font-size:0.7rem;">Demo — Mapa interactivo disponible en producción</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ==================== CONTACT PAGE ==================== -->
+   <section id="page-contact" class="page-section" style="flex:1;">
+    <div style="padding:60px 24px 80px;max-width:900px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:50px;">
+      <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Hablemos</p>
+      <h1 class="font-display" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;">Contacto</h1>
+      <div class="section-divider" style="margin-top:20px;"></div>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;"><!-- Contact Form -->
+      <div style="background:var(--dark-card);border:1px solid #222;padding:32px;">
+       <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:20px;">Envíanos un Mensaje</h3>
+       <form id="contact-form" onsubmit="handleContactForm(event)">
+        <div style="margin-bottom:16px;"><label for="contact-name" style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Nombre</label> <input type="text" id="contact-name" class="input-field" placeholder="Tu nombre completo" required>
+        </div>
+        <div style="margin-bottom:16px;"><label for="contact-email" style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Email</label> <input type="email" id="contact-email" class="input-field" placeholder="tu@email.com" required>
+        </div>
+        <div style="margin-bottom:16px;"><label for="contact-subject" style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Asunto</label> <input type="text" id="contact-subject" class="input-field" placeholder="¿En qué podemos ayudarte?">
+        </div>
+        <div style="margin-bottom:20px;"><label for="contact-message" style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Mensaje</label> <textarea id="contact-message" class="input-field" rows="5" placeholder="Escribe tu mensaje aquí..." required style="resize:vertical;"></textarea>
+        </div><button type="submit" class="btn-gold" style="width:100%;text-align:center;">Enviar Mensaje</button>
+        <p id="contact-success" style="display:none;color:var(--gold);font-size:0.85rem;text-align:center;margin-top:12px;">✓ ¡Mensaje enviado! Te contactaremos pronto.</p>
+       </form>
+      </div><!-- Contact Info -->
+      <div>
+       <div style="background:var(--dark-card);border:1px solid #222;padding:32px;margin-bottom:24px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:20px;">Información</h3>
+        <div style="display:flex;flex-direction:column;gap:20px;">
+         <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--gold);font-size:1.2rem;">📍</span>
+          <div>
+           <p style="font-size:0.85rem;margin-bottom:2px;">Dirección</p>
+           <p id="contact-address" style="color:var(--text-muted);font-size:0.8rem;">Calle 10 #43-12, El Poblado, Medellín</p>
+          </div>
+         </div>
+         <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--gold);font-size:1.2rem;">📞</span>
+          <div>
+           <p style="font-size:0.85rem;margin-bottom:2px;">WhatsApp</p>
+           <p id="contact-whatsapp" style="color:var(--text-muted);font-size:0.8rem;">+57 300 123 4567</p>
+          </div>
+         </div>
+         <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--gold);font-size:1.2rem;">✉️</span>
+          <div>
+           <p style="font-size:0.85rem;margin-bottom:2px;">Email</p>
+           <p style="color:var(--text-muted);font-size:0.8rem;">info@perfumeriapremium.co</p>
+          </div>
+         </div>
+         <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--gold);font-size:1.2rem;">🕐</span>
+          <div>
+           <p style="font-size:0.85rem;margin-bottom:2px;">Horario</p>
+           <p style="color:var(--text-muted);font-size:0.8rem;">Lun - Sáb: 9:00 AM - 7:00 PM</p>
+          </div>
+         </div>
+        </div>
+       </div><!-- WhatsApp CTA --> <a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#25D366,#128C7E);padding:16px 24px;text-decoration:none;color:#fff;font-weight:600;font-size:0.9rem;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="white">
+         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg> Escríbenos por WhatsApp </a> <!-- Social -->
+       <div style="background:var(--dark-card);border:1px solid #222;padding:24px;margin-top:24px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1rem;margin-bottom:16px;">Síguenos</h3>
+        <div style="display:flex;gap:16px;"><a href="#" target="_blank" rel="noopener noreferrer" style="width:40px;height:40px;border:1px solid #333;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='#333';this.style.color='var(--text-muted)'" aria-label="Instagram">
+          <svg width="18" height="18" fill="currentColor" viewbox="0 0 24 24">
+           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+          </svg></a> <a href="#" target="_blank" rel="noopener noreferrer" style="width:40px;height:40px;border:1px solid #333;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='#333';this.style.color='var(--text-muted)'" aria-label="Facebook">
+          <svg width="18" height="18" fill="currentColor" viewbox="0 0 24 24">
+           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg></a> <a href="#" target="_blank" rel="noopener noreferrer" style="width:40px;height:40px;border:1px solid #333;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='#333';this.style.color='var(--text-muted)'" aria-label="TikTok">
+          <svg width="18" height="18" fill="currentColor" viewbox="0 0 24 24">
+           <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+          </svg></a>
+        </div>
+       </div><!-- Shipping Info -->
+       <div style="background:var(--dark-card);border:1px solid #222;padding:24px;margin-top:24px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1rem;margin-bottom:12px;">🚚 Envíos Nacionales</h3>
+        <ul style="color:var(--text-muted);font-size:0.8rem;line-height:2;list-style:none;">
+         <li>• Medellín: 1-2 días hábiles</li>
+         <li>• Bogotá, Cali, Barranquilla: 2-3 días</li>
+         <li>• Otras ciudades: 3-5 días hábiles</li>
+         <li>• Envío gratis desde $250.000 COP</li>
+         <li>• Envío estándar: $15.000 COP</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ==================== CHECKOUT PAGE ==================== -->
+   <section id="page-checkout" class="page-section" style="flex:1;">
+    <div style="padding:40px 24px 80px;max-width:800px;margin:0 auto;"><button onclick="navigateTo('shop')" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:0.8rem;margin-bottom:24px;display:flex;align-items:center;gap:6px;">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+       <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg> Volver a la tienda </button>
+     <div style="text-align:center;margin-bottom:40px;">
+      <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Paso Final</p>
+      <h1 class="font-display" style="font-size:2rem;font-weight:300;">Finalizar Compra</h1>
+      <p style="color:var(--text-muted);font-size:0.8rem;margin-top:8px;">Demo — Pasarela de pagos simulada</p>
+     </div>
+     <div id="checkout-content">
+      <form id="checkout-form" onsubmit="handleCheckout(event)"><!-- Shipping Info -->
+       <div style="background:var(--dark-card);border:1px solid #222;padding:28px;margin-bottom:24px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:20px;">Datos de Envío</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+         <div><label for="checkout-name" style="display:block;font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Nombre completo</label> <input type="text" id="checkout-name" class="input-field" required placeholder="Juan Pérez">
+         </div>
+         <div><label for="checkout-phone" style="display:block;font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Teléfono</label> <input type="tel" id="checkout-phone" class="input-field" required placeholder="+57 300 000 0000">
+         </div>
+         <div style="grid-column:1/-1;"><label for="checkout-address-input" style="display:block;font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Dirección</label> <input type="text" id="checkout-address-input" class="input-field" required placeholder="Calle/Carrera, número, barrio">
+         </div>
+         <div><label for="checkout-city" style="display:block;font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Ciudad</label> <input type="text" id="checkout-city" class="input-field" required placeholder="Medellín">
+         </div>
+         <div><label for="checkout-dept" style="display:block;font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Departamento</label> <input type="text" id="checkout-dept" class="input-field" required placeholder="Antioquia">
+         </div>
+        </div>
+       </div><!-- Payment Method -->
+       <div style="background:var(--dark-card);border:1px solid #222;padding:28px;margin-bottom:24px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:20px;">Método de Pago (Demo)</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;"><label style="border:1px solid #333;padding:16px;cursor:pointer;text-align:center;transition:all 0.3s;" class="payment-option" onclick="selectPayment(this)"> <input type="radio" name="payment" value="card" style="display:none;" checked>
+          <div style="font-size:1.5rem;margin-bottom:4px;">
+           💳
+          </div><span style="font-size:0.75rem;color:var(--text-muted);">Tarjeta</span> </label> <label style="border:1px solid #333;padding:16px;cursor:pointer;text-align:center;transition:all 0.3s;" class="payment-option" onclick="selectPayment(this)"> <input type="radio" name="payment" value="pse" style="display:none;">
+          <div style="font-size:1.5rem;margin-bottom:4px;">
+           🏦
+          </div><span style="font-size:0.75rem;color:var(--text-muted);">PSE</span> </label> <label style="border:1px solid #333;padding:16px;cursor:pointer;text-align:center;transition:all 0.3s;" class="payment-option" onclick="selectPayment(this)"> <input type="radio" name="payment" value="transfer" style="display:none;">
+          <div style="font-size:1.5rem;margin-bottom:4px;">
+           🔄
+          </div><span style="font-size:0.75rem;color:var(--text-muted);">Transferencia</span> </label> <label style="border:1px solid #333;padding:16px;cursor:pointer;text-align:center;transition:all 0.3s;" class="payment-option" onclick="selectPayment(this)"> <input type="radio" name="payment" value="mercadopago" style="display:none;">
+          <div style="font-size:1.5rem;margin-bottom:4px;">
+           🟦
+          </div><span style="font-size:0.75rem;color:var(--text-muted);">MercadoPago</span> </label>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.7rem;text-align:center;background:rgba(197,162,88,0.08);padding:8px;border:1px solid rgba(197,162,88,0.2);">🔒 Demo — En producción se integraría con MercadoPago, Stripe o PSE</p>
+       </div><!-- Order Summary -->
+       <div style="background:var(--dark-card);border:1px solid #222;padding:28px;margin-bottom:24px;">
+        <h3 class="font-display" style="color:var(--gold);font-size:1.2rem;margin-bottom:16px;">Resumen del Pedido</h3>
+        <div id="checkout-items"></div>
+        <div style="border-top:1px solid #333;padding-top:12px;margin-top:12px;">
+         <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--text-muted);font-size:0.85rem;">Subtotal</span> <span id="checkout-subtotal" style="font-size:0.85rem;"></span>
+         </div>
+         <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--text-muted);font-size:0.85rem;">Envío</span> <span id="checkout-shipping" style="font-size:0.85rem;color:var(--gold);"></span>
+         </div>
+         <div id="checkout-discount-row" style="display:none;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--gold);font-size:0.85rem;">Descuento</span> <span id="checkout-discount" style="font-size:0.85rem;color:var(--gold);"></span>
+         </div>
+         <div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #333;"><span style="font-weight:600;font-size:1.1rem;">Total</span> <span id="checkout-total" style="font-weight:700;font-size:1.2rem;color:var(--gold);"></span>
+         </div>
+        </div>
+       </div><button type="submit" class="btn-gold" style="width:100%;padding:16px;text-align:center;font-size:0.9rem;">Confirmar Pedido (Demo)</button>
+      </form>
+     </div><!-- Success state -->
+     <div id="checkout-success" style="display:none;text-align:center;padding:60px 20px;">
+      <div style="font-size:4rem;margin-bottom:20px;">
+       🎉
+      </div>
+      <h2 class="font-display" style="font-size:2rem;color:var(--gold);margin-bottom:12px;">¡Pedido Confirmado!</h2>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">Gracias por tu compra. Recibirás un correo de confirmación.</p>
+      <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:24px;">Número de orden: <strong style="color:var(--gold);" id="order-number">PP-000000</strong></p>
+      <p style="color:var(--text-muted);font-size:0.75rem;background:rgba(197,162,88,0.08);padding:12px;border:1px solid rgba(197,162,88,0.2);margin-bottom:24px;">Demo — En producción se enviaría confirmación por email y se procesaría el pago real</p><button onclick="navigateTo('shop')" class="btn-gold">Seguir Comprando</button>
+     </div>
+    </div>
+   </section><!-- ==================== FOOTER ==================== -->
+   <footer style="background:var(--surface);border-top:1px solid #1a1a1a;padding:48px 24px 24px;margin-top:auto;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-bottom:32px;">
+      <div><span class="font-display gold-shimmer" style="font-size:1.2rem;font-weight:600;letter-spacing:1px;display:block;margin-bottom:12px;" id="footer-brand">Perfumería Premium</span>
+       <p style="color:var(--text-muted);font-size:0.8rem;line-height:1.6;">Fragancias originales con envío a todo Colombia. Tu destino premium de perfumería en Medellín.</p>
+      </div>
+      <div>
+       <h4 style="color:var(--gold);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Navegación</h4>
+       <div style="display:flex;flex-direction:column;gap:8px;"><span style="color:var(--text-muted);font-size:0.8rem;cursor:pointer;transition:color 0.3s;" onclick="navigateTo('home')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Inicio</span> <span style="color:var(--text-muted);font-size:0.8rem;cursor:pointer;transition:color 0.3s;" onclick="navigateTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Tienda</span> <span style="color:var(--text-muted);font-size:0.8rem;cursor:pointer;transition:color 0.3s;" onclick="navigateTo('about')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Nosotros</span> <span style="color:var(--text-muted);font-size:0.8rem;cursor:pointer;transition:color 0.3s;" onclick="navigateTo('contact')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Contacto</span>
+       </div>
+      </div>
+      <div>
+       <h4 style="color:var(--gold);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Políticas</h4>
+       <div style="display:flex;flex-direction:column;gap:8px;"><span style="color:var(--text-muted);font-size:0.8rem;">Política de envíos</span> <span style="color:var(--text-muted);font-size:0.8rem;">Devoluciones</span> <span style="color:var(--text-muted);font-size:0.8rem;">Términos y condiciones</span> <span style="color:var(--text-muted);font-size:0.8rem;">Privacidad</span>
+       </div>
+      </div>
+      <div>
+       <h4 style="color:var(--gold);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Contacto</h4>
+       <div style="display:flex;flex-direction:column;gap:8px;"><span id="footer-address" style="color:var(--text-muted);font-size:0.8rem;">📍 El Poblado, Medellín</span> <span id="footer-whatsapp" style="color:var(--text-muted);font-size:0.8rem;">📞 +57 300 123 4567</span> <span style="color:var(--text-muted);font-size:0.8rem;">✉️ info@perfumeriapremium.co</span>
+       </div>
+      </div>
+     </div>
+     <div style="border-top:1px solid #222;padding-top:20px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+      <p style="color:var(--text-muted);font-size:0.7rem;">© 2024 Perfumería Premium. Todos los derechos reservados.</p>
+      <div style="display:flex;gap:8px;align-items:center;"><span style="font-size:0.65rem;color:var(--text-muted);background:#222;padding:4px 8px;">🔒 SSL</span> <span style="font-size:0.65rem;color:var(--text-muted);background:#222;padding:4px 8px;">💳 MercadoPago</span> <span style="font-size:0.65rem;color:var(--text-muted);background:#222;padding:4px 8px;">🚚 Envíos Colombia</span>
+      </div>
+     </div>
+    </div>
+   </footer><!-- Toast Notification -->
+   <div id="toast" class="toast-notification" role="status" aria-live="polite"><span style="color:var(--gold);margin-right:8px;">✓</span> <span id="toast-message">Producto agregado al carrito</span>
+   </div>
+  </div><!-- end app-wrapper -->
+  <script>
+// ==================== DATA ====================
+const products = [
+  { id: 1, name: "Chanel N°5 EDP", brand: "chanel", gender: "mujer", price: 580000, description: "La icónica fragancia floral-aldehydic. Un clásico atemporal con notas de rosa, jazmín y ylang-ylang.", rating: 5, reviews: 128, notes: "Rosa, Jazmín, Ylang-Ylang, Sándalo", size: "100ml", featured: true },
+  { id: 2, name: "Dior Sauvage EDT", brand: "dior", gender: "hombre", price: 420000, description: "Salvaje y noble. Una fragancia fresca y especiada con bergamota y pimienta de Sichuan.", rating: 5, reviews: 215, notes: "Bergamota, Pimienta Sichuan, Ambroxan", size: "100ml", featured: true },
+  { id: 3, name: "Tom Ford Black Orchid", brand: "tom_ford", gender: "unisex", price: 750000, description: "Lujoso y oscuro. Una orquídea negra envuelta en trufa, ylang-ylang y pachulí.", rating: 5, reviews: 89, notes: "Trufa Negra, Orquídea Negra, Pachulí", size: "100ml", featured: true },
+  { id: 4, name: "YSL Libre EDP", brand: "ysl", gender: "mujer", price: 490000, description: "Libertad en cada nota. Lavanda, flor de azahar y vainilla en una mezcla audaz.", rating: 4, reviews: 156, notes: "Lavanda, Flor de Azahar, Vainilla", size: "90ml", featured: true },
+  { id: 5, name: "Versace Eros EDT", brand: "versace", gender: "hombre", price: 350000, description: "El dios del amor. Menta, manzana verde y vainilla crean una fragancia irresistible.", rating: 4, reviews: 192, notes: "Menta, Manzana Verde, Vainilla, Cedro", size: "100ml", featured: false },
+  { id: 6, name: "Carolina Herrera Good Girl", brand: "carolina_herrera", gender: "mujer", price: 460000, description: "La dualidad femenina. Jazmín luminoso y cacao sensual en el icónico frasco de tacón.", rating: 5, reviews: 178, notes: "Jazmín, Cacao, Tonka, Tuberosa", size: "80ml", featured: true },
+  { id: 7, name: "Dior J'adore EDP", brand: "dior", gender: "mujer", price: 520000, description: "Un bouquet absoluto de flores. Rosa, jazmín e ylang-ylang en una composición luminosa.", rating: 5, reviews: 201, notes: "Rosa de Damasco, Jazmín, Ylang-Ylang", size: "100ml", featured: false },
+  { id: 8, name: "Tom Ford Oud Wood", brand: "tom_ford", gender: "unisex", price: 820000, description: "Exótico y sofisticado. Oud, palo de rosa y cardamomo en una sinergia perfecta.", rating: 5, reviews: 67, notes: "Oud, Palo de Rosa, Cardamomo, Sándalo", size: "100ml", featured: false },
+  { id: 9, name: "Versace Dylan Blue", brand: "versace", gender: "hombre", price: 320000, description: "Masculinidad mediterránea. Notas acuáticas con incienso y almizcle.", rating: 4, reviews: 143, notes: "Bergamota, Incienso, Almizcle, Ámbar", size: "100ml", featured: false },
+  { id: 10, name: "YSL La Nuit de L'Homme", brand: "ysl", gender: "hombre", price: 440000, description: "Seducción nocturna. Cardamomo, lavanda y cedro para un hombre magnético.", rating: 5, reviews: 134, notes: "Cardamomo, Lavanda, Cedro", size: "100ml", featured: false },
+  { id: 11, name: "Chanel Coco Mademoiselle", brand: "chanel", gender: "mujer", price: 560000, description: "Elegancia moderna. Naranja, jazmín y pachulí en una fragancia fresca y oriental.", rating: 5, reviews: 245, notes: "Naranja, Jazmín, Rosa, Pachulí", size: "100ml", featured: false },
+  { id: 12, name: "Carolina Herrera 212 VIP", brand: "carolina_herrera", gender: "hombre", price: 380000, description: "Fiesta VIP. Ginebra, especias y cuero en una mezcla sofisticada y moderna.", rating: 4, reviews: 112, notes: "Ginebra, Especias, Cuero, Ámbar", size: "100ml", featured: false }
+];
+
+// Perfume SVG templates by gender
+function getPerfumeSVG(gender, accentColor) {
+  const c = accentColor || '#C5A258';
+  if (gender === 'mujer') {
+    return `<svg viewBox="0 0 120 180" width="100%" height="100%" style="max-height:200px;">
+      <defs><linearGradient id="gw${c.replace('#','')}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${c}" stop-opacity="0.3"/><stop offset="100%" stop-color="${c}" stop-opacity="0.1"/></linearGradient></defs>
+      <rect x="50" y="8" width="20" height="10" rx="3" fill="${c}" opacity="0.6"/>
+      <rect x="55" y="0" width="10" height="12" rx="2" fill="${c}" opacity="0.4"/>
+      <rect x="30" y="18" width="60" height="140" rx="30" fill="url(#gw${c.replace('#','')})" stroke="${c}" stroke-width="0.5"/>
+      <ellipse cx="60" cy="65" rx="18" ry="25" fill="${c}" opacity="0.08"/>
+      <text x="60" y="70" text-anchor="middle" fill="${c}" font-size="8" font-family="serif" opacity="0.5">P</text>
+    </svg>`;
+  } else if (gender === 'hombre') {
+    return `<svg viewBox="0 0 120 180" width="100%" height="100%" style="max-height:200px;">
+      <defs><linearGradient id="gm${c.replace('#','')}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${c}" stop-opacity="0.25"/><stop offset="100%" stop-color="${c}" stop-opacity="0.08"/></linearGradient></defs>
+      <rect x="48" y="6" width="24" height="14" rx="2" fill="${c}" opacity="0.5"/>
+      <rect x="54" y="0" width="12" height="10" rx="1" fill="${c}" opacity="0.35"/>
+      <rect x="32" y="20" width="56" height="140" rx="6" fill="url(#gm${c.replace('#','')})" stroke="${c}" stroke-width="0.5"/>
+      <rect x="38" y="30" width="44" height="55" rx="3" fill="${c}" opacity="0.06"/>
+      <text x="60" y="62" text-anchor="middle" fill="${c}" font-size="9" font-family="sans-serif" opacity="0.4">P</text>
+    </svg>`;
+  } else {
+    return `<svg viewBox="0 0 120 180" width="100%" height="100%" style="max-height:200px;">
+      <defs><linearGradient id="gu${c.replace('#','')}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${c}" stop-opacity="0.2"/><stop offset="100%" stop-color="${c}" stop-opacity="0.1"/></linearGradient></defs>
+      <circle cx="60" cy="12" r="6" fill="${c}" opacity="0.4"/>
+      <rect x="57" y="12" width="6" height="10" fill="${c}" opacity="0.3"/>
+      <path d="M35 22 Q60 18 85 22 L80 160 Q60 165 40 160 Z" fill="url(#gu${c.replace('#','')})" stroke="${c}" stroke-width="0.5"/>
+      <ellipse cx="60" cy="80" rx="15" ry="20" fill="${c}" opacity="0.06"/>
+      <text x="60" y="85" text-anchor="middle" fill="${c}" font-size="8" font-family="serif" opacity="0.4">P</text>
+    </svg>`;
+  }
+}
+
+// ==================== STATE ====================
+let cart = [];
+let activeFilters = { gender: 'all', brand: 'all', price: 'all' };
+let discountApplied = false;
+let currentPage = 'home';
+
+// ==================== NAVIGATION ====================
+function navigateTo(page, data) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
+  const target = document.getElementById('page-' + page);
+  if (target) {
+    target.classList.add('active-section');
+    currentPage = page;
+  }
+  // Update nav links
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.nav === page);
+  });
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (page === 'product' && data) showProductDetail(data);
+  if (page === 'shop') renderShopProducts();
+  if (page === 'checkout') renderCheckout();
+}
+
+// ==================== PRODUCT RENDERING ====================
+function formatPrice(p) {
+  return '$' + p.toLocaleString('es-CO');
+}
+
+function renderStars(rating) {
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    html += i < rating ? '<span class="star">★</span>' : '<span class="star-empty">★</span>';
+  }
+  return html;
+}
+
+function createProductCard(product, delay) {
+  const card = document.createElement('div');
+  card.className = 'card-product anim-fade-up';
+  if (delay) { card.classList.add('anim-delay-' + delay); }
+  card.innerHTML = `
+    <div style="padding:24px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(197,162,88,0.03),rgba(20,20,20,1));min-height:220px;cursor:pointer;" onclick="navigateTo('product',${product.id})">
+      ${getPerfumeSVG(product.gender)}
+    </div>
+    <div style="padding:20px;">
+      <p style="color:var(--gold);font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">${product.brand.replace('_',' ')}</p>
+      <h3 style="font-size:0.95rem;font-weight:500;margin-bottom:6px;cursor:pointer;" onclick="navigateTo('product',${product.id})">${product.name}</h3>
+      <p style="color:var(--text-muted);font-size:0.75rem;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${product.description}</p>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;">
+        <span style="font-size:0.75rem;">${renderStars(product.rating)}</span>
+        <span style="color:var(--text-muted);font-size:0.7rem;">(${product.reviews})</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:1.05rem;font-weight:600;color:var(--gold);">${formatPrice(product.price)}</span>
+        <button onclick="event.stopPropagation();addToCart(${product.id})" class="btn-outline" style="padding:6px 14px;font-size:0.65rem;">Agregar</button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+// Featured products on home page
+function renderFeaturedProducts() {
+  const container = document.getElementById('featured-products');
+  const featured = products.filter(p => p.featured);
+  container.innerHTML = '';
+  featured.forEach((p, i) => {
+    container.appendChild(createProductCard(p, (i % 6) + 1));
+  });
+}
+
+// Shop page products with filters
+function renderShopProducts() {
+  const container = document.getElementById('shop-products');
+  let filtered = [...products];
+
+  if (activeFilters.gender !== 'all') {
+    filtered = filtered.filter(p => p.gender === activeFilters.gender);
+  }
+  if (activeFilters.brand !== 'all') {
+    filtered = filtered.filter(p => p.brand === activeFilters.brand);
+  }
+  if (activeFilters.price !== 'all') {
+    if (activeFilters.price === 'low') filtered = filtered.filter(p => p.price <= 300000);
+    else if (activeFilters.price === 'mid') filtered = filtered.filter(p => p.price > 300000 && p.price <= 600000);
+    else if (activeFilters.price === 'high') filtered = filtered.filter(p => p.price > 600000);
+  }
+
+  document.getElementById('results-count').textContent = `${filtered.length} producto${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
+
+  container.innerHTML = '';
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;"><p style="color:var(--text-muted);font-size:0.9rem;">No se encontraron productos con estos filtros.</p></div>';
+    return;
+  }
+  filtered.forEach((p, i) => {
+    container.appendChild(createProductCard(p, (i % 6) + 1));
+  });
+}
+
+function setFilter(type, value, btn) {
+  activeFilters[type] = value;
+  document.querySelectorAll(`.filter-chip[data-filter="${type}"]`).forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderShopProducts();
+}
+
+// ==================== PRODUCT DETAIL ====================
+function showProductDetail(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  const related = products.filter(p => p.id !== product.id && (p.brand === product.brand || p.gender === product.gender)).slice(0, 3);
+
+  document.getElementById('product-detail-content').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;margin-bottom:60px;">
+      <div style="background:var(--dark-card);border:1px solid #222;padding:40px;display:flex;align-items:center;justify-content:center;min-height:350px;">
+        ${getPerfumeSVG(product.gender)}
+      </div>
+      <div>
+        <p style="color:var(--gold);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">${product.brand.replace('_',' ')} — ${product.gender}</p>
+        <h1 class="font-display" style="font-size:2rem;font-weight:400;margin-bottom:12px;">${product.name}</h1>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span>${renderStars(product.rating)}</span>
+          <span style="color:var(--text-muted);font-size:0.8rem;">(${product.reviews} reseñas)</span>
+        </div>
+        <p style="font-size:1.8rem;color:var(--gold);font-weight:600;margin-bottom:20px;">${formatPrice(product.price)} <span style="font-size:0.8rem;color:var(--text-muted);font-weight:400;">COP</span></p>
+        <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:20px;">${product.description}</p>
+        <div style="margin-bottom:20px;">
+          <p style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Notas</p>
+          <p style="font-size:0.85rem;color:var(--text-light);">${product.notes}</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <p style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Tamaño</p>
+          <span style="border:1px solid var(--gold);color:var(--gold);padding:6px 16px;font-size:0.8rem;">${product.size}</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;">
+          <label style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;" for="qty-${product.id}">Cantidad</label>
+          <div style="display:flex;align-items:center;gap:0;">
+            <button class="quantity-btn" onclick="updateDetailQty(-1,${product.id})">−</button>
+            <span id="detail-qty-${product.id}" style="width:40px;text-align:center;font-size:0.9rem;">1</span>
+            <button class="quantity-btn" onclick="updateDetailQty(1,${product.id})">+</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="addToCartWithQty(${product.id})" class="btn-gold" style="flex:1;min-width:180px;text-align:center;">Agregar al Carrito</button>
+          <button onclick="addToCartWithQty(${product.id});proceedToCheckout();" class="btn-outline" style="flex:1;min-width:180px;text-align:center;">Comprar Ahora</button>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:16px;flex-wrap:wrap;">
+          <span style="font-size:0.7rem;color:var(--text-muted);">✓ 100% Original</span>
+          <span style="font-size:0.7rem;color:var(--text-muted);">✓ Envío Nacional</span>
+          <span style="font-size:0.7rem;color:var(--text-muted);">✓ Garantía</span>
+        </div>
+      </div>
+    </div>
+    <!-- Reviews -->
+    <div style="background:var(--dark-card);border:1px solid #222;padding:32px;margin-bottom:40px;">
+      <h3 class="font-display" style="color:var(--gold);font-size:1.3rem;margin-bottom:20px;">Opiniones de Clientes</h3>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="border-bottom:1px solid #222;padding-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.85rem;font-weight:500;">Ana M.</span>
+            <span style="font-size:0.75rem;">${renderStars(5)}</span>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.6;">"Fragancia increíble, llegó perfecto. Totalmente original, se nota la calidad."</p>
+        </div>
+        <div style="border-bottom:1px solid #222;padding-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.85rem;font-weight:500;">Diego R.</span>
+            <span style="font-size:0.75rem;">${renderStars(5)}</span>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.6;">"Excelente servicio y envío rapidísimo a Bogotá. Muy recomendado."</p>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.85rem;font-weight:500;">Valentina S.</span>
+            <span style="font-size:0.75rem;">${renderStars(4)}</span>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.6;">"Me encantó la fragancia. La duración es muy buena y el empaque excelente."</p>
+        </div>
+      </div>
+    </div>
+    <!-- Related Products -->
+    ${related.length > 0 ? `
+    <div>
+      <h3 class="font-display" style="text-align:center;font-size:1.5rem;margin-bottom:24px;">Productos Relacionados</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;" id="related-products-grid"></div>
+    </div>` : ''}
+  `;
+
+  // Render related
+  if (related.length > 0) {
+    const relGrid = document.getElementById('related-products-grid');
+    related.forEach((r, i) => relGrid.appendChild(createProductCard(r, i + 1)));
+  }
+}
+
+let detailQuantities = {};
+function updateDetailQty(delta, id) {
+  if (!detailQuantities[id]) detailQuantities[id] = 1;
+  detailQuantities[id] = Math.max(1, detailQuantities[id] + delta);
+  const el = document.getElementById('detail-qty-' + id);
+  if (el) el.textContent = detailQuantities[id];
+}
+
+function addToCartWithQty(productId) {
+  const qty = detailQuantities[productId] || 1;
+  for (let i = 0; i < qty; i++) addToCart(productId, i === qty - 1);
+  detailQuantities[productId] = 1;
+  const el = document.getElementById('detail-qty-' + productId);
+  if (el) el.textContent = '1';
+}
+
+// ==================== CART ====================
+function addToCart(productId, showNotify = true) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  const existing = cart.find(item => item.id === productId);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  updateCartUI();
+  if (showNotify !== false) showToast(`${product.name} agregado al carrito`);
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(item => item.id !== productId);
+  updateCartUI();
+}
+
+function updateCartQty(productId, delta) {
+  const item = cart.find(i => i.id === productId);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const badge = document.getElementById('cart-badge');
+  const itemsContainer = document.getElementById('cart-items');
+  const summary = document.getElementById('cart-summary');
+  const empty = document.getElementById('cart-empty');
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+
+  if (totalQty > 0) {
+    badge.style.display = 'flex';
+    badge.textContent = totalQty;
+    empty.style.display = 'none';
+    summary.style.display = 'block';
+  } else {
+    badge.style.display = 'none';
+    empty.style.display = 'block';
+    summary.style.display = 'none';
+  }
+
+  // Render items
+  itemsContainer.innerHTML = '';
+  cart.forEach(item => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #222;';
+    div.innerHTML = `
+      <div style="width:60px;height:70px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #222;">
+        <svg viewBox="0 0 40 50" width="30" height="40"><rect x="12" y="2" width="16" height="40" rx="3" fill="var(--gold)" opacity="0.15" stroke="var(--gold)" stroke-width="0.3"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <p style="font-size:0.8rem;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</p>
+        <p style="color:var(--gold);font-size:0.8rem;margin-bottom:6px;">${formatPrice(item.price)}</p>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="quantity-btn" style="width:26px;height:26px;font-size:0.8rem;" onclick="updateCartQty(${item.id},-1)">−</button>
+          <span style="font-size:0.8rem;width:20px;text-align:center;">${item.qty}</span>
+          <button class="quantity-btn" style="width:26px;height:26px;font-size:0.8rem;" onclick="updateCartQty(${item.id},1)">+</button>
+          <button onclick="removeFromCart(${item.id})" style="margin-left:auto;background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;transition:color 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#666'">Eliminar</button>
+        </div>
+      </div>
+    `;
+    itemsContainer.appendChild(div);
+  });
+
+  updateCartTotals();
+}
+
+function updateCartTotals() {
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const shippingCost = subtotal >= 250000 ? 0 : 15000;
+  const discountAmount = discountApplied ? Math.round(subtotal * 0.25) : 0;
+  const total = subtotal - discountAmount + shippingCost;
+
+  document.getElementById('cart-subtotal').textContent = formatPrice(subtotal);
+  document.getElementById('cart-shipping').textContent = shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost);
+  document.getElementById('cart-total').textContent = formatPrice(total);
+
+  const discountRow = document.getElementById('discount-row');
+  if (discountApplied) {
+    discountRow.style.display = 'flex';
+    document.getElementById('cart-discount').textContent = '-' + formatPrice(discountAmount);
+  } else {
+    discountRow.style.display = 'none';
+  }
+}
+
+function openCart() {
+  document.getElementById('cart-backdrop').classList.add('show');
+  document.getElementById('cart-panel').classList.add('show');
+}
+function closeCart() {
+  document.getElementById('cart-backdrop').classList.remove('show');
+  document.getElementById('cart-panel').classList.remove('show');
+}
+
+function applyDiscount() {
+  const code = document.getElementById('discount-code-input').value.trim().toUpperCase();
+  const msg = document.getElementById('discount-msg');
+  if (code === 'PREMIUM25') {
+    discountApplied = true;
+    msg.style.display = 'block';
+    msg.style.color = 'var(--gold)';
+    msg.textContent = '✓ ¡Código aplicado! 25% de descuento';
+    updateCartTotals();
+  } else {
+    msg.style.display = 'block';
+    msg.style.color = '#ff4444';
+    msg.textContent = '✗ Código inválido';
+  }
+}
+
+function proceedToCheckout() {
+  if (cart.length === 0) {
+    showToast('Tu carrito está vacío');
+    return;
+  }
+  closeCart();
+  navigateTo('checkout');
+}
+
+// ==================== CHECKOUT ====================
+function renderCheckout() {
+  const itemsContainer = document.getElementById('checkout-items');
+  itemsContainer.innerHTML = '';
+  cart.forEach(item => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;justify-content:space-between;margin-bottom:8px;';
+    div.innerHTML = `
+      <span style="color:var(--text-muted);font-size:0.85rem;">${item.name} x${item.qty}</span>
+      <span style="font-size:0.85rem;">${formatPrice(item.price * item.qty)}</span>
+    `;
+    itemsContainer.appendChild(div);
+  });
+
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const shippingCost = subtotal >= 250000 ? 0 : 15000;
+  const discountAmount = discountApplied ? Math.round(subtotal * 0.25) : 0;
+  const total = subtotal - discountAmount + shippingCost;
+
+  document.getElementById('checkout-subtotal').textContent = formatPrice(subtotal);
+  document.getElementById('checkout-shipping').textContent = shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost);
+  document.getElementById('checkout-total').textContent = formatPrice(total);
+
+  if (discountApplied) {
+    document.getElementById('checkout-discount-row').style.display = 'flex';
+    document.getElementById('checkout-discount').textContent = '-' + formatPrice(discountAmount);
+  }
+
+  // Select first payment option visually
+  const firstOption = document.querySelector('.payment-option');
+  if (firstOption) selectPayment(firstOption);
+}
+
+function selectPayment(el) {
+  document.querySelectorAll('.payment-option').forEach(o => {
+    o.style.borderColor = '#333';
+    o.style.background = 'transparent';
+  });
+  el.style.borderColor = 'var(--gold)';
+  el.style.background = 'rgba(197,162,88,0.08)';
+  el.querySelector('input').checked = true;
+}
+
+function handleCheckout(e) {
+  e.preventDefault();
+  const orderNum = 'PP-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+  document.getElementById('order-number').textContent = orderNum;
+  document.getElementById('checkout-content').querySelector('form').style.display = 'none';
+  document.getElementById('checkout-success').style.display = 'block';
+  cart = [];
+  discountApplied = false;
+  updateCartUI();
+}
+
+// ==================== SEARCH ====================
+function openSearch() {
+  document.getElementById('search-overlay').classList.add('show');
+  setTimeout(() => document.getElementById('search-input').focus(), 100);
+}
+function closeSearch() {
+  document.getElementById('search-overlay').classList.remove('show');
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-results').innerHTML = '';
+}
+
+function handleSearch(query) {
+  const container = document.getElementById('search-results');
+  if (query.length < 2) { container.innerHTML = ''; return; }
+  const q = query.toLowerCase();
+  const results = products.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.brand.toLowerCase().includes(q) ||
+    p.description.toLowerCase().includes(q) ||
+    p.gender.toLowerCase().includes(q)
+  );
+  container.innerHTML = '';
+  if (results.length === 0) {
+    container.innerHTML = '<div style="background:var(--dark-card);border:1px solid #222;padding:16px;text-align:center;color:var(--text-muted);font-size:0.85rem;">No se encontraron resultados</div>';
+    return;
+  }
+  results.slice(0, 5).forEach(p => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--dark-card);border:1px solid #222;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:4px;transition:border-color 0.2s;';
+    div.onmouseover = () => div.style.borderColor = 'var(--gold)';
+    div.onmouseout = () => div.style.borderColor = '#222';
+    div.onclick = () => { closeSearch(); navigateTo('product', p.id); };
+    div.innerHTML = `
+      <div>
+        <p style="font-size:0.85rem;font-weight:500;">${p.name}</p>
+        <p style="color:var(--text-muted);font-size:0.7rem;text-transform:uppercase;">${p.brand.replace('_',' ')} — ${p.gender}</p>
+      </div>
+      <span style="color:var(--gold);font-size:0.9rem;font-weight:600;">${formatPrice(p.price)}</span>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// ==================== CONTACT FORM ====================
+function handleContactForm(e) {
+  e.preventDefault();
+  document.getElementById('contact-success').style.display = 'block';
+  e.target.reset();
+  setTimeout(() => { document.getElementById('contact-success').style.display = 'none'; }, 4000);
+}
+
+// ==================== MOBILE MENU ====================
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+// ==================== TOAST ====================
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-message').textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ==================== ELEMENT SDK ====================
+const defaultConfig = {
+  brand_name: 'Perfumería Premium',
+  hero_tagline: 'Fragancias que definen tu esencia',
+  hero_subtitle: 'Perfumes 100% originales con envío a todo Colombia. Descubre la fragancia perfecta para cada momento.',
+  about_title: 'Nuestra Historia',
+  about_text: 'Desde 2015, Perfumería Premium ha sido el destino preferido de los amantes de las fragancias en Medellín y toda Colombia. Nacimos con la misión de acercar las mejores marcas internacionales de perfumería a nuestros clientes, garantizando siempre autenticidad y calidad excepcional.',
+  whatsapp_number: '+57 300 123 4567',
+  store_address: 'Calle 10 #43-12, El Poblado, Medellín',
+  background_color: '#0A0A0A',
+  surface_color: '#1A1A1A',
+  text_color: '#E8E8E8',
+  accent_color: '#C5A258',
+  muted_color: '#999999',
+  font_family: 'Montserrat',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const font = c.font_family || defaultConfig.font_family;
+  const baseSize = c.font_size || defaultConfig.font_size;
+
+  // Brand names
+  const navBrand = document.getElementById('nav-brand');
+  const footerBrand = document.getElementById('footer-brand');
+  if (navBrand) navBrand.textContent = c.brand_name;
+  if (footerBrand) footerBrand.textContent = c.brand_name;
+
+  // Hero
+  const heroTagline = document.getElementById('hero-tagline');
+  if (heroTagline) {
+    const words = c.hero_tagline.split(' ');
+    const lastTwo = words.slice(-2).join(' ');
+    const rest = words.slice(0, -2).join(' ');
+    heroTagline.innerHTML = rest + ' <span class="gold-shimmer">' + lastTwo + '</span>';
+  }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) heroSub.textContent = c.hero_subtitle;
+
+  // About
+  const aboutTitle = document.getElementById('about-title');
+  if (aboutTitle) aboutTitle.textContent = c.about_title;
+  const aboutText = document.getElementById('about-text');
+  if (aboutText) aboutText.textContent = c.about_text;
+
+  // Contact info
+  const contactAddr = document.getElementById('contact-address');
+  if (contactAddr) contactAddr.textContent = c.store_address;
+  const aboutAddr = document.getElementById('about-address');
+  if (aboutAddr) aboutAddr.textContent = c.store_address;
+  const contactWA = document.getElementById('contact-whatsapp');
+  if (contactWA) contactWA.textContent = c.whatsapp_number;
+  const footerAddr = document.getElementById('footer-address');
+  if (footerAddr) footerAddr.textContent = '📍 ' + c.store_address;
+  const footerWA = document.getElementById('footer-whatsapp');
+  if (footerWA) footerWA.textContent = '📞 ' + c.whatsapp_number;
+
+  // Colors
+  document.documentElement.style.setProperty('--dark', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text-light', c.text_color);
+  document.documentElement.style.setProperty('--gold', c.accent_color);
+  document.documentElement.style.setProperty('--text-muted', c.muted_color);
+  document.body.style.background = c.background_color;
+  document.body.style.color = c.text_color;
+
+  // Font
+  document.body.style.fontFamily = `${font}, Montserrat, sans-serif`;
+
+  // Font size - scale proportionally
+  document.documentElement.style.fontSize = baseSize + 'px';
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig: defaultConfig,
+    onConfigChange: async (config) => {
+      applyConfig(config);
+    },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        {
+          get: () => config.background_color || defaultConfig.background_color,
+          set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+        },
+        {
+          get: () => config.surface_color || defaultConfig.surface_color,
+          set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+        },
+        {
+          get: () => config.text_color || defaultConfig.text_color,
+          set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+        },
+        {
+          get: () => config.accent_color || defaultConfig.accent_color,
+          set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+        },
+        {
+          get: () => config.muted_color || defaultConfig.muted_color,
+          set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); }
+        }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['brand_name', config.brand_name || defaultConfig.brand_name],
+      ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['about_title', config.about_title || defaultConfig.about_title],
+      ['about_text', config.about_text || defaultConfig.about_text],
+      ['whatsapp_number', config.whatsapp_number || defaultConfig.whatsapp_number],
+      ['store_address', config.store_address || defaultConfig.store_address]
+    ])
+  });
+}
+
+// ==================== INIT ====================
+renderFeaturedProducts();
+renderShopProducts();
+applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cc8eb0fb4bddead',t:'MTc3MDg2NjA5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

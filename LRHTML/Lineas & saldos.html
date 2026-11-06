@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Líneas & Saldos | Telas y Textiles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- ESTILOS CSS --- */
+        :root {
+            --primary: #2c3e50; /* Azul oscuro */
+            --accent: #e67e22;  /* Naranja */
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f9f9f9; color: #333; }
+
+        /* HEADER */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 5%; max-width: 1200px; margin: 0 auto;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        .logo span { color: var(--accent); }
+
+        /* BARRA DE BÚSQUEDA */
+        .search-bar { display: flex; flex-grow: 1; margin: 0 2rem; max-width: 500px; }
+        .search-bar input {
+            width: 100%; padding: 0.5rem; border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px; outline: none;
+        }
+        .search-bar button {
+            background: var(--primary); color: white; border: none;
+            padding: 0 1rem; border-radius: 0 4px 4px 0; cursor: pointer;
+        }
+
+        /* ICONO CARRITO */
+        .cart-icon { position: relative; cursor: pointer; font-size: 1.3rem; color: var(--primary); }
+        .cart-count {
+            position: absolute; top: -8px; right: -8px; background: var(--accent);
+            color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; font-weight: bold;
+        }
+
+        /* HERO / PORTADA */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1520207588543-1e545b20c19e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80');
+            background-size: cover; background-position: center;
+            color: white; text-align: center; padding: 4rem 1rem;
+        }
+
+        /* FILTROS */
+        .filters { display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 0.5rem 1.5rem; border: 1px solid var(--primary);
+            background: white; cursor: pointer; border-radius: 20px; transition: 0.3s; font-weight: 500;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; }
+
+        /* GRILLA DE PRODUCTOS */
+        .products-container {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; margin-bottom: 4rem;
+        }
+
+        .product-card {
+            background: white; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .product-card:hover { transform: translateY(-5px); }
+
+        .product-img { height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        .product-info { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-title { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: bold; }
+        .product-desc { font-size: 0.9rem; color: #666; margin-bottom: 1rem; flex-grow: 1; }
+        .product-price { color: var(--accent); font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem; }
+
+        .add-btn {
+            background: var(--primary); color: white; border: none; padding: 0.8rem;
+            width: 100%; cursor: pointer; border-radius: 4px; transition: 0.2s; font-weight: bold;
+        }
+        .add-btn:hover { background: #34495e; }
+
+        /* --- CARRITO LATERAL --- */
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px; width: 380px; height: 100%;
+            background: white; box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+            transition: 0.3s; z-index: 2000; display: flex; flex-direction: column;
+        }
+        .cart-sidebar.open { right: 0; }
+
+        .cart-header { padding: 1.5rem; background: var(--primary); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .close-cart { cursor: pointer; font-size: 1.5rem; }
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 1rem; }
+
+        /* ITEM DEL CARRITO */
+        .cart-item { display: flex; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; margin-right: 15px; }
+        .cart-item-info { flex-grow: 1; }
+        .cart-item-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 4px; }
+        .cart-item-price { font-size: 0.85rem; color: #777; }
+
+        /* CONTROLES DE CANTIDAD (+ / -) */
+        .qty-controls {
+            display: flex; align-items: center; margin-top: 8px;
+            background: #f0f0f0; width: fit-content; border-radius: 4px;
+        }
+        .qty-btn {
+            background: transparent; border: none; width: 30px; height: 30px;
+            cursor: pointer; font-weight: bold; color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .qty-btn:hover { background: #ddd; }
+        .qty-value { margin: 0 5px; font-size: 0.9rem; font-weight: bold; min-width: 20px; text-align: center; }
+
+        .remove-item { color: var(--danger); cursor: pointer; margin-left: 10px; font-size: 1rem; padding: 5px; }
+
+        /* FOOTER CARRITO */
+        .cart-footer { padding: 1.5rem; border-top: 1px solid #eee; background: #f9f9f9; }
+        .total-row { display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: bold; margin-bottom: 1rem; color: var(--primary); }
+
+        .whatsapp-btn {
+            background: #25D366; color: white; text-align: center; padding: 1rem;
+            border-radius: 4px; text-decoration: none; display: flex; justify-content: center;
+            align-items: center; font-weight: bold; font-size: 1.1rem; transition: 0.3s;
+        }
+        .whatsapp-btn:hover { background: #1ebc57; }
+        .whatsapp-btn i { margin-right: 10px; font-size: 1.3rem; }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 1rem; }
+            .search-bar { width: 100%; margin: 10px 0; }
+            .cart-sidebar { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <div class="logo">Líneas & <span>Saldos</span></div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="¿Qué tela estás buscando?">
+                <button onclick="filterProducts()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Venta de Saldos y Telas</h1>
+        <p>Somos "Líneas & Saldos": Calidad y economía</p>
+    </section>
+
+    <section class="filters">
+        <button class="filter-btn active" onclick="filterCategory('todos')">Todos</button>
+        <button class="filter-btn" onclick="filterCategory('algodon')">Algodón</button>
+        <button class="filter-btn" onclick="filterCategory('lino')">Lino</button>
+        <button class="filter-btn" onclick="filterCategory('poliester')">Poliéster</button>
+        <button class="filter-btn" onclick="filterCategory('tapiceria')">Tapicería</button>
+    </section>
+
+    <section class="products-container" id="productsGrid"></section>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-bag"></i> Tu Pedido</h2>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+
+        <div class="cart-items" id="cartItems"></div>
+
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total Estimado:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <a href="#" class="whatsapp-btn" id="whatsappLink" target="_blank">
+                <i class="fab fa-whatsapp"></i> Finalizar en WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DATOS DE PRODUCTOS ---
+        const products = [
+            { id: 1, name: "Lino Flex Unicolor", category: "lino", price: 18000, img: "https://images.unsplash.com/photo-1596238618776-88062085718a?auto=format&fit=crop&w=300&q=80", desc: "Tela fresca para confección." },
+            { id: 2, name: "Algodón Perchado", category: "algodon", price: 22000, img: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&w=300&q=80", desc: "Ideal para sudaderas y busos." },
+            { id: 3, name: "Antifluido Universal", category: "poliester", price: 15000, img: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=300&q=80", desc: "Para uniformes y dotaciones." },
+            { id: 4, name: "Terciopelo Tapicería", category: "tapiceria", price: 35000, img: "https://images.unsplash.com/photo-1550226891-ef816aed4a98?auto=format&fit=crop&w=300&q=80", desc: "Alta resistencia y suavidad." },
+            { id: 5, name: "Dril Licrado", category: "algodon", price: 28000, img: "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?auto=format&fit=crop&w=300&q=80", desc: "Para pantalones resistentes." },
+            { id: 6, name: "Seda Studio", category: "poliester", price: 12000, img: "https://images.unsplash.com/photo-1612459892306-616223528eb3?auto=format&fit=crop&w=300&q=80", desc: "Elegancia y caída suave." },
+            { id: 7, name: "Lino Rústico", category: "lino", price: 20000, img: "https://images.unsplash.com/photo-1579636907689-53e30f167669?auto=format&fit=crop&w=300&q=80", desc: "Textura natural para hogar." },
+            { id: 8, name: "Jacquard Decorativo", category: "tapiceria", price: 42000, img: "https://images.unsplash.com/photo-1617103996702-96ff29b1c467?auto=format&fit=crop&w=300&q=80", desc: "Diseños exclusivos para muebles." },
+        ];
+
+        let cart = []; // Array vacío para el carrito
+
+        // --- RENDERIZAR PRODUCTOS ---
+        const grid = document.getElementById('productsGrid');
+
+        function renderProducts(filter = 'todos', searchTerm = '') {
+            grid.innerHTML = '';
+            
+            const filtered = products.filter(p => {
+                const matchesCategory = filter === 'todos' || p.category === filter;
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">No encontramos telas con esa descripción.</div>';
+                return;
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img"><img src="${product.img}" alt="${product.name}"></div>
+                    <div class="product-info">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-desc">${product.desc}</div>
+                        <div class="product-price">$${product.price.toLocaleString()} /m</div>
+                        <button class="add-btn" onclick="addToCart(${product.id})">
+                            <i class="fas fa-plus"></i> Agregar al Pedido
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- LÓGICA DEL CARRITO INTELIGENTE ---
+        
+        // 1. Agregar (Suma cantidad si ya existe)
+        function addToCart(id) {
+            const existingItem = cart.find(item => item.id === id);
+
+            if (existingItem) {
+                existingItem.qty++; 
+            } else {
+                const product = products.find(p => p.id === id);
+                cart.push({ ...product, qty: 1 });
+            }
+            
+            updateCartUI();
+            if(!document.getElementById('cartSidebar').classList.contains('open')){
+                toggleCart();
+            }
+        }
+
+        // 2. Modificar Cantidad (+ / -)
+        function changeQty(id, action) {
+            const item = cart.find(item => item.id === id);
+            if (!item) return;
+
+            if (action === 'plus') {
+                item.qty++;
+            } else if (action === 'minus') {
+                item.qty--;
+                if (item.qty <= 0) {
+                    removeFromCart(id);
+                    return;
+                }
+            }
+            updateCartUI();
+        }
+
+        // 3. Eliminar item
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        // 4. Actualizar HTML del Carrito
+        function updateCartUI() {
+            const container = document.getElementById('cartItems');
+            const countSpan = document.getElementById('cartCount');
+            const totalSpan = document.getElementById('cartTotal');
+            
+            container.innerHTML = '';
+            let totalMoney = 0;
+            let totalItems = 0;
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.qty;
+                totalMoney += subtotal;
+                totalItems += item.qty;
+
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <img src="${item.img}" alt="img">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">Precio: $${item.price.toLocaleString()}</div>
+                        
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="changeQty(${item.id}, 'minus')">-</button>
+                            <span class="qty-value">${item.qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${item.id}, 'plus')">+</button>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; font-size: 0.9rem;">$${subtotal.toLocaleString()}</div>
+                        <div class="remove-item" onclick="removeFromCart(${item.id})">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:2rem;">Tu pedido está vacío.</p>';
+            }
+
+            countSpan.innerText = totalItems;
+            totalSpan.innerText = '$' + totalMoney.toLocaleString();
+            
+            updateWhatsAppLink(totalMoney);
+        }
+
+        // 5. Generar enlace de WhatsApp
+        function updateWhatsAppLink(total) {
+            const btn = document.getElementById('whatsappLink');
+            
+            // --- ¡IMPORTANTE! PON TU NÚMERO DE WHATSAPP AQUÍ ---
+            const phone = "573000000000"; 
+            
+            let message = "Hola *Líneas & Saldos*, estoy interesado en este pedido:%0A%0A";
+            
+            cart.forEach(item => {
+                const subtotal = item.price * item.qty;
+                message += `▪ *${item.name}*%0A   Cant: ${item.qty} mts | Subtotal: $${subtotal.toLocaleString()}%0A`;
+            });
+            
+            message += `%0A---------------------------%0A*TOTAL ESTIMADO: $${total.toLocaleString()}*`;
+            
+            if(cart.length === 0) {
+                btn.style.pointerEvents = "none";
+                btn.style.opacity = "0.5";
+            } else {
+                btn.style.pointerEvents = "auto";
+                btn.style.opacity = "1";
+                btn.href = `https://wa.me/${phone}?text=${message}`;
+            }
+        }
+
+        // --- INTERACCIONES UI ---
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('searchInput').value = ''; 
+            renderProducts(cat, '');
+        }
+
+        function filterProducts() {
+            const term = document.getElementById('searchInput').value;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.filter-btn:first-child').classList.add('active');
+            renderProducts('todos', term);
+        }
+
+        // Iniciar
+        renderProducts();
+    </script>
+</body>
+</html>

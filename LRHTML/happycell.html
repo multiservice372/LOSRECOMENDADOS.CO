@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Cell - Tecnología a tu Alcance</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Markdown Parser (Marked) para formatear respuestas de AI -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Animación suave para el badge del carrito */
+        .pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        
+        /* Chat Widget Styles */
+        .chat-open { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* Markdown Styles inside chat */
+        .prose p { margin-bottom: 0.5em; }
+        .prose ul { list-style-type: disc; padding-left: 1.2em; margin-bottom: 0.5em; }
+        .prose strong { font-weight: 700; color: #EAB308; /* Yellow-500 */ }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+
+    <!-- Navbar Container -->
+    <div id="navbar-container" class="sticky top-0 z-50"></div>
+
+    <!-- Main Content Container -->
+    <main id="app" class="flex-grow fade-in"></main>
+
+    <!-- Chat Widget Container -->
+    <div id="chat-widget-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+        <!-- Chat Window (Hidden by default) -->
+        <div id="chat-window" class="pointer-events-auto bg-white w-80 sm:w-96 rounded-2xl shadow-2xl border border-gray-200 mb-4 hidden overflow-hidden flex flex-col h-[500px] transition-all duration-300 transform origin-bottom-right">
+            <!-- Header -->
+            <div class="bg-black p-4 flex justify-between items-center text-white border-b-4 border-yellow-400">
+                <div class="flex items-center gap-2">
+                    <div class="bg-yellow-400 p-1.5 rounded-full text-black">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm">Happy Bot IA</h3>
+                        <p class="text-xs text-gray-400">Asistente Virtual</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="hover:text-yellow-400 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <!-- Messages Area -->
+            <div id="chat-messages" class="flex-grow p-4 overflow-y-auto bg-gray-50 space-y-4 text-sm">
+                <!-- Welcome Message -->
+                <div class="flex items-start gap-2">
+                    <div class="bg-black text-white p-2 rounded-full shrink-0 h-8 w-8 flex items-center justify-center font-bold">H</div>
+                    <div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm border border-gray-200 max-w-[85%]">
+                        ¡Hola! 👋 Soy el asistente virtual de Happy Cell. ¿Buscas un celular nuevo o necesitas servicio técnico? ¡Pregúntame! ✨
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-3 bg-white border-t border-gray-100">
+                <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
+                    <input id="chat-input" type="text" placeholder="Escribe tu pregunta..." class="flex-grow bg-gray-100 text-gray-900 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
+                    <button type="submit" class="bg-yellow-400 text-black p-2 rounded-full hover:bg-yellow-300 transition shadow-md disabled:opacity-50 disabled:cursor-not-allowed" id="chat-submit-btn">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Float Button -->
+        <button onclick="toggleChat()" class="pointer-events-auto bg-black hover:bg-zinc-800 text-yellow-400 p-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center gap-2 border-2 border-yellow-400 group">
+            <span class="font-bold text-sm hidden group-hover:block text-white">Asistente IA</span>
+            <i data-lucide="bot" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12 border-t-8 border-yellow-400 mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+                <h3 class="text-2xl font-black text-yellow-400 mb-4">HAPPY CELL</h3>
+                <p class="text-gray-400 text-sm">
+                    Tu aliado tecnológico en Medellín a domicilio para servicio tecnico, venta de celulares y accesorios. Servicio a domicilio y garantizado.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-lg font-bold mb-4">Contacto</h4>
+                <p class="text-gray-400 flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> Centro comercial Opera Mall en Medellín
+                </p>
+                <p class="text-gray-400 flex items-center justify-center md:justify-start gap-2">
+                    <i data-lucide="phone" class="w-4 h-4"></i> +57 301 358 0850
+                </p>
+            </div>
+            <div>
+                <h4 class="text-lg font-bold mb-4">Síguenos</h4>
+                <div class="flex justify-center md:justify-start gap-4">
+                    <button class="hover:text-yellow-400 transition"><i data-lucide="instagram"></i></button>
+                    <button class="hover:text-yellow-400 transition"><i data-lucide="facebook"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-12 text-gray-600 text-sm">
+            © <span id="year"></span> Happy Cell. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- CONFIGURACIÓN GEMINI API ---
+        const apiKey = ""; // La clave se inyectará en tiempo de ejecución
+        
+        async function callGeminiAPI(prompt) {
+            if (!apiKey) {
+                console.warn("API Key no encontrada. Simulando respuesta.");
+                return new Promise(r => setTimeout(() => r("Lo siento, no puedo conectarme con mi cerebro de IA en este momento (Falta API Key). Pero estoy aquí para ayudarte manualmente."), 1000));
+            }
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            // Contexto del sistema: Inventario y Rol
+            const inventoryContext = JSON.stringify(state.products.map(p => ({
+                nombre: p.nombre,
+                precio: p.precio,
+                categoria: p.categoria,
+                desc: p.descripcion
+            })));
+
+            const systemInstruction = `
+                Eres "Happy Bot", el asistente virtual experto y amable de la tienda "Happy Cell" en Medellín.
+                Tu objetivo es ayudar a los clientes a elegir productos o dar consejos de soporte técnico.
+                
+                INVENTARIO ACTUAL: ${inventoryContext}
+                
+                REGLAS:
+                1. Usa un tono amable, profesional pero cercano (puedes usar jerga paisa levemente si aplica, como "parcero", "claro que sí", "de una").
+                2. Si preguntan por un producto, búscalo en el INVENTARIO ACTUAL y da el precio exacto.
+                3. Si el producto no existe, sugiere uno similar del inventario.
+                4. Si preguntan por soporte técnico, ofrece consejos generales y sugiere agendar una revisión en nuestra tienda física en el Centro de Medellín o pedir servicio a domicilio.
+                5. Responde de forma concisa (máximo 3 párrafos cortos).
+                6. Usa emojis ✨📱 para ser más amigable.
+                7. Formatea tu respuesta usando Markdown (negritas para precios y nombres).
+            `;
+
+            const payload = {
+                contents: [{ 
+                    role: "user",
+                    parts: [{ text: `Contexto del sistema: ${systemInstruction}\n\nPregunta del usuario: ${prompt}` }] 
+                }]
+            };
+
+            // Exponential Backoff Logic
+            const maxRetries = 3;
+            let delay = 1000;
+
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Lo siento, no entendí eso.";
+                } catch (error) {
+                    console.error(`Intento ${i + 1} fallido:`, error);
+                    if (i === maxRetries - 1) return "Lo siento, estoy teniendo problemas de conexión. Por favor intenta más tarde.";
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // --- CHAT WIDGET LOGIC ---
+        let isChatOpen = false;
+
+        window.toggleChat = () => {
+            const windowEl = document.getElementById('chat-window');
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                windowEl.classList.remove('hidden');
+                windowEl.classList.add('chat-open');
+                setTimeout(() => document.getElementById('chat-input').focus(), 100);
+            } else {
+                windowEl.classList.add('hidden');
+                windowEl.classList.remove('chat-open');
+            }
+        };
+
+        window.handleChatSubmit = async (e) => {
+            e.preventDefault();
+            const inputEl = document.getElementById('chat-input');
+            const btnEl = document.getElementById('chat-submit-btn');
+            const message = inputEl.value.trim();
+            
+            if (!message) return;
+
+            // 1. Add User Message
+            addMessageToChat(message, 'user');
+            inputEl.value = '';
+            inputEl.disabled = true;
+            btnEl.disabled = true;
+
+            // 2. Show Loading
+            const loadingId = addLoadingIndicator();
+            scrollToBottom();
+
+            // 3. Call API
+            const response = await callGeminiAPI(message);
+
+            // 4. Remove Loading & Add AI Message
+            removeMessage(loadingId);
+            addMessageToChat(response, 'ai');
+            
+            inputEl.disabled = false;
+            btnEl.disabled = false;
+            inputEl.focus();
+            scrollToBottom();
+        };
+
+        function addMessageToChat(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            const isAI = sender === 'ai';
+            
+            div.className = `flex items-start gap-2 ${isAI ? '' : 'flex-row-reverse'}`;
+            
+            const avatar = isAI 
+                ? `<div class="bg-black text-white p-2 rounded-full shrink-0 h-8 w-8 flex items-center justify-center font-bold">H</div>`
+                : `<div class="bg-gray-200 text-gray-600 p-2 rounded-full shrink-0 h-8 w-8 flex items-center justify-center"><i data-lucide="user" class="w-4 h-4"></i></div>`;
+
+            const bubbleClass = isAI 
+                ? "bg-white border border-gray-200 text-gray-800 rounded-tl-none" 
+                : "bg-black text-white rounded-tr-none";
+
+            // Parse Markdown if it's AI
+            const content = isAI ? marked.parse(text) : text;
+
+            div.innerHTML = `
+                ${avatar}
+                <div class="p-3 rounded-lg shadow-sm max-w-[85%] text-sm prose ${bubbleClass}">
+                    ${content}
+                </div>
+            `;
+            container.appendChild(div);
+            // Re-run lucide for user icon
+            if(!isAI) lucide.createIcons({ root: div });
+        }
+
+        function addLoadingIndicator() {
+            const container = document.getElementById('chat-messages');
+            const id = 'loading-' + Date.now();
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = "flex items-start gap-2";
+            div.innerHTML = `
+                <div class="bg-black text-white p-2 rounded-full shrink-0 h-8 w-8 flex items-center justify-center font-bold">H</div>
+                <div class="bg-white p-4 rounded-lg rounded-tl-none shadow-sm border border-gray-200 flex gap-1 items-center h-10">
+                    <div class="typing-dot w-2 h-2 bg-gray-400 rounded-full"></div>
+                    <div class="typing-dot w-2 h-2 bg-gray-400 rounded-full"></div>
+                    <div class="typing-dot w-2 h-2 bg-gray-400 rounded-full"></div>
+                </div>
+            `;
+            container.appendChild(div);
+            return id;
+        }
+
+        function removeMessage(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chat-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+
+        // --- SIMULACIÓN DE BACKEND (LocalStorage) ---
+        const DB_KEYS = {
+            USERS: 'happycell_users',
+            PRODUCTS: 'happycell_products',
+            ORDERS: 'happycell_orders',
+            SESSION: 'happycell_session'
+        };
+
+        const MockDB = {
+            get: (key) => JSON.parse(localStorage.getItem(key) || '[]'),
+            set: (key, data) => localStorage.setItem(key, JSON.stringify(data)),
+            
+            resetProducts: (newProducts) => {
+                localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(newProducts));
+            },
+
+            login: (email, password) => {
+                const users = MockDB.get(DB_KEYS.USERS);
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(user));
+                    return user;
+                }
+                throw new Error("Credenciales inválidas");
+            },
+            
+            register: (email, password, name) => {
+                const users = MockDB.get(DB_KEYS.USERS);
+                if (users.find(u => u.email === email)) throw new Error("El usuario ya existe");
+                const newUser = { uid: 'user_' + Date.now(), email, password, displayName: name };
+                users.push(newUser);
+                MockDB.set(DB_KEYS.USERS, users);
+                localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(newUser));
+                return newUser;
+            },
+
+            logout: () => {
+                localStorage.removeItem(DB_KEYS.SESSION);
+            },
+
+            getCurrentUser: () => {
+                return JSON.parse(localStorage.getItem(DB_KEYS.SESSION));
+            },
+
+            getProducts: () => {
+                return MockDB.get(DB_KEYS.PRODUCTS);
+            },
+
+            seedProducts: (products) => {
+                MockDB.set(DB_KEYS.PRODUCTS, products);
+            },
+
+            createOrder: (userId, orderData) => {
+                const orders = MockDB.get(DB_KEYS.ORDERS);
+                const newOrder = { id: 'ord_' + Date.now(), userId, ...orderData };
+                orders.push(newOrder);
+                MockDB.set(DB_KEYS.ORDERS, orders);
+                return newOrder;
+            },
+
+            getUserOrders: (userId) => {
+                const orders = MockDB.get(DB_KEYS.ORDERS);
+                return orders.filter(o => o.userId === userId).sort((a,b) => b.createdAt - a.createdAt);
+            }
+        };
+
+        // --- Estado Global ---
+        const state = {
+            user: null,
+            cart: [],
+            view: 'home', 
+            products: [],
+            filter: 'Todos',
+            authType: 'login',
+            mobileMenuOpen: false
+        };
+
+        // --- DATOS DE PRUEBA ---
+        const PRODUCTOS_INICIALES = [
+            { id: 'p1', nombre: "iPhone 14 Pro Max", precio: 5400000, categoria: "Celulares", imagen: "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&q=80&w=600", descripcion: "128GB, Deep Purple. Garantía de 1 año." },
+            { id: 'p2', nombre: "Samsung Galaxy S23 Ultra", precio: 4800000, categoria: "Celulares", imagen: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&q=80&w=600", descripcion: "256GB, Phantom Black. Cámara de 200MP." },
+            { id: 'p3', nombre: "Xiaomi Redmi Note 12", precio: 950000, categoria: "Celulares", imagen: "https://images.unsplash.com/photo-1598327105666-5b89351aff70?auto=format&fit=crop&q=80&w=600", descripcion: "Calidad precio. Batería de larga duración." },
+            { id: 'p9', nombre: "iPad Air 5", precio: 2800000, categoria: "Tablets", imagen: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=600", descripcion: "Chip M1, Pantalla Liquid Retina 10.9\"." },
+            { id: 'p10', nombre: "Samsung Tab S8", precio: 3100000, categoria: "Tablets", imagen: "https://images.unsplash.com/photo-1588702547923-7093a6c3f067?auto=format&fit=crop&q=80&w=600", descripcion: "Incluye S-Pen. Ideal para diseño." },
+            { id: 'p11', nombre: "JBL Flip 6", precio: 450000, categoria: "Audio", imagen: "https://images.unsplash.com/photo-1612442449556-9d9df35eb2a7?auto=format&fit=crop&q=80&w=600", descripcion: "Parlante Bluetooth resistente al agua." },
+            { id: 'p4', nombre: "AirPods Pro (2da Gen)", precio: 1100000, categoria: "Accesorios", imagen: "https://images.unsplash.com/photo-1603351154351-5cf99bc02aa1?auto=format&fit=crop&q=80&w=600", descripcion: "Cancelación de ruido activa." },
+            { id: 'p5', nombre: "Cargador Carga Rápida 20W", precio: 80000, categoria: "Accesorios", imagen: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&q=80&w=600", descripcion: "Compatible con iPhone y Android." },
+            { id: 'p6', nombre: "Funda Silicona iPhone 13", precio: 45000, categoria: "Accesorios", imagen: "https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?auto=format&fit=crop&q=80&w=600", descripcion: "Protección contra caídas. Varios colores." },
+            { id: 'p7', nombre: "Reparación Pantalla iPhone X", precio: 250000, categoria: "Servicios", imagen: "https://images.unsplash.com/photo-1599950755346-a3e58f84ca63?auto=format&fit=crop&q=80&w=600", descripcion: "Servicio técnico garantizado. Instalación incluida." },
+            { id: 'p8', nombre: "Cambio de Batería Android", precio: 80000, categoria: "Servicios", imagen: "https://images.unsplash.com/photo-1588702547923-7093a6c3f067?auto=format&fit=crop&q=80&w=600", descripcion: "Batería original o certificada." },
+        ];
+
+        // --- Inicialización ---
+        function init() {
+            document.getElementById('year').textContent = new Date().getFullYear();
+            state.user = MockDB.getCurrentUser();
+            MockDB.seedProducts(PRODUCTOS_INICIALES);
+            state.products = PRODUCTOS_INICIALES;
+            renderNavbar();
+            renderApp();
+            // Initialize chat icons
+            lucide.createIcons({ root: document.getElementById('chat-widget-container') });
+        }
+
+        // --- Navegación Core ---
+        window.navigate = (viewName) => {
+            state.view = viewName;
+            state.mobileMenuOpen = false;
+            if (viewName === 'profile' && !state.user) {
+                state.view = 'login';
+            }
+            renderNavbar();
+            renderApp();
+            window.scrollTo(0,0);
+        };
+
+        window.toggleMobileMenu = () => {
+            state.mobileMenuOpen = !state.mobileMenuOpen;
+            renderNavbar();
+        };
+
+        function renderApp() {
+            const appDiv = document.getElementById('app');
+            appDiv.innerHTML = '';
+            appDiv.className = "flex-grow fade-in";
+
+            switch (state.view) {
+                case 'home': renderHero(appDiv); renderFeatures(appDiv); renderHomeShopPreview(appDiv); renderRepairsPreview(appDiv); break;
+                case 'shop': renderShop(appDiv); break;
+                case 'cart': renderCart(appDiv); break;
+                case 'repairs': renderRepairsPage(appDiv); break;
+                case 'about': renderAbout(appDiv); break;
+                case 'login': renderAuthForm(appDiv); break;
+                case 'profile': renderProfile(appDiv); break;
+                case 'success': renderSuccess(appDiv); break;
+                default: renderHero(appDiv);
+            }
+            if(window.lucide) lucide.createIcons(); 
+        }
+
+        // --- Componentes ---
+
+        function renderNavbar() {
+            const container = document.getElementById('navbar-container');
+            const cartCount = state.cart.reduce((acc, item) => acc + item.qty, 0);
+            
+            const userDisplay = state.user ? 
+                `<div class="flex items-center gap-2">
+                    <button onclick="navigate('profile')" class="text-sm font-semibold hidden md:block hover:text-yellow-400 truncate max-w-[100px] md:max-w-none">Hola, ${state.user.displayName.split(' ')[0]}</button>
+                    <button onclick="logout()" class="hover:text-red-500 transition" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+                 </div>` : 
+                `<button onclick="navigate('login')" class="flex items-center hover:text-yellow-400 transition"><i data-lucide="user" class="w-6 h-6"></i></button>`;
+
+            const mobileMenu = state.mobileMenuOpen ? `
+                <div class="md:hidden bg-zinc-900 border-t border-zinc-800 absolute w-full left-0 top-full z-40 shadow-xl">
+                    <div class="flex flex-col p-4 space-y-4 font-bold text-center">
+                        <button onclick="navigate('home')" class="hover:text-yellow-400 text-white py-2">INICIO</button>
+                        <button onclick="navigate('shop')" class="hover:text-yellow-400 text-white py-2">TIENDA</button>
+                        <button onclick="navigate('repairs')" class="hover:text-yellow-400 text-white py-2">REPARACIONES</button>
+                        <button onclick="navigate('about')" class="hover:text-yellow-400 text-white py-2">UBICACIÓN</button>
+                    </div>
+                </div>
+            ` : '';
+
+            container.innerHTML = `
+                <nav class="bg-black text-white border-b-4 border-yellow-400 shadow-lg relative">
+                    <div class="container mx-auto px-4">
+                        <div class="flex justify-between items-center h-20">
+                            <div class="flex items-center cursor-pointer shrink-0" onclick="navigate('home')">
+                                <div class="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 rounded-full flex items-center justify-center mr-2 text-black font-bold text-lg md:text-xl">H</div>
+                                <div class="flex flex-col">
+                                    <span class="text-xl md:text-2xl font-black tracking-tighter text-yellow-400 leading-none">HAPPY CELL</span>
+                                    <span class="text-[0.6rem] md:text-xs text-gray-300 tracking-widest uppercase hidden sm:block">Tecnología a tu alcance</span>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex space-x-6 lg:space-x-8 font-bold text-sm uppercase tracking-wide">
+                                <button onclick="navigate('home')" class="hover:text-yellow-400 transition">Inicio</button>
+                                <button onclick="navigate('shop')" class="hover:text-yellow-400 transition">Tienda</button>
+                                <button onclick="navigate('repairs')" class="hover:text-yellow-400 transition">Reparaciones</button>
+                                <button onclick="navigate('about')" class="hover:text-yellow-400 transition">Nosotros</button>
+                            </div>
+                            <div class="flex items-center space-x-4 md:space-x-6">
+                                <button onclick="navigate('cart')" class="relative hover:text-yellow-400 transition p-1">
+                                    <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                                    ${cartCount > 0 ? `<span class="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-yellow-400 text-black text-[10px] md:text-xs font-bold rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center pop-in">${cartCount}</span>` : ''}
+                                </button>
+                                ${userDisplay}
+                                <button class="md:hidden p-1" onclick="toggleMobileMenu()">
+                                    <i data-lucide="${state.mobileMenuOpen ? 'x' : 'menu'}" class="w-6 h-6"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    ${mobileMenu}
+                </nav>
+            `;
+            if(window.lucide) { window.lucide.createIcons({ root: container }); }
+        }
+
+        function renderHero(parent) {
+            const div = document.createElement('div');
+            div.className = "relative bg-zinc-900 text-white overflow-hidden";
+            div.innerHTML = `
+                <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556656793-02451369563f?auto=format&fit=crop&q=80')] bg-cover bg-center"></div>
+                <div class="container mx-auto px-4 py-16 md:py-24 relative z-10 flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                        <img src="1.jpg" alt="Happy Cell Logo" class="w-32 md:w-48 mx-auto md:mx-0 mb-6 rounded-lg shadow-lg border-2 border-yellow-400">
+                        <span class="bg-yellow-400 text-black px-3 py-1 text-xs md:text-sm font-bold uppercase rounded-sm mb-4 inline-block">Sé un cliente happy</span>
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black mb-6 leading-tight">Servicio<span class="text-yellow-400"> a domicilio</span></h1>
+                        <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-lg mx-auto md:mx-0">Venta de celulares a crédito y de contado. Expertos en reparación de iPhone y Android.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start w-full sm:w-auto">
+                            <button onclick="navigate('shop')" class="bg-yellow-400 text-black font-bold py-3 px-8 rounded hover:bg-yellow-300 transition shadow-lg transform hover:-translate-y-1 w-full sm:w-auto">VER CATÁLOGO</button>
+                            <button onclick="navigate('repairs')" class="border-2 border-white text-white font-bold py-3 px-8 rounded hover:bg-white hover:text-black transition w-full sm:w-auto">SERVICIO TÉCNICO</button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center mt-8 md:mt-0">
+                        <img src="logoHCconnumero.jpg" alt="Happy Cell Promo" class="relative z-10 w-full max-w-md rounded-lg shadow-2xl border-4 border-gray-800 object-contain hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&q=80&w=600'">
+                    </div>
+                </div>
+            `;
+            parent.appendChild(div);
+        }
+
+        function renderFeatures(parent) {
+            const div = document.createElement('div');
+            div.className = "bg-yellow-400 py-12";
+            div.innerHTML = `
+                <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-black">
+                    <div class="flex flex-col items-center text-center p-4"><i data-lucide="credit-card" class="w-10 h-10 mb-3"></i><h3 class="font-bold text-lg uppercase">Crédito Fácil</h3><p class="text-sm">Lleva tu equipo hoy y págalo a cuotas.</p></div>
+                    <div class="flex flex-col items-center text-center p-4"><i data-lucide="wrench" class="w-10 h-10 mb-3"></i><h3 class="font-bold text-lg uppercase">Servicio Técnico</h3><p class="text-sm">Especialistas en Apple y Android.</p></div>
+                    <div class="flex flex-col items-center text-center p-4"><i data-lucide="truck" class="w-10 h-10 mb-3"></i><h3 class="font-bold text-lg uppercase">Domicilios</h3><p class="text-sm">Envíos seguros en todo Medellín.</p></div>
+                    <div class="flex flex-col items-center text-center p-4"><i data-lucide="shield-check" class="w-10 h-10 mb-3"></i><h3 class="font-bold text-lg uppercase">Garantía</h3><p class="text-sm">Respaldo total en tus compras.</p></div>
+                </div>
+            `;
+            parent.appendChild(div);
+        }
+
+        function renderHomeShopPreview(parent) {
+            const div = document.createElement('div');
+            div.className = "py-12 bg-gray-50";
+            div.innerHTML = `
+                <div class="container mx-auto px-4 text-center mb-8">
+                    <h2 class="text-3xl font-black uppercase">Destacados</h2>
+                    <p class="text-gray-500">Lo mejor en tecnología para ti</p>
+                </div>
+                <div id="home-products-container"></div>
+            `;
+            parent.appendChild(div);
+            renderShop(document.getElementById('home-products-container'), true);
+        }
+
+        function renderRepairsPreview(parent) { renderRepairsPage(parent); }
+
+        function renderShop(parent, isPreview = false) {
+            const container = document.createElement('div');
+            container.className = isPreview ? "" : "container mx-auto px-4 py-12";
+            if (!isPreview) {
+                let filtersHtml = ['Todos', 'Celulares', 'Tablets', 'Audio', 'Accesorios', 'Servicios'].map(cat => 
+                    `<button onclick="setFilter('${cat}')" class="px-4 py-2 rounded-full font-bold text-sm transition ${state.filter === cat ? 'bg-yellow-400 text-black' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} mb-2">${cat}</button>`
+                ).join('');
+                container.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-10">
+                        <h2 class="text-3xl font-black uppercase mb-4 md:mb-0">Buscar productos por categoria</h2>
+                        <div class="flex flex-wrap gap-2 justify-center md:justify-end">${filtersHtml}</div>
+                    </div>
+                `;
+            }
+            const grid = document.createElement('div');
+            grid.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8";
+            const filtered = state.filter === 'Todos' ? state.products : state.products.filter(p => p.categoria === state.filter);
+            grid.innerHTML = filtered.map(product => `
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 group border border-gray-100 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        ${product.categoria === 'Servicios' ? '<span class="absolute top-2 right-2 bg-black text-white text-xs font-bold px-2 py-1 rounded">SERVICIO</span>' : ''}
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="text-xs text-gray-500 uppercase tracking-wide font-bold mb-1">${product.categoria}</div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 truncate">${product.nombre}</h3>
+                        <p class="text-sm text-gray-600 mb-4 h-10 overflow-hidden text-ellipsis flex-grow">${product.descripcion || ''}</p>
+                        <div class="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
+                            <span class="text-xl font-black text-yellow-600">$${product.precio.toLocaleString()}</span>
+                            <button onclick="addToCart('${product.id}')" class="bg-black text-white p-2 rounded-full hover:bg-yellow-400 hover:text-black transition">
+                                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            container.appendChild(grid);
+            parent.appendChild(container);
+        }
+
+        window.setFilter = (cat) => { state.filter = cat; renderApp(); };
+
+        window.addToCart = (id) => {
+            const product = state.products.find(p => p.id === id);
+            if (!product) return;
+            const existing = state.cart.find(p => p.id === id);
+            if (existing) { existing.qty++; } else { state.cart.push({ ...product, qty: 1 }); }
+            renderNavbar();
+        };
+
+        function renderCart(parent) {
+            const total = state.cart.reduce((acc, item) => acc + (item.precio * item.qty), 0);
+            if (state.cart.length === 0) {
+                parent.innerHTML = `
+                    <div class="container mx-auto px-4 py-20 text-center">
+                        <i data-lucide="shopping-cart" class="w-20 h-20 mx-auto text-gray-300 mb-6"></i>
+                        <h2 class="text-3xl font-black mb-4">Tu carrito está vacío</h2>
+                        <button onclick="navigate('shop')" class="bg-yellow-400 text-black font-bold py-3 px-8 rounded hover:bg-yellow-300 transition">IR A LA TIENDA</button>
+                    </div>`;
+                return;
+            }
+            const itemsHtml = state.cart.map(item => `
+                <div class="flex flex-col sm:flex-row items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-4">
+                    <img src="${item.imagen}" class="w-24 h-24 object-cover rounded mb-4 sm:mb-0 sm:mr-6">
+                    <div class="flex-grow text-center sm:text-left w-full sm:w-auto mt-4 sm:mt-0">
+                        <h3 class="font-bold text-lg">${item.nombre}</h3>
+                        <p class="text-gray-500 text-sm mb-2">${item.categoria}</p>
+                        <div class="text-yellow-600 font-bold">$${item.precio.toLocaleString()}</div>
+                    </div>
+                    <div class="flex items-center gap-4 mt-4 sm:mt-0 justify-between w-full sm:w-auto">
+                        <div class="flex items-center border border-gray-300 rounded">
+                            <button onclick="updateQty('${item.id}', -1)" class="px-3 py-1 hover:bg-gray-100">-</button>
+                            <span class="px-3 font-bold">${item.qty}</span>
+                            <button onclick="updateQty('${item.id}', 1)" class="px-3 py-1 hover:bg-gray-100">+</button>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-red-500 hover:text-red-700 ml-4"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            parent.innerHTML = `
+                <div class="container mx-auto px-4 py-12">
+                    <h2 class="text-3xl font-black uppercase mb-8 border-b-2 border-yellow-400 pb-2 inline-block">Tu Carrito</h2>
+                    <div class="flex flex-col lg:flex-row gap-12">
+                        <div class="lg:w-2/3">${itemsHtml}</div>
+                        <div class="lg:w-1/3">
+                            <div class="bg-zinc-900 text-white p-8 rounded-lg shadow-xl sticky top-24">
+                                <h3 class="text-xl font-bold mb-6 border-b border-gray-700 pb-4">Resumen</h3>
+                                <div class="flex justify-between mb-4"><span class="text-gray-400">Subtotal</span><span>$${total.toLocaleString()}</span></div>
+                                <div class="flex justify-between mb-4"><span class="text-gray-400">Envío</span><span class="text-yellow-400">Gratis</span></div>
+                                <div class="flex justify-between text-2xl font-black mt-8 mb-8"><span>Total</span><span class="text-yellow-400">$${total.toLocaleString()}</span></div>
+                                ${state.user ? `<button onclick="createOrder()" class="w-full bg-yellow-400 text-black font-bold py-4 rounded hover:bg-yellow-300 transition text-lg">PAGAR AHORA</button>` : `<div class="text-center"><p class="mb-4 text-sm text-gray-400">Inicia sesión para comprar.</p><button onclick="navigate('login')" class="w-full bg-white text-black font-bold py-4 rounded hover:bg-gray-200 transition">INICIAR SESIÓN</button></div>`}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.updateQty = (id, delta) => {
+            const item = state.cart.find(p => p.id === id);
+            if (item) {
+                item.qty = Math.max(1, item.qty + delta);
+                renderApp();
+                renderNavbar();
+            }
+        };
+
+        window.removeFromCart = (id) => {
+            state.cart = state.cart.filter(p => p.id !== id);
+            renderApp();
+            renderNavbar();
+        };
+
+        window.createOrder = async () => {
+            if (!state.user) return;
+            const total = state.cart.reduce((acc, item) => acc + (item.precio * item.qty), 0);
+            const orderData = { items: state.cart, total: total, createdAt: Date.now(), status: 'Pagado', customerName: state.user.displayName, customerEmail: state.user.email };
+            MockDB.createOrder(state.user.uid, orderData);
+            state.cart = [];
+            state.view = 'success';
+            renderNavbar();
+            renderApp();
+        };
+
+        function renderRepairsPage(parent) {
+            const div = document.createElement('div');
+            div.className = "bg-white";
+            div.innerHTML = `
+                <div class="bg-black text-white py-16 text-center">
+                    <h2 class="text-3xl md:text-4xl font-black text-yellow-400 mb-4 px-4">SERVICIO TÉCNICO ESPECIALIZADO</h2>
+                    <p class="text-lg md:text-xl text-gray-400 px-4">Devolvemos la vida a tu dispositivo</p>
+                </div>
+                <div class="container mx-auto px-4 py-16">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div><img src="https://images.unsplash.com/photo-1581092921461-eab62e97a783?auto=format&fit=crop&q=80&w=800" class="rounded-lg shadow-2xl w-full"></div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6">¿Qué reparamos?</h3>
+                            <ul class="space-y-4 mb-6">
+                                <li class="flex items-center bg-gray-50 p-3 rounded"><i data-lucide="check-circle" class="text-yellow-400 mr-3 w-5 h-5"></i><span class="font-semibold">Cambio de Pantallas</span></li>
+                                <li class="flex items-center bg-gray-50 p-3 rounded"><i data-lucide="check-circle" class="text-yellow-400 mr-3 w-5 h-5"></i><span class="font-semibold">Baterías Originales</span></li>
+                                <li class="flex items-center bg-gray-50 p-3 rounded"><i data-lucide="check-circle" class="text-yellow-400 mr-3 w-5 h-5"></i><span class="font-semibold">Daños por Agua</span></li>
+                            </ul>
+                            <div class="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
+                                <h4 class="font-bold text-lg mb-2">Agenda tu revisión</h4>
+                                <button class="bg-black text-white px-6 py-2 rounded font-bold hover:bg-gray-800 transition flex items-center w-full sm:w-auto justify-center"><i data-lucide="phone" class="mr-2 w-4 h-4"></i> Contactar por WhatsApp</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            parent.appendChild(div);
+        }
+
+        function renderAbout(parent) {
+             parent.innerHTML = `
+                <div class="container mx-auto px-4 py-12 text-center">
+                    <h1 class="text-4xl font-black mb-6">UBICACIÓN</h1>
+                    <div class="bg-black text-white p-8 rounded-xl max-w-2xl mx-auto shadow-2xl">
+                        <i data-lucide="map-pin" class="mx-auto text-yellow-400 mb-4 w-12 h-12"></i>
+                        <h2 class="text-2xl font-bold mb-2">HAPPY CEL MEDELLÍN</h2>
+                        <p class="text-lg text-gray-300 mb-4">Centro de Medellín</p>
+                        <p class="text-gray-400">Te esperamos para brindarte la mejor asesoría.</p>
+                    </div>
+                </div>
+             `;
+        }
+
+        function renderAuthForm(parent) {
+            parent.innerHTML = `
+                <div class="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4">
+                    <div class="max-w-md w-full space-y-8 bg-white p-8 md:p-10 rounded-xl shadow-2xl border-t-4 border-yellow-400">
+                        <div class="text-center">
+                             <div class="mx-auto h-12 w-12 bg-black text-yellow-400 rounded-full flex items-center justify-center font-bold text-2xl">H</div>
+                             <h2 class="mt-6 text-3xl font-extrabold text-gray-900">${state.authType === 'login' ? 'Bienvenido' : 'Crear Cuenta'}</h2>
+                             <p class="mt-2 text-sm text-gray-600">
+                                ${state.authType === 'login' ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
+                                <button onclick="toggleAuthType()" class="font-medium text-yellow-600 hover:text-yellow-500 underline ml-1">${state.authType === 'login' ? 'Regístrate' : 'Ingresa'}</button>
+                             </p>
+                        </div>
+                        <form class="mt-8 space-y-6" onsubmit="handleAuth(event)">
+                            ${state.authType === 'register' ? `<input id="auth-name" type="text" required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded focus:ring-yellow-500 focus:border-yellow-500 mb-4" placeholder="Nombre Completo">` : ''}
+                            <input id="auth-email" type="email" required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded focus:ring-yellow-500 focus:border-yellow-500 mb-4" placeholder="Correo Electrónico">
+                            <input id="auth-pass" type="password" required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded focus:ring-yellow-500 focus:border-yellow-500 mb-4" placeholder="Contraseña">
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-md text-black bg-yellow-400 hover:bg-yellow-300 transition">${state.authType === 'login' ? 'INGRESAR' : 'REGISTRARME'}</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.toggleAuthType = () => {
+            state.authType = state.authType === 'login' ? 'register' : 'login';
+            renderApp();
+        };
+
+        window.handleAuth = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            try {
+                if (state.authType === 'register') {
+                    const name = document.getElementById('auth-name').value;
+                    const user = MockDB.register(email, pass, name);
+                    state.user = user;
+                } else {
+                    const user = MockDB.login(email, pass);
+                    state.user = user;
+                }
+                navigate('home');
+            } catch (err) { alert(err.message); }
+        };
+
+        window.logout = () => {
+            MockDB.logout();
+            state.user = null;
+            state.cart = [];
+            navigate('home');
+        };
+
+        function renderProfile(parent) {
+            parent.innerHTML = `
+                 <div class="container mx-auto px-4 py-12">
+                    <div class="bg-white rounded-lg shadow-lg p-8 mb-8 border-l-8 border-yellow-400">
+                        <h2 class="text-2xl font-black mb-2">Mi Perfil</h2>
+                        <p class="text-gray-600"><strong>Nombre:</strong> ${state.user.displayName}</p>
+                        <p class="text-gray-600"><strong>Email:</strong> ${state.user.email}</p>
+                    </div>
+                    <h3 class="text-xl font-bold mb-6">Mis Pedidos</h3>
+                    <div id="orders-list" class="space-y-4"></div>
+                 </div>
+            `;
+            const orders = MockDB.getUserOrders(state.user.uid);
+            const list = document.getElementById('orders-list');
+            if(orders.length === 0) { list.innerHTML = `<p class="text-gray-500 italic">Sin pedidos aún.</p>`; return; }
+            list.innerHTML = orders.map(d => `
+                <div class="bg-white border border-gray-200 rounded p-4 flex flex-col md:flex-row justify-between items-center">
+                        <div>
+                        <p class="font-bold">Orden #${d.id.slice(0,6)}</p>
+                        <p class="text-sm text-gray-500">${new Date(d.createdAt).toLocaleDateString()}</p>
+                        <div class="mt-2 text-sm">${d.items.map(i => `<span class="block text-gray-600">• ${i.qty}x ${i.nombre}</span>`).join('')}</div>
+                        </div>
+                        <div class="mt-4 md:mt-0 text-right">
+                        <span class="block text-lg font-black text-green-600">$${d.total.toLocaleString()}</span>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold mt-1">${d.status || 'Pagado'}</span>
+                        </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSuccess(parent) {
+            parent.innerHTML = `
+               <div class="min-h-[60vh] flex flex-col items-center justify-center text-center p-4">
+                  <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6"><i data-lucide="check-circle" class="text-green-500 w-12 h-12"></i></div>
+                  <h2 class="text-3xl font-black mb-2">¡Gracias por tu compra!</h2>
+                  <p class="text-gray-600 max-w-md mb-8">Tu pedido ha sido registrado (Localmente). Te hemos enviado un correo con los detalles.</p>
+                  <button onclick="navigate('shop')" class="bg-black text-white px-8 py-3 rounded font-bold hover:bg-gray-800 transition">SEGUIR COMPRANDO</button>
+               </div>
+            `;
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
